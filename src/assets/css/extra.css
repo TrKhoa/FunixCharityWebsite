@@ -1,0 +1,50 @@
+.nav-link{
+  color: black;
+  text-decoration: none;
+}
+
+.nav-link:hover{
+  color:#f19224
+}
+
+.text-darkYellow{
+  color:#f19224
+}
+
+.bg-darkYellow{
+  background-color:#f19224;
+  border-color:#f19224;
+}
+
+.btn-darkYellow{
+  background-color:#f19224;
+  border-color:#f19224;
+  color:white;
+}
+
+.btn-darkYellow:hover{
+  background-color:black;
+  border-color:black;
+  color:white;
+}
+
+.btn-outline-darkYellow{
+  outline: solid;
+  outline-color:#f19224;
+  color:#f19224
+}
+
+.btn-outline-darkYellow:hover{
+  background-color:black;
+  outline: none;
+  color:white;
+}
+
+.hover-card-shadow:hover{
+  transition: 0.5s;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+.card{
+  cursor: default;
+}
