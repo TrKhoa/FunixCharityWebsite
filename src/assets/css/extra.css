@@ -1,50 +1,97 @@
-.nav-link{
-  color: black;
-  text-decoration: none;
+.nav-link {
+    color: black;
+    text-decoration: none;
 }
 
-.nav-link:hover{
-  color:#f19224
+.nav-link:hover {
+    color: #f19224;
 }
 
-.text-darkYellow{
-  color:#f19224
+.text-darkYellow {
+    color: #f19224;
 }
 
-.bg-darkYellow{
-  background-color:#f19224;
-  border-color:#f19224;
+.text-darkYellow:hover {
+    color: #f19224;
 }
 
-.btn-darkYellow{
-  background-color:#f19224;
-  border-color:#f19224;
-  color:white;
+.hover-darkYellow:hover {
+    color: #f19224;
 }
 
-.btn-darkYellow:hover{
-  background-color:black;
-  border-color:black;
-  color:white;
+.bg-darkYellow {
+    background-color: #f19224;
+    border-color: #f19224;
 }
 
-.btn-outline-darkYellow{
-  outline: solid;
-  outline-color:#f19224;
-  color:#f19224
+.btn-darkYellow {
+    background-color: #f19224;
+    border-color: #f19224;
+    color: white;
 }
 
-.btn-outline-darkYellow:hover{
-  background-color:black;
-  outline: none;
-  color:white;
+.btn-darkYellow:hover {
+    background-color: black;
+    border-color: black;
+    color: white;
 }
 
-.hover-card-shadow:hover{
-  transition: 0.5s;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+.btn-outline-darkYellow {
+    outline: solid;
+    outline-color: #f19224;
+    color: #f19224;
 }
 
-.card{
-  cursor: default;
+.btn-outline-darkYellow:hover {
+    background-color: black;
+    outline: none;
+    color: white;
+}
+
+.hover-card-shadow:hover {
+    transition: 0.5s;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+
+.c-default {
+    cursor: default;
+}
+
+.c-pointer {
+    cursor: pointer;
+}
+
+.card {
+    cursor: default;
+}
+
+body {
+    overflow-y: "s";
+}
+
+.full-view {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+}
+
+.z-index-1{
+    z-index: 10000;
+}
+
+.z-index-2{
+    z-index: 9000;
+}
+
+.spin {
+    animation: spinner 2s linear infinite;
+}
+
+@keyframes spinner {
+    0% {
+        transform: translate3d(-50%, -50%, 0) rotate(0deg);
+    }
+    100% {
+        transform: translate3d(-50%, -50%, 0) rotate(360deg);
+    }
 }

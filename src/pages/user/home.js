@@ -1,19 +1,13 @@
-import {useEffect} from 'react';
-import { useSelector,useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Hero from '../../components/user/Hero'
 import Mission from '../../components/user/Mission'
 import AboutUs from '../../components/user/AboutUs-Landing'
 import Causes from '../../components/user/Causes'
-import { getCampaign } from '../../redux/apiRequest';
 
 export default function Home(){
 
-    const reduxCampaign = useSelector((state: RootState) => state.campaign)
-    const dispatch = useDispatch();
+    const reduxCampaign = useSelector((state) => state.campaign)
 
-    useEffect(() => {
-        getCampaign(dispatch);
-    }, []);
     /*
     useEffect(() => {
         axios.get('http://localhost:8888/campaigns')

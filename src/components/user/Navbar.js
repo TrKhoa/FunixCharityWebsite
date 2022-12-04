@@ -7,10 +7,6 @@ import {
     Nav,
     NavItem,
     NavLink,
-    UncontrolledDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
     NavbarText,
     Button,
 } from "reactstrap";
@@ -18,12 +14,10 @@ import { Link } from "react-router-dom";
 
 function Menu() {
     const [isOpen, setIsOpen] = useState(false);
-
     const toggle = () => setIsOpen(!isOpen);
 
     return (
-        <div>
-            <Navbar expand="md" fixed="top" color="light">
+            <Navbar expand="md" fixed="top" color="light" className="z-index-2">
                 <NavbarBrand href="/" className="text-darkYellow">
                     <img
                         alt="logo"
@@ -67,7 +61,6 @@ function Menu() {
                     <NavbarText><Button className="btn btn-lg rounded-5 btn-darkYellow fw-semibold">ĐÓNG GÓP NGAY</Button></NavbarText>
                 </Collapse>
             </Navbar>
-        </div>
     );
 }
 

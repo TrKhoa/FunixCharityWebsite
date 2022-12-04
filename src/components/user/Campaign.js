@@ -90,7 +90,7 @@ export default function Campaign(data) {
                     </div>
                 </div>
                 <Button
-                    color="btn btn-outline-darkYellow btn-md rounded-5 fw-bold mt-4"
+                    color="btn btn-outline-darkYellow btn-md rounded-0 fw-bold mt-4"
                     outline
                 >
                     ỦNG HỘ

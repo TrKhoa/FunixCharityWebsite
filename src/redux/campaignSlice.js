@@ -20,9 +20,6 @@ export const campaignSlice = createSlice({
             state.error = false;
             state.data = action.payload.data;
             
-        },
-        getData:(state)=>{
-            console.log("state.data");
         }
     }
 })

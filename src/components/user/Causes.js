@@ -39,14 +39,13 @@ export default function Causes(args) {
             </div>
             <div className="row align-items-center justify-content-center">
                 {
-                campaigns.data.map((val) => (
+                campaigns.data.slice(0, 6).map((val) => (
                         <Campaign
                             title={val.name}
                             sub=""
                             image="https://picsum.photos/318/180"
                             raise={val.raise}
                             goal={val.goal}
-                            percent="100"
                             desc={val.desc}
                         />
                     ))
