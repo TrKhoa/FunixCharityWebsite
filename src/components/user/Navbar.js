@@ -17,8 +17,9 @@ function Menu() {
     const toggle = () => setIsOpen(!isOpen);
 
     return (
-            <Navbar expand="md" fixed="top" color="light" className="z-index-2">
-                <NavbarBrand href="/" className="text-darkYellow">
+        <Navbar expand="md" fixed="top" color="light" className="z-index-2">
+            <Link to="/" className="text-decoration-none">
+                <NavbarBrand className="text-darkYellow">
                     <img
                         alt="logo"
                         src="/image/logo.jpg"
@@ -29,38 +30,45 @@ function Menu() {
                     />
                     VINADONATION
                 </NavbarBrand>
-                <NavbarToggler onClick={toggle} />
-                <Collapse isOpen={isOpen} navbar>
-                    <Nav className="me-auto" navbar>
-                        <NavItem >
-                            <Link to="/" className="nav-link">
-                                <NavLink>Trang chủ</NavLink>
-                            </Link>
-                        </NavItem>
-                        <NavItem >
-                            <Link to="/" className="nav-link">
-                                <NavLink>Các hoàn cảnh cần quyên góp</NavLink>
-                            </Link>
-                        </NavItem>
-                        <NavItem >
-                            <Link to="/" className="nav-link nav-link-active">
-                                <NavLink>Về chúng tôi</NavLink>
-                            </Link>
-                        </NavItem>
-                        <NavItem >
-                            <Link to="/" className="nav-link">
-                                <NavLink>Blog</NavLink>
-                            </Link>
-                        </NavItem>
-                        <NavItem >
-                            <Link to="/" className="nav-link">
-                                <NavLink>Liên hệ</NavLink>
-                            </Link>
-                        </NavItem>
-                    </Nav>
-                    <NavbarText><Button className="btn btn-lg rounded-5 btn-darkYellow fw-semibold">ĐÓNG GÓP NGAY</Button></NavbarText>
-                </Collapse>
-            </Navbar>
+            </Link>
+            <NavbarToggler onClick={toggle} />
+            <Collapse isOpen={isOpen} navbar>
+                <Nav className="me-auto" navbar>
+                    <NavItem>
+                        <Link to="/" className="nav-link">
+                            <NavLink>Trang chủ</NavLink>
+                        </Link>
+                    </NavItem>
+                    <NavItem>
+                        <Link to="/" className="nav-link">
+                            <NavLink>Các hoàn cảnh cần quyên góp</NavLink>
+                        </Link>
+                    </NavItem>
+                    <NavItem>
+                        <Link to="/" className="nav-link nav-link-active">
+                            <NavLink>Về chúng tôi</NavLink>
+                        </Link>
+                    </NavItem>
+                    <NavItem>
+                        <Link to="/" className="nav-link">
+                            <NavLink>Blog</NavLink>
+                        </Link>
+                    </NavItem>
+                    <NavItem>
+                        <Link to="/" className="nav-link">
+                            <NavLink>Liên hệ</NavLink>
+                        </Link>
+                    </NavItem>
+                </Nav>
+                <NavbarText>
+                    <Link to="/login">
+                        <Button className="btn btn-lg rounded-5 btn-darkYellow fw-semibold">
+                            ĐÓNG GÓP NGAY
+                        </Button>
+                    </Link>
+                </NavbarText>
+            </Collapse>
+        </Navbar>
     );
 }
 
