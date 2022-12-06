@@ -19,11 +19,20 @@ export default function Causes(args) {
     };
     */
     const campaigns = args.campaigns;
+    const {title} = args || '';
+    const extraInfo = () =>{
+        if(title === '' || title === undefined){
+            return {display: 'd-none', limit: 12};
+        }
+        else
+            return {display: '', limit: 6};
+    }
     return (
         <div className="container col-xxl-12 px-4 py-5">
+            <div className={extraInfo().display}>
             <div className="row align-items-center justify-content-center g-5 py-5">
                 <h1 className="display-5 fw-bold lh-3 mb-3 col-xxl-8 text-center">
-                    {args.title}
+                    {title}
                 </h1>
 
                 <p className="lead">
@@ -37,9 +46,10 @@ export default function Causes(args) {
                     deserunt mollit anim id est laborum.
                 </p>
             </div>
+            </div>
             <div className="row align-items-center justify-content-center">
                 {
-                campaigns.data.slice(0, 6).map((val) => (
+                campaigns.data.slice(0, extraInfo().limit).map((val) => (
                         <Campaign
                             title={val.name}
                             sub=""

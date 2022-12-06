@@ -8,6 +8,10 @@ import {
     NavItem,
     NavLink,
     NavbarText,
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem,
     Button,
 } from "reactstrap";
 import { Link } from "react-router-dom";
@@ -40,7 +44,7 @@ function Menu() {
                         </Link>
                     </NavItem>
                     <NavItem>
-                        <Link to="/" className="nav-link">
+                        <Link to="/Cause" className="nav-link">
                             <NavLink>Các hoàn cảnh cần quyên góp</NavLink>
                         </Link>
                     </NavItem>
@@ -61,11 +65,22 @@ function Menu() {
                     </NavItem>
                 </Nav>
                 <NavbarText>
-                    <Link to="/login">
+                    <Link to="/Login">
                         <Button className="btn btn-lg rounded-5 btn-darkYellow fw-semibold">
                             ĐÓNG GÓP NGAY
                         </Button>
                     </Link>
+                    <UncontrolledDropdown className="d-none">
+                        <DropdownToggle nav caret>
+                            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle" />
+                        </DropdownToggle>
+                        <DropdownMenu right>
+                            <DropdownItem>Option 1</DropdownItem>
+                            <DropdownItem>Option 2</DropdownItem>
+                            <DropdownItem divider />
+                            <DropdownItem>Reset</DropdownItem>
+                        </DropdownMenu>
+                    </UncontrolledDropdown>
                 </NavbarText>
             </Collapse>
         </Navbar>

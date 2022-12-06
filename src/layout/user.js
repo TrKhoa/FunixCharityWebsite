@@ -2,11 +2,12 @@ import { Routes,Route,Outlet } from 'react-router-dom';
 import {useEffect} from 'react';
 import { useDispatch } from 'react-redux';
 import { getCampaign } from '../redux/apiRequest';
-import Home from '../pages/user/home';
 import Menu from '../components/user/Navbar'
-import Err404 from './404';
 import Footer from '../components/user/Footer'
 import Login from '../components/Login'
+import Home from '../pages/user/home';
+import Causes from '../pages/user/causes';
+import Err404 from './404';
 
 export default function User() {
 
@@ -31,7 +32,8 @@ export default function User() {
                 <Route element={<BasicLayout />} >
                     <Route path="/">
                         <Route index element={<Home />} />
-                        <Route path="login" element={<Login />} />
+                        <Route path="Cause" element={<Causes />} />
+                        <Route path="Login" element={<Login />} />
                         <Route path="*" element={<Err404 />} />
                     </Route>
                 </Route>
