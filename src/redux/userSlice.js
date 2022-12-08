@@ -5,13 +5,30 @@ export const userSlice = createSlice({
     initialState: {
         info: [],
         pending: false,
+        error: ''
     },
     reducers: {
-        update:(state,action)=>{
-            state.name = action.payload.name;
+        isStart:(state)=>{
+            state.pending = true;
+        },
+        loginSuccess:(state,action)=>{
+            state.pending = false;
+            state.error = '';
+            state.info = action.payload.data;
+        },
+        registerSuccess:(state,action)=>{
+            state.pending = false;
+            state.error = '';
+        },
+        registerFailed:(state,action)=>{
+            state.pending = false;
+            state.error = action.payload;
+        },
+        userResetError: (state) => {
+            state.error = ''
         }
     }
 })
 
-export const { update } = userSlice.actions;
+export const { isStart,isError,loginSuccess,registerSuccess, registerFailed, userResetError } = userSlice.actions;
 export default userSlice.reducer;

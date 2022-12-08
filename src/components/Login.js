@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
     FormGroup,
     Label,
@@ -9,17 +9,13 @@ import {
     Form,
     Button,
 } from "reactstrap";
-import { postRegister } from "../redux/apiRequest";
+import Notification from "./user/Notification";
 
+import { postRegister, postLogin, resetError } from "../redux/apiRequest";
 
 const LoginForm = (type) => {
     const validate = (values) => {
         const errors = {};
-        if (!values.name) {
-            errors.name = "Thiếu thông tin!";
-        } else if (values.name.length < 4) {
-            errors.name = "Cần tối thiểu 4 ký tự!";
-        }
 
         if (!values.username) {
             errors.username = "Thiếu thông tin!";
@@ -32,15 +28,22 @@ const LoginForm = (type) => {
         } else if (values.password.length < 8) {
             errors.password = "Cần tối thiểu 8 ký tự!";
         }
-
-        if (!values.passwordConfirm) {
-            errors.passwordConfirm = "Thiếu thông tin!";
-        } else if (values.password !== values.passwordConfirm) {
-            errors.passwordConfirm = "Passwords không giống nhau";
-        }
-
-        if (!values.email) {
-            errors.email = "Thiếu thông tin!";
+        if(isRegister){
+            if (!values.name) {
+                errors.name = "Thiếu thông tin!";
+            } else if (values.name.length < 4) {
+                errors.name = "Cần tối thiểu 4 ký tự!";
+            }
+    
+            if (!values.passwordConfirm) {
+                errors.passwordConfirm = "Thiếu thông tin!";
+            } else if (values.password !== values.passwordConfirm) {
+                errors.passwordConfirm = "Passwords không giống nhau";
+            }
+    
+            if (!values.email) {
+                errors.email = "Thiếu thông tin!";
+            }
         }
 
         return errors;
@@ -56,10 +59,18 @@ const LoginForm = (type) => {
         },
         validate,
         onSubmit: (values) => {
-            postRegister(dispatch,formik.values);
+            if (isRegister) {
+                postRegister(dispatch, formik.values);
+            } else {
+                postLogin(dispatch, formik.values);
+            }
         },
     });
     const [isRegister, setIsRegister] = useState(type.isRegister);
+
+    useEffect(() => {
+        resetError(dispatch);
+    }, [isRegister]);
 
     if (isRegister) {
         return (
@@ -172,7 +183,10 @@ const LoginForm = (type) => {
         );
     } else {
         return (
-            <Form className="p-4 p-md-5 border rounded-3 bg-light">
+            <Form
+                className="p-4 p-md-5 border rounded-3 bg-light"
+                onSubmit={formik.handleSubmit}
+            >
                 <h2 className="text-center">Đăng Nhập</h2>
                 <FormGroup floating>
                     <Input
@@ -213,7 +227,6 @@ const LoginForm = (type) => {
                             setIsRegister(!isRegister);
                             formik.resetForm({
                                 values: {
-                                    name: '',
                                     username: formik.values.username,
                                     password: formik.values.password,
                                 },
@@ -241,6 +254,8 @@ const LoginForm = (type) => {
 };
 
 export default function Login(value) {
+    const errMessage = useSelector((state) => state.user.error);
+
     return (
         <div className="container-fluid col-xl-12 col-xxl-12 pt-5">
             <div className="row position-relative align-items-center justify-content-center g-lg-5 py-5">
@@ -252,6 +267,7 @@ export default function Login(value) {
                     />
                 </div>
                 <div className="position-absolute col-md-10 align-middle col-lg-5">
+                    <Notification color="danger" message={errMessage} />
                     <LoginForm isRegister={false} />
                 </div>
             </div>
