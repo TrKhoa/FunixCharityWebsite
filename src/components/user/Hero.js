@@ -9,7 +9,6 @@ export default function Hero(args) {
                         className="d-block mx-lg-auto img-fluid"
                         alt="Bootstrap Themes"
                         loading="lazy"
-                        sty
                     />
                 </div>
                 <div className="col-lg-5">

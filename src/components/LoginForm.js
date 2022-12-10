@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
     FormGroup,
     Label,
@@ -9,11 +9,9 @@ import {
     Form,
     Button,
 } from "reactstrap";
-import Notification from "./user/Notification";
-
 import { postRegister, postLogin, resetError } from "../redux/apiRequest";
 
-const LoginForm = (type) => {
+export default function LoginForm(type){
     const validate = (values) => {
         const errors = {};
 
@@ -252,25 +250,3 @@ const LoginForm = (type) => {
         );
     }
 };
-
-export default function Login(value) {
-    const errMessage = useSelector((state) => state.user.error);
-
-    return (
-        <div className="container-fluid col-xl-12 col-xxl-12 pt-5">
-            <div className="row position-relative align-items-center justify-content-center g-lg-5 py-5">
-                <div className="col-lg-12">
-                    <img
-                        className="w-100"
-                        src="/image/login/closeup-diverse-people-joining-their-hands.jpg"
-                        alt="1"
-                    />
-                </div>
-                <div className="position-absolute col-md-10 align-middle col-lg-5">
-                    <Notification color="danger" message={errMessage} />
-                    <LoginForm isRegister={false} />
-                </div>
-            </div>
-        </div>
-    );
-}

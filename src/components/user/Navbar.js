@@ -72,9 +72,9 @@ function Menu() {
                     </Link>
                     <UncontrolledDropdown className="d-none">
                         <DropdownToggle nav caret>
-                            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle" />
+                            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" className="rounded-circle" />
                         </DropdownToggle>
-                        <DropdownMenu right>
+                        <DropdownMenu>
                             <DropdownItem>Option 1</DropdownItem>
                             <DropdownItem>Option 2</DropdownItem>
                             <DropdownItem divider />

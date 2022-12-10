@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { getCampaign } from '../redux/apiRequest';
 import Menu from '../components/user/Navbar'
 import Footer from '../components/user/Footer'
-import Login from '../components/Login'
+import Login from '../pages/login'
 import Home from '../pages/user/home';
 import Causes from '../pages/user/causes';
 import Err404 from './404';
