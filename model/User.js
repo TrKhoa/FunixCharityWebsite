@@ -13,6 +13,10 @@ const User = new Schema({
         type: String,
         required: true,
     },
+    image: {
+        type: String,
+        default: ''
+    },
     status: {
         type: Number,
         default: 0,
