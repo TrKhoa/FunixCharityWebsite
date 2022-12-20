@@ -21,7 +21,10 @@
               <label for="username" class="form-label">Tài khoản</label>
               <input type="text" class="form-control" id="username" name="username" value=<%= user ? user.username : '' %>>
             </div>
-
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" name="email" value=<%= user ? user.email : '' %>>
+            </div>
             <% if(!edit) {%>
             <div class="mb-3">
               <label for="password" class="form-label">Mật khẩu</label>
@@ -32,6 +35,7 @@
               <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm">
             </div>
             <% } %>
+            <% if(user.status !== 3) { %>
             <div class="mb-3">
               <label for="type" class="form-label">Loại tài khoản</label>
               <select id="type" class="form-select" name="type">
@@ -39,6 +43,10 @@
                 <option value="3">Admin</option>
               </select>
             </div>
+            <% } %>
+            <a href="/admin/user">
+              <button type="button" class="btn btn-secondary">Hủy</button>
+            </a>
             <button type="submit" class="btn btn-primary"><%= user ? 'Chỉnh sửa' : 'Tạo tài khoản' %></button>
           </form>
         </div>

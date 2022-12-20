@@ -51,8 +51,13 @@
               <label for="desc">Miêu tả</label>
               <textarea class="form-control" placeholder="VD: lorem is" id="desc" name="desc" style="height: 250px" value="d"></textarea>
             </div>
-            <button type="submit" class="btn btn-primary"><%= edit ? 'Chỉnh sửa' : 'Xác nhận' %></button>
-          </form>
+            <div>
+              <a href="/admin/campaign">
+                <button type="button" class="btn btn-secondary">Hủy</button>
+              </a>
+              <button type="submit" class="btn btn-primary"><%= edit ? 'Chỉnh sửa' : 'Xác nhận' %></button>
+            </div>
+            </form>
         </div>
       </div>
       <script>

@@ -13,6 +13,7 @@
                 <th scope="col">Hình ảnh</th>
                 <th scope="col">Tên tài khoản</th>
                 <th scope="col">Tên người dùng</th>
+                <th scope="col">Email</th>
                 <th scope="col">Chức năng</th>
                 <th scope="col"></th>
               </tr>
@@ -24,6 +25,7 @@
                   <td><img src="/image/user/default.png" height="40"></td>
                   <td><%= val.username %></td>
                   <td><%= val.name %></td>
+                  <td><%= val.email %></td>
                   <td><%= val.status===3 ? 'admin' : 'user'%></td>
                   <td><a href=<%= "/admin/user-edit/"+val.username %> class="fa-solid fa-pen-to-square"> </a> <div class="fa fa-solid fa-trash" data-bs-toggle="modal" data-bs-target=<%= "#"+val.username %>></div></td>
                 </tr>
@@ -35,13 +37,19 @@
                         <h1 class="modal-title fs-5" id="label">Thông báo</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
+                      
                       <div class="modal-body">
-                        Bạn có chắc muốn xóa User: <%= val.username %>
+                        <%= val.status !== 3 ? "Bạn có chắc muốn xóa User: "+val.username : "Không thể xóa User là Admin" %>
                       </div>
+                      
                       <div class="modal-footer">
+                        <% if(val.status !== 3) { %>
                         <a href=<%= "/admin/user-delete/"+val.username %>>
                           <button type="button" class="btn btn-primary">Xóa</button>
                         </a>
+                        <% } else { %>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Trở lại</button>
+                      <% } %>
                       </div>
                     </div>
                   </div>

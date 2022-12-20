@@ -7,10 +7,11 @@ const Campaign = require("../model/Campaign");
 exports.postRegister = async (req, res) => {
     try {
         const userInfo = req.body.data;
-        await User.findOne({ username: userInfo.username }).then(
+        const validUsername = userInfo.username.toLowerCase().split(" ").join("");
+        await User.findOne({ username: validUsername }).then(
             (userExist) => {
                 if (!userExist) {
-                    const user = new User(userInfo);
+                    const user = new User({...userInfo, username: validUsername});
                     user.save()
                         .then((e) => {
                             return res.status(201).send({
@@ -46,11 +47,12 @@ exports.postLogin = async (req, res) => {
     let getCookie = undefined;
     if (req.get("Cookie")) getCookie = req.get("Cookie").split(";");
     else getCookie = [];
-    const userInfo = req.body;
-    await User.findOne({ username: userInfo.username })
+    const {username,password} = req.body;
+    const validUsername = username.toLowerCase().split(" ").join("");
+    await User.findOne({ username: validUsername })
         .then((user) => {
             if (user) {
-                if (user.password === userInfo.password) {
+                if (user.password === password) {
                     req.session.isLoggedIn = true;
                     req.session.user = user;
                     return res.status(201).send({ data: user, error: false });

@@ -57,7 +57,7 @@ exports.postUserAdd = (req, res, next) => {
             errorMessage: err.array()[0].msg,
         });
     } else {
-        const { name, username, password, type } = req.body;
+        const { name, username, email, password, type } = req.body;
         const validUsername = username.toLowerCase().split(" ").join("");
         console.log(validUsername);
         const filter = ({username: username});
@@ -76,6 +76,7 @@ exports.postUserAdd = (req, res, next) => {
                     name: name,
                     username: validUsername,
                     password: password,
+                    email: email,
                     status: type,
                     donate: [],
                 });
@@ -97,7 +98,7 @@ exports.getUserEdit = (req, res, next) => {
                 user: user,
                 edit: true,
                 pageTitle: "User",
-                errorMessage: "errorMessage",
+                errorMessage: "",
             });
         } else {
             res.redirect("/admin/user");
@@ -140,7 +141,7 @@ exports.getUserDelete = (req, res, next) => {
     if (user === "") {
         res.redirect("/admin/user");
     } else {
-        const filter = { username: user };
+        const filter = { username: user, status: {$lt: 3} };
         User.deleteOne(filter).then(() => {
             res.redirect("/admin/user");
         });
