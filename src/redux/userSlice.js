@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const userSlice = createSlice({
     name: "user",
     initialState: {
-        info: [],
+        info: '',
         pending: false,
         error: ''
     },
@@ -15,6 +15,20 @@ export const userSlice = createSlice({
             state.pending = false;
             state.error = '';
             state.info = action.payload.data;
+        },
+        loginFailed:(state,action)=>{
+            state.pending = false;
+            state.error = action.payload;
+        },
+        logoutSuccess:(state,action)=>{
+            state.pending = false;
+            state.error = '';
+            state.info = '';
+        },
+        logoutFailed:(state,action)=>{
+            state.pending = false;
+            state.error = action.payload;
+            state.info = '';
         },
         registerSuccess:(state,action)=>{
             state.pending = false;

@@ -50,8 +50,21 @@ export const postLogin = async (dispatch, data) => {
         }
     );
     if (!login.data.error) {
-        dispatch(loginSuccess(login));
+        dispatch(loginSuccess(login.data));
     } else {
         dispatch(registerFailed(login.data.message));
     }
 };
+
+export const isLogin = async (dispatch, data) =>{
+    await dispatch(isStart());
+    if (data.isLogin === true) {
+        dispatch(loginSuccess(data));
+    }
+    /*
+    if (!login.data.error) {
+        dispatch(loginSuccess(login.data));
+    } else {
+        dispatch(registerFailed(login.data.message));
+    }\*/
+}

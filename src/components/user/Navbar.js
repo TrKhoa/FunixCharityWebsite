@@ -15,13 +15,16 @@ import {
     Button,
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function Menu() {
+    const userState = useSelector((state) => state.user.info);
+    const serverUrl = process.env.REACT_APP_SERVER_ADMIN_URL || '';
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
 
     return (
-        <Navbar expand="md" fixed="top" color="light" className="z-index-2">
+        <Navbar expand="md" fixed="top" color="light" className="z-index-2" >
             <Link to="/" className="text-decoration-none">
                 <NavbarBrand className="text-darkYellow">
                     <img
@@ -65,22 +68,35 @@ function Menu() {
                     </NavItem>
                 </Nav>
                 <NavbarText>
-                    <Link to="/Login">
-                        <Button className="btn btn-lg rounded-5 btn-darkYellow fw-semibold">
-                            ĐÓNG GÓP NGAY
-                        </Button>
-                    </Link>
-                    <UncontrolledDropdown className="d-none">
-                        <DropdownToggle nav caret>
-                            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" className="rounded-circle" />
-                        </DropdownToggle>
-                        <DropdownMenu>
-                            <DropdownItem>Option 1</DropdownItem>
-                            <DropdownItem>Option 2</DropdownItem>
-                            <DropdownItem divider />
-                            <DropdownItem>Reset</DropdownItem>
-                        </DropdownMenu>
-                    </UncontrolledDropdown>
+                    {userState === "" ? (
+                        <Link to="/Login">
+                            <Button className="btn btn-lg rounded-5 btn-darkYellow fw-semibold">
+                                ĐÓNG GÓP NGAY
+                            </Button>
+                        </Link>
+                    ) : (
+                        <UncontrolledDropdown>
+                            <DropdownToggle nav caret>
+                                <img
+                                    src={
+                                        (userState.image !== "" &&
+                                            userState.image) ||
+                                        "/image/default-user.png"
+                                    }
+                                    alt="mdo"
+                                    width="32"
+                                    height="32"
+                                    className="rounded-circle"
+                                />
+                            </DropdownToggle>
+                            <DropdownMenu>
+                                <a href={userState.status === 3 ? serverUrl+"/dashboard" : "/dashboard"} className="text-decoration-none"><DropdownItem>Tài khoản</DropdownItem></a>
+                                <a href={userState.status === 3 ? serverUrl+"/history" : "/history"} className="text-decoration-none"><DropdownItem>Lịch sử</DropdownItem></a>
+                                <DropdownItem divider />
+                                <DropdownItem>Đăng xuất</DropdownItem>
+                            </DropdownMenu>
+                        </UncontrolledDropdown>
+                    )}
                 </NavbarText>
             </Collapse>
         </Navbar>

@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
     FormGroup,
     Label,
@@ -11,7 +11,8 @@ import {
 } from "reactstrap";
 import { postRegister, postLogin, resetError } from "../redux/apiRequest";
 
-export default function LoginForm(type){
+export default function LoginForm(type) {
+    const errMessage = useSelector((state) => state.user.error);
     const validate = (values) => {
         const errors = {};
 
@@ -26,19 +27,19 @@ export default function LoginForm(type){
         } else if (values.password.length < 8) {
             errors.password = "Cần tối thiểu 8 ký tự!";
         }
-        if(isRegister){
+        if (isRegister) {
             if (!values.name) {
                 errors.name = "Thiếu thông tin!";
             } else if (values.name.length < 4) {
                 errors.name = "Cần tối thiểu 4 ký tự!";
             }
-    
+
             if (!values.passwordConfirm) {
                 errors.passwordConfirm = "Thiếu thông tin!";
             } else if (values.password !== values.passwordConfirm) {
                 errors.passwordConfirm = "Passwords không giống nhau";
             }
-    
+
             if (!values.email) {
                 errors.email = "Thiếu thông tin!";
             }
@@ -59,6 +60,15 @@ export default function LoginForm(type){
         onSubmit: (values) => {
             if (isRegister) {
                 postRegister(dispatch, formik.values);
+                if (!errMessage) {
+                    setIsRegister(!isRegister);
+                    formik.resetForm({
+                        values: {
+                            username: formik.values.username,
+                            password: "",
+                        },
+                    });
+                }
             } else {
                 postLogin(dispatch, formik.values);
             }
@@ -249,4 +259,4 @@ export default function LoginForm(type){
             </Form>
         );
     }
-};
+}

@@ -9,6 +9,7 @@ import store from "./redux/store";
 import Main from "./layout/main";
 
 function App() {
+    
     return (
         <BrowserRouter>
             <Provider store={store}>
