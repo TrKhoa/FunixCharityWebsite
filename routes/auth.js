@@ -10,5 +10,6 @@ const isManager = require('../middleware/is-manager');
 router.get("/isLogin", authController.isLogin);
 router.post("/register", authController.postRegister);
 router.post("/login", authController.postLogin);
+router.post("/passwordReset/:user", authController.postPasswordReset);
 
 module.exports = router;

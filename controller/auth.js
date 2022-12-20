@@ -74,41 +74,7 @@ exports.postLogin = async (req, res) => {
         });
 };
 
-exports.postLoginREF = (req, res, next) => {
-    let getCookie = undefined;
-    if (req.get("Cookie")) getCookie = req.get("Cookie").split(";");
-    else getCookie = [];
-    const username = req.body.username;
-    const password = req.body.password;
-    User.findOne({ username: username })
-        .then((user) => {
-            if (!user) {
-                return res.status(422).render("MH-6/login", {
-                    pageTitle: "Login",
-                    userRoll: 0,
-                    path: "/MH-6",
-                    oldInput: {
-                        username: username,
-                    },
-                    isAuthenticated: false,
-                    errorMessage: "Username không tồn tại",
-                });
-            }
-            if (user.password == password) {
-                req.session.isLoggedIn = true;
-                req.session.user = user;
-                return res.redirect(lastPage);
-            }
-            return res.status(422).render("MH-6/login", {
-                pageTitle: "Login",
-                userRoll: 0,
-                path: "/MH-6",
-                oldInput: {
-                    username: username,
-                },
-                isAuthenticated: false,
-                errorMessage: "Sai tài khoản hoặc mật khẩu",
-            });
-        })
-        .catch((err) => console.log(err));
+exports.postPasswordReset = async (req, res) => {
+    const username = req.params.user;
+
 };
