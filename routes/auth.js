@@ -8,6 +8,7 @@ const isManager = require('../middleware/is-manager');
 */
 
 //Khai báo dường dẫn
+router.get("/isLogin", authController.isLogin);
 router.post("/register", authController.postRegister);
 router.post("/login", authController.postLogin);
 

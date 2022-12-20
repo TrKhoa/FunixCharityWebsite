@@ -6,7 +6,11 @@ const Campaign = new Schema({
     required: true
   },
   image: {
-    type: String
+    type: String,
+    default: ''
+  },
+  type: {
+    type: Number,
   },
   desc: {
     type: String,

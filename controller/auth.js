@@ -34,13 +34,26 @@ exports.postRegister = async (req, res) => {
     }
 };
 
+exports.isLogin = async (req, res) => {
+    if (req.session.user) {
+        res.send({ data: req.session.user, isLogin: true });
+    } else {
+        res.send({ data: [], isLogin: false });
+    }
+};
+
 exports.postLogin = async (req, res) => {
+    let getCookie = undefined;
+    if (req.get("Cookie")) getCookie = req.get("Cookie").split(";");
+    else getCookie = [];
     const userInfo = req.body;
     await User.findOne({ username: userInfo.username })
         .then((user) => {
             if (user) {
                 if (user.password === userInfo.password) {
-                    return res.status(201).send({data: user, error: false});
+                    req.session.isLoggedIn = true;
+                    req.session.user = user;
+                    return res.status(201).send({ data: user, error: false });
                 } else {
                     return res.status(202).send({
                         error: true,
@@ -57,4 +70,43 @@ exports.postLogin = async (req, res) => {
         .catch((err) => {
             console.error(err);
         });
+};
+
+exports.postLoginREF = (req, res, next) => {
+    let getCookie = undefined;
+    if (req.get("Cookie")) getCookie = req.get("Cookie").split(";");
+    else getCookie = [];
+    const username = req.body.username;
+    const password = req.body.password;
+    User.findOne({ username: username })
+        .then((user) => {
+            if (!user) {
+                return res.status(422).render("MH-6/login", {
+                    pageTitle: "Login",
+                    userRoll: 0,
+                    path: "/MH-6",
+                    oldInput: {
+                        username: username,
+                    },
+                    isAuthenticated: false,
+                    errorMessage: "Username không tồn tại",
+                });
+            }
+            if (user.password == password) {
+                req.session.isLoggedIn = true;
+                req.session.user = user;
+                return res.redirect(lastPage);
+            }
+            return res.status(422).render("MH-6/login", {
+                pageTitle: "Login",
+                userRoll: 0,
+                path: "/MH-6",
+                oldInput: {
+                    username: username,
+                },
+                isAuthenticated: false,
+                errorMessage: "Sai tài khoản hoặc mật khẩu",
+            });
+        })
+        .catch((err) => console.log(err));
 };

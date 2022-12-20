@@ -1,14 +1,16 @@
+const path = require('path')
 const express = require("express");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const session = require("express-session");
-const multer = require("multer");
 const moment = require("moment");
 const MongoDBStore = require("connect-mongodb-session")(session);
 const authRoute = require("./routes/auth");
 const campaignRoute = require("./routes/campaign");
 const paymentRoute = require("./routes/payment");
+const uiRoute = require("./routes/ui");
 require("dotenv").config();
 
 const app = express();
@@ -20,51 +22,38 @@ const store = new MongoDBStore({
     collection: "sessions",
 });
 
-const fileStorage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "images");
-    },
-    filename: (req, file, cb) => {
-        cb(null, new Date().getTime() + "-" + file.originalname);
-    },
-});
-
-const fileFilter = (req, file, cb) => {
-    if (
-        file.mimetype === "image/png" ||
-        file.mimetype === "image/jpg" ||
-        file.mimetype === "image/jpeg"
-    ) {
-        cb(null, true);
-    } else {
-        cb(null, false);
-    }
-};
-
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(
-    multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
-);
+
+app.set('view engine', 'ejs');
+app.set('views', 'views');
+
 app.use(
     cors({
         origin: "http://localhost:3000",
+        methods: ["GET", "POST"],
         credentials: true,
     })
 );
+app.use(cookieParser());
 
 app.use(
     session({
-        secret: "my secret",
+        secret: "1jf7s03jf792k94ks234",
         resave: false,
         saveUninitialized: false,
+        cookie: {maxAge: 1000*60*60},
         store: store,
     })
 );
 
+
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(authRoute);
 app.use(campaignRoute);
 app.use(paymentRoute);
+app.use(uiRoute);
 
 app.get("/", (req, res) => {
     res.send(

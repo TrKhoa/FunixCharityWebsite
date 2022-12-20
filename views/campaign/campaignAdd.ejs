@@ -1,0 +1,64 @@
+<%- include('../includes/head.ejs') %>
+</head>
+
+<body>
+    <%- include('../includes/sidebar.ejs') %>
+    <% if(errorMessage) { %>
+    <div class="alert alert-danger" role="alert">
+      <%= errorMessage %>
+    </div>
+    <% } %>
+    <div class="row">
+        <div class="col-lg-12">
+          <h1><%= edit ? 'Chỉnh sửa chiến dịch' : 'Thêm chiến dịch' %></h1>
+          <form enctype="multipart/form-data" action=<%= edit ? "/admin/campaign-edit/"+campaign._id : "/admin/campaign-add" %> method="post" class="mt-5">
+            <div class="mb-3">
+              <label for="name" class="form-label">Tên chiến dịch</label>
+              <input type="text" class="form-control" id="name" name="name" placeholder="VD: Chiến dịch ủng hộ đồng bào miền trung" value=<%= campaign ? campaign.name : '' %> >
+            </div>
+            <div class="mb-3 row">
+              <div class="col-lg-4">
+                <label for="goal" class="form-label">Mục tiêu đề ra</label>
+                <input type="number" class="form-control" id="goal" name="goal" placeholder="VD: 100000" value=<%= campaign ? campaign.goal : '' %>>
+              </div>
+              <div class="col-lg-4">
+                <label for="image" class="form-label">Hình ảnh</label>
+                <input type="file" class="form-control" id="image" name="image">
+              </div>
+              <div class="col-lg-4">
+                <label for="type" class="form-label">Loại từ thiện</label>
+                <select id="type" class="form-select" name="type">
+                  <option value="1" <%= campaign.type == 1 ? "selected" : "" %>>Vì trẻ em</option>
+                  <option value="2" <%= campaign.type == 2 ? "selected" : "" %>>Vì người già</option>
+                  <option value="3" <%= campaign.type == 3 ? "selected" : "" %>>Y tế</option>
+                  <option value="4" <%= campaign.type == 4 ? "selected" : "" %>>Cơ sở vật chất</option>
+                  <option value="5" <%= campaign.type == 5 ? "selected" : "" %>>Bảo vệ môi trường</option>
+                </select>
+              </div>
+            </div>
+            </div>
+            <div class="mb-3 row">
+              <div class="col-lg-6">
+                <label for="startAt" class="form-label">Ngày bắt đầu</label>
+                <input type="date" class="form-control" id="startAt" name="startAt" placeholder="VD: 100000" value=<%= today ? today : moment(campaign.startAt).format("YYYY-MM-DD") %>>
+              </div>
+              <div class="col-lg-6">
+                <label for="endAt" class="form-label">Ngày kết thúc</label>
+                <input type="date" class="form-control" id="endAt" name="endAt" placeholder="VD: 100000" value=<%= campaign ? moment(campaign.endAt).format("YYYY-MM-DD") : '' %>>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="desc">Miêu tả</label>
+              <textarea class="form-control" placeholder="VD: lorem is" id="desc" name="desc" style="height: 250px" value="d"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary"><%= edit ? 'Chỉnh sửa' : 'Xác nhận' %></button>
+          </form>
+        </div>
+      </div>
+      <script>
+        $(document).ready(function() {
+          $('#desc').val("<%= campaign ? campaign.desc : '' %>");
+        });
+      </script>
+    <%- include('../includes/end.ejs') %>
+</body>
