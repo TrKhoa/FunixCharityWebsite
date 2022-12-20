@@ -58,16 +58,32 @@ exports.postUserAdd = (req, res, next) => {
         });
     } else {
         const { name, username, password, type } = req.body;
-        const user = new User({
-            name: name,
-            username: username,
-            password: password,
-            status: type,
-            donate: [],
-        });
-        user.save().then(() => {
-            res.redirect("/admin/user");
-        });
+        const validUsername = username.toLowerCase().split(" ").join("");
+        console.log(validUsername);
+        const filter = ({username: username});
+        User.findOne(filter).then((check) => {
+            if(check){
+                res.render("user/userAdd", {
+                    name: req.session.name,
+                    image: req.session.image,
+                    user: req.body,
+                    edit: false,
+                    pageTitle: "User add",
+                    errorMessage: 'Username đã tồn tại',
+                });
+            } else {
+                const user = new User({
+                    name: name,
+                    username: validUsername,
+                    password: password,
+                    status: type,
+                    donate: [],
+                });
+                user.save().then(() => {
+                    res.redirect("/admin/user");
+                });
+            }
+        })
     }
 };
 

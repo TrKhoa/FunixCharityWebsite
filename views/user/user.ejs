@@ -25,8 +25,27 @@
                   <td><%= val.username %></td>
                   <td><%= val.name %></td>
                   <td><%= val.status===3 ? 'admin' : 'user'%></td>
-                  <td><a href=<%= "/admin/user-edit/"+val.username %> class="fa-solid fa-pen-to-square"> </a> <a href=<%= "/admin/user-delete/"+val.username %> class="fa fa-solid fa-trash"></a></td>
+                  <td><a href=<%= "/admin/user-edit/"+val.username %> class="fa-solid fa-pen-to-square"> </a> <div class="fa fa-solid fa-trash" data-bs-toggle="modal" data-bs-target=<%= "#"+val.username %>></div></td>
                 </tr>
+
+                <div class="modal fade" id=<%= val.username %> tabindex="-1" aria-labelledby="label" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="label">Thông báo</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        Bạn có chắc muốn xóa User: <%= val.username %>
+                      </div>
+                      <div class="modal-footer">
+                        <a href=<%= "/admin/user-delete/"+val.username %>>
+                          <button type="button" class="btn btn-primary">Xóa</button>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <%}) %>
 
             </tbody>

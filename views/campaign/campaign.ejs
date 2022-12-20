@@ -20,7 +20,25 @@
             <li class="list-group-item">Tiến độ: 5%</li>
           </ul>
           <div class="card-body">
-            <a href=<%= "/admin/campaign-delete/"+val._id %> class="fa fa-solid fa-trash"></a>
+            <div class="fa fa-solid fa-trash" data-bs-toggle="modal" data-bs-target=<%= "#modal-"+val._id %>></div>
+          </div>
+        </div>
+
+        <div class="modal fade" id=<%= "modal-"+val._id %> tabindex="-1" aria-labelledby="label" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="label">Thông báo</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                Bạn có muốn xóa chiến dịch:<br /> <%= val.name %>
+              </div>
+              <div class="modal-footer">
+                <a href=<%= "/admin/campaign-delete/"+val._id %>>
+                  <button type="button" class="btn btn-primary">Xóa</button></a>
+              </div>
+            </div>
           </div>
         </div>
 <% }) %>

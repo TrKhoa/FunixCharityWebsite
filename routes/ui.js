@@ -74,7 +74,7 @@ router.post(
     UIController.postUserAdd
 );
 router.get("/admin/user-edit/:user", UIController.getUserEdit);
-router.post("/admin/user-edit/:user", UIController.postUserEdit);
+router.post("/admin/user-edit/:user", [nameValidate, usernameValidate, passwordValidate, passwordConfirmValidate], UIController.postUserEdit);
 router.get("/admin/user-delete/:user", UIController.getUserDelete);
 
 //Campaigns
