@@ -40,6 +40,12 @@ export const postRegister = async (dispatch, data) => {
     }
 };
 
+export const postPasswordForgot = async (data) => {
+    await axios.post(
+        process.env.REACT_APP_SERVER_URL + "/passwordReset/"+data.username
+    );
+};
+
 export const postLogin = async (dispatch, data) => {
     dispatch(isStart());
     const login = await axios.post(

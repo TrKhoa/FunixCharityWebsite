@@ -4,7 +4,7 @@ export default function AboutUs(args) {
             <div className="row flex-lg-row align-items-center g-5 py-5">
                 <div className="col-10 col-sm-8 col-lg-7">
                     <img
-                        src="/image/ceo.jpg"
+                        src="/images/ceo.jpg"
                         className="d-block mx-lg-auto img-fluid"
                         alt="Bootstrap Themes"
                         style={{

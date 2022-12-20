@@ -12,7 +12,7 @@ export default function Login(value) {
                 <div className="col-lg-12">
                     <img
                         className="w-100"
-                        src="/image/login/closeup-diverse-people-joining-their-hands.jpg"
+                        src="/images/login/closeup-diverse-people-joining-their-hands.jpg"
                         alt="1"
                     />
                 </div>

@@ -19,7 +19,7 @@ export default function Mission(args) {
 
                 <div className="d-flex col-xxl-12 justify-content-center">
                 <div className="col-xxl-2">
-                        <img src="/image/icon-1.png" alt="1" />
+                        <img src="/images/icon-1.png" alt="1" />
                         <h4 className="fw-bold mt-5 mb-3">Help child</h4>
                         <p className="">
                             Lorem ipsum dolor sit amet, consectetur adipiscing
@@ -28,7 +28,7 @@ export default function Mission(args) {
                         </p>
                     </div>
                     <div className="col-xxl-2 offset-md-1">
-                        <img src="/image/icon-1.png" alt="1" />
+                        <img src="/images/icon-1.png" alt="1" />
                         <h4 className="fw-bold mt-5 mb-3">Help child</h4>
                         <p className="">
                             Lorem ipsum dolor sit amet, consectetur adipiscing
@@ -37,7 +37,7 @@ export default function Mission(args) {
                         </p>
                     </div>
                     <div className="col-xxl-2 offset-md-1">
-                        <img src="/image/icon-1.png" alt="1" />
+                        <img src="/images/icon-1.png" alt="1" />
                         <h4 className="fw-bold mt-5 mb-3">Help child</h4>
                         <p className="">
                             Lorem ipsum dolor sit amet, consectetur adipiscing
@@ -46,7 +46,7 @@ export default function Mission(args) {
                         </p>
                     </div>
                     <div className="col-xxl-2 offset-md-1">
-                        <img src="/image/icon-1.png" alt="1" />
+                        <img src="/images/icon-1.png" alt="1" />
                         <h4 className="fw-bold mt-5 mb-3">Help child</h4>
                         <p className="">
                             Lorem ipsum dolor sit amet, consectetur adipiscing

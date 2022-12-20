@@ -29,7 +29,7 @@ function Menu() {
                 <NavbarBrand className="text-darkYellow">
                     <img
                         alt="logo"
-                        src="/image/logo.jpg"
+                        src='/images/logo.jpg'
                         style={{
                             height: 60,
                             width: 80,

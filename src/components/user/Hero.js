@@ -5,7 +5,7 @@ export default function Hero(args) {
             <div className="row flex-lg-row-reverse align-items-center g-5 py-5">
                 <div className="col-10 col-sm-8 col-lg-7">
                     <img
-                        src="/image/charity.png"
+                        src="/images/charity.png"
                         className="d-block mx-lg-auto img-fluid"
                         alt="Bootstrap Themes"
                         loading="lazy"
