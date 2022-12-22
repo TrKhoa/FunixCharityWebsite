@@ -1,7 +1,8 @@
 const nodeMailer = require('nodemailer');
+const mailConfig = require('../config/mail.config');
 const { sendMail } = require('../config/mail.config')
 
-exports.sendMail = (to, subject, htmlContent) => {
+exports.sendMail = async (to, subject, htmlContent) => {
     const transport = nodeMailer.createTransport({
         host: mailConfig.HOST,
         port: mailConfig.PORT,
@@ -16,7 +17,7 @@ exports.sendMail = (to, subject, htmlContent) => {
         from: mailConfig.FROM_ADDRESS,
         to: to,
         subject: subject,
-        htmlContent: htmlContent
+        html: htmlContent,
     }
 
     return transport.sendMail(options);
