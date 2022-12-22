@@ -4,6 +4,7 @@ import {
     loginSuccess,
     registerSuccess,
     registerFailed,
+    logoutSuccess,
     userResetError,
 } from "./userSlice";
 import axios from "axios";
@@ -42,8 +43,14 @@ export const postRegister = async (dispatch, data) => {
 
 export const postPasswordForgot = async (data) => {
     await axios.post(
-        process.env.REACT_APP_SERVER_URL + "/passwordReset/"+data.username
+        process.env.REACT_APP_SERVER_URL + "/passwordReset/" + data.username
     );
+};
+
+export const postPasswordReset = async (data) => {
+    await axios.post(process.env.REACT_APP_SERVER_URL + "/forgotPassword/", {
+        data,
+    });
 };
 
 export const postLogin = async (dispatch, data) => {
@@ -62,15 +69,18 @@ export const postLogin = async (dispatch, data) => {
     }
 };
 
-export const isLogin = async (dispatch, data) =>{
+export const isLogin = async (dispatch, data) => {
     await dispatch(isStart());
     if (data.isLogin === true) {
         dispatch(loginSuccess(data));
     }
-    /*
-    if (!login.data.error) {
-        dispatch(loginSuccess(login.data));
-    } else {
-        dispatch(registerFailed(login.data.message));
-    }\*/
-}
+};
+
+export const isLogout = async (dispatch) => {
+    dispatch(isStart());
+    const logout = await axios.get(process.env.REACT_APP_SERVER_URL + "/logout");
+    if(!logout.data.error){
+        dispatch(logoutSuccess());
+    }
+    
+};

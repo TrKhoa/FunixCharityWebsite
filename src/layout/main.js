@@ -9,7 +9,15 @@ import { isLogin } from "../redux/apiRequest";
 export default function Main() {
     axios.defaults.withCredentials = true;
     const dispatch = useDispatch();
-    const loadingState = useSelector((state) => state.campaign.pending);
+    const loadingState = useSelector((state) => {
+        if (state.campaign.pending) {
+            return true;
+        } else if (state.user.pending) {
+            return true;
+        } else {
+            return false;
+        }
+    });
     const location = useLocation();
 
     useEffect(() => {

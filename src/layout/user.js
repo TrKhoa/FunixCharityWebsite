@@ -37,6 +37,7 @@ export default function User() {
                         <Route path="Cause" element={<Causes />} />
                         <Route path="Cause/:id" element={<CauseDetail />} />
                         <Route path="Login" element={<Login />} />
+                        <Route path="forgotPassword" element={<Login forgot={true}/>} />
                         <Route path="*" element={<Err404 />} />
                     </Route>
                 </Route>

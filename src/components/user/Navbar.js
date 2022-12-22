@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
     Collapse,
     Navbar,
@@ -15,9 +16,10 @@ import {
     Button,
 } from "reactstrap";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { isLogout } from "../../redux/apiRequest";
 
 function Menu() {
+    const dispatch = useDispatch();
     const userState = useSelector((state) => state.user.info);
     const serverUrl = process.env.REACT_APP_SERVER_ADMIN_URL || '';
     const [isOpen, setIsOpen] = useState(false);
@@ -93,7 +95,7 @@ function Menu() {
                                 <a href={userState.status === 3 ? serverUrl+"/dashboard" : "/dashboard"} className="text-decoration-none"><DropdownItem>Tài khoản</DropdownItem></a>
                                 <a href={userState.status === 3 ? serverUrl+"/history" : "/history"} className="text-decoration-none"><DropdownItem>Lịch sử</DropdownItem></a>
                                 <DropdownItem divider />
-                                <DropdownItem>Đăng xuất</DropdownItem>
+                                <DropdownItem onClick={() => isLogout(dispatch)}>Đăng xuất</DropdownItem>
                             </DropdownMenu>
                         </UncontrolledDropdown>
                     )}
