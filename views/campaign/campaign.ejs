@@ -11,13 +11,13 @@
           <img src=<%= val.image != '' ? val.image : "/image/campaign/c1.jpg"%> class="card-img-top" alt="...">
           </a>
           <div class="card-body">
-            <h5 class="card-title"><%= val.name %></h5>
-            <p class="card-text"><%= val.desc %></p>
+            <h5 class="card-title truncate-3"><%= val.name %></h5>
+            <p class="card-text truncate-2"><%= val.desc %></p>
           </div>
           <ul class="list-group list-group-flush">
             <li class="list-group-item">Số tiền hiện tại: <%= val.raise %></li>
             <li class="list-group-item">Mục tiêu đề ra: <%= val.goal %></li>
-            <li class="list-group-item">Tiến độ: 5%</li>
+            <li class="list-group-item">Tiến độ: <%= val.raise*100/val.goal %>%</li>
           </ul>
           <div class="card-body">
             <div class="fa fa-solid fa-trash" data-bs-toggle="modal" data-bs-target=<%= "#modal-"+val._id %>></div>
@@ -42,9 +42,41 @@
           </div>
         </div>
 <% }) %>
-        <div class="col-lg-12 ">
-          
-          
+        <div class="col-lg-12 d-flex justify-content-center">
+          <ul class="pagination">
+            <% if(page > 1 ) { %>
+            <li class=page-item">
+              <a href="/admin/campaign?page=1">
+                <span class="page-link">Trang đầu</span>
+              </a>
+            </li>
+
+            <% } else { %>
+              <li class=page-item">
+                 <span class="page-link text-secondary">Trang đầu</span>
+              </li>
+            <% } %>
+
+              <% if(page > 1) { %>
+              <li class="page-item"><a class="page-link" href=<%= "/admin/campaign?page="+(parseInt(page)-1) %>><%= page-1 %></a></li>
+              <% } %>
+              <li class="page-item active" aria-current="page"><a class="page-link" href=<%= "/admin/campaign?page="+page %>><%= page %></a></li>
+              <% if(nextPage) { %>
+              <li class="page-item"><a class="page-link" href=<%= "/admin/campaign?page="+(parseInt(page)+1) %>><%= page+1 %></a></li>
+              <% } %>
+
+            <% if(nextPage) { %>
+              <li class=page-item">
+                <a href=<%= "/admin/campaign?page="+lastPage %>>
+                  <span class="page-link">Trang cuối</span>
+                </a>
+              </li>
+              <% } else { %>
+                <li class=page-item">
+                   <span class="page-link text-secondary">Trang cuối</span>
+                </li>
+              <% } %>
+          </ul>
         </div>
       </div>
     <%- include('../includes/end.ejs') %>

@@ -60,16 +60,16 @@ exports.postUserAdd = (req, res, next) => {
         const { name, username, email, password, type } = req.body;
         const validUsername = username.toLowerCase().split(" ").join("");
         console.log(validUsername);
-        const filter = ({username: username});
+        const filter = { username: username };
         User.findOne(filter).then((check) => {
-            if(check){
+            if (check) {
                 res.render("user/userAdd", {
                     name: req.session.name,
                     image: req.session.image,
                     user: req.body,
                     edit: false,
                     pageTitle: "User add",
-                    errorMessage: 'Username đã tồn tại',
+                    errorMessage: "Username đã tồn tại",
                 });
             } else {
                 const user = new User({
@@ -84,7 +84,7 @@ exports.postUserAdd = (req, res, next) => {
                     res.redirect("/admin/user");
                 });
             }
-        })
+        });
     }
 };
 
@@ -141,7 +141,7 @@ exports.getUserDelete = (req, res, next) => {
     if (user === "") {
         res.redirect("/admin/user");
     } else {
-        const filter = { username: user, status: {$lt: 3} };
+        const filter = { username: user, status: { $lt: 3 } };
         User.deleteOne(filter).then(() => {
             res.redirect("/admin/user");
         });
@@ -149,23 +149,45 @@ exports.getUserDelete = (req, res, next) => {
 };
 
 exports.getCampaigns = (req, res, next) => {
-    Campaign.find().then((campaign) => {
-        if (campaign) {
-            res.render("campaign/campaign", {
-                name: "req.session.name",
-                pageTitle: "Campaign",
-                campaign: campaign,
-                errorMessage: "errorMessage",
-            });
-        } else {
-            res.render("campaign/campaign", {
-                name: "req.session.name",
-                pageTitle: "Campaign",
-                campaign: [],
-                errorMessage: "errorMessage",
-            });
-        }
-    });
+    const page = req.query.page || 1;
+    const itemsPerPage = 8;
+    const skippedItems = (page - 1) * itemsPerPage;
+    let totalItems = 0;
+    Campaign.find()
+        .count()
+        .then((items) => {
+            totalItems = items;
+            const lastPage = Math.ceil(totalItems / itemsPerPage);
+            if (page < 1 || page > lastPage) {
+                res.redirect("/admin/campaign");
+            } else {
+                return Campaign.find()
+                    .skip(skippedItems)
+                    .limit(itemsPerPage)
+                    .then((campaign) => {
+                        if (campaign) {
+                            res.render("campaign/campaign", {
+                                name: "req.session.name",
+                                pageTitle: "Campaign",
+                                campaign: campaign,
+                                page: parseInt(page),
+                                totalItems: totalItems,
+                                nextPage: itemsPerPage * page < totalItems,
+                                prePage: page > 1,
+                                lastPage: lastPage,
+                                errorMessage: "errorMessage",
+                            });
+                        } else {
+                            res.render("campaign/campaign", {
+                                name: "req.session.name",
+                                pageTitle: "Campaign",
+                                campaign: [],
+                                errorMessage: "errorMessage",
+                            });
+                        }
+                    });
+            }
+        });
 };
 
 exports.getCampaignAdd = (req, res, next) => {
@@ -226,9 +248,9 @@ exports.postCampaignAdd = (req, res, next) => {
 };
 
 exports.getCampaignEdit = (req, res, next) => {
-    const id = req.params.id || '';
-    Campaign.findById(id).then(campaign => {
-        if(campaign){
+    const id = req.params.id || "";
+    Campaign.findById(id).then((campaign) => {
+        if (campaign) {
             res.render("campaign/campaignAdd", {
                 name: req.session.name,
                 image: req.session.image,
@@ -239,9 +261,9 @@ exports.getCampaignEdit = (req, res, next) => {
                 errorMessage: "",
             });
         } else {
-            res.redirect('/admin/campaign')
+            res.redirect("/admin/campaign");
         }
-    })
+    });
 };
 
 exports.postCampaignEdit = (req, res, next) => {
@@ -272,7 +294,7 @@ exports.postCampaignEdit = (req, res, next) => {
                 type: type,
                 desc: desc,
                 startAt: startAt,
-                endAt: endAt
+                endAt: endAt,
             };
             Campaign.findOneAndUpdate(filter, update).then(() => {
                 res.redirect("/admin/campaign");
