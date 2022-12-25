@@ -1,6 +1,9 @@
 const express = require("express");
-const config = require("config");
+const sha256 = require("sha256");
+const querystring = require("qs");
+const moment = require("moment");
 const dateFormat = require("dateformat");
+const vnpayConfig = require("../config/vnpay.config");
 
 
 exports.getCreate = async (req, res) => {
@@ -14,35 +17,31 @@ exports.postPostName = async (req, res) => {
 };
 
 exports.postCreatePayment = async (req, res, next) => {
-    var ipAddr =
+    const { value, desc } = req.body;
+
+    let ipAddr =
         req.headers["x-forwarded-for"] ||
         req.connection.remoteAddress ||
         req.socket.remoteAddress ||
         req.connection.socket.remoteAddress;
 
-    var config = require("config");
-    var dateFormat = require("dateformat");
+    let tmnCode = vnpayConfig.vnp_TmnCode;
+    let secretKey = vnpayConfig.vnp_HashSecret;
+    let vnpUrl = vnpayConfig.vnp_Url;
+    let returnUrl = vnpayConfig.vnp_ReturnUrl;
 
-    var tmnCode = config.get("vnp_TmnCode");
-    var secretKey = config.get("vnp_HashSecret");
-    var vnpUrl = config.get("vnp_Url");
-    var returnUrl = config.get("vnp_ReturnUrl");
+    let date = new Date();
 
-    var date = new Date();
+    let createDate = dateFormat(date, "yyyymmddHHmmss");
+    let orderId = dateFormat(date, "HHmmss");
+    let amount = value || 0;
+    let bankCode = "";
 
-    var createDate = dateFormat(date, "yyyymmddHHmmss");
-    var orderId = dateFormat(date, "HHmmss");
-    var amount = 10000000 || req.body.amount;
-    var bankCode = "NCB" || req.body.bankCode;
-
-    var orderInfo = "ko" || req.body.orderDescription;
-    var orderType = "billpayment" || req.body.orderType;
-    var locale = "vn" || req.body.language;
-    if (locale === null || locale === "") {
-        locale = "vn";
-    }
-    var currCode = "VND";
-    var vnp_Params = {};
+    let orderInfo = desc || "";
+    let orderType = "billpayment";
+    let locale = "vn";
+    let currCode = "VND";
+    let vnp_Params = {};
     vnp_Params["vnp_Version"] = "2";
     vnp_Params["vnp_Command"] = "pay";
     vnp_Params["vnp_TmnCode"] = tmnCode;
@@ -62,33 +61,63 @@ exports.postCreatePayment = async (req, res, next) => {
     }
 
     vnp_Params = sortObject(vnp_Params);
+    let signData =
+        secretKey + querystring.stringify(vnp_Params, { encode: false });
+    let secureHash = sha256(signData);
 
-    var querystring = require("qs");
-    var signData = querystring.stringify(vnp_Params, { encode: false });
-    var crypto = require("crypto");
-    var hmac = crypto.createHmac("sha512", secretKey);
-    var signed = hmac.update(new Buffer(signData, "utf-8")).digest("hex");
-    vnp_Params["vnp_SecureHash"] = signed;
-    vnpUrl += "?" + querystring.stringify(vnp_Params, { encode: false });
+    vnp_Params["vnp_SecureHashType"] = "SHA256";
+    vnp_Params["vnp_SecureHash"] = secureHash;
+    vnpUrl += "?" + querystring.stringify(vnp_Params, { encode: true });
 
-    res.redirect(vnpUrl);
+    res.send(vnpUrl);
 };
 
-function sortObject(o) {
-    var sorted = {},
-        key,
-        a = [];
+exports.getPaymentReturn = async (req, res, next) => {
+    var vnp_Params = req.query;
 
-    for (key in o) {
-        if (o.hasOwnProperty(key)) {
-            a.push(key);
+    var secureHash = vnp_Params['vnp_SecureHash'];
+
+    delete vnp_Params['vnp_SecureHash'];
+    delete vnp_Params['vnp_SecureHashType'];
+
+    vnp_Params = sortObject(vnp_Params);
+
+    var config = require('config');
+    var tmnCode = config.get('vnp_TmnCode');
+    var secretKey = config.get('vnp_HashSecret');
+
+    var querystring = require('qs');
+    var signData = secretKey + querystring.stringify(vnp_Params, { encode: false });
+
+    var sha256 = require('sha256');
+
+    var checkSum = sha256(signData);
+
+    if(secureHash === checkSum){
+        //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
+
+        console.log('Kiem tra xem du lieu trong db co hop')
+    } else{
+       console.log('haha ko')
+    }
+};
+
+
+function sortObject(obj) {
+    let sorted = {};
+    let str = [];
+    let key;
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            str.push(encodeURIComponent(key));
         }
     }
-
-    a.sort();
-
-    for (key = 0; key < a.length; key++) {
-        sorted[a[key]] = o[a[key]];
+    str.sort();
+    for (key = 0; key < str.length; key++) {
+        sorted[str[key]] = encodeURIComponent(obj[str[key]]).replace(
+            /%20/g,
+            "+"
+        );
     }
     return sorted;
 }

@@ -150,7 +150,7 @@ exports.getUserDelete = (req, res, next) => {
 
 exports.getCampaigns = (req, res, next) => {
     const page = req.query.page || 1;
-    const itemsPerPage = 8;
+    const itemsPerPage = 6;
     const skippedItems = (page - 1) * itemsPerPage;
     let totalItems = 0;
     Campaign.find()

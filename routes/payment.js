@@ -1,28 +1,61 @@
-const express = require('express');
-// const { body } = require('express-validator/check');
-const router = express.Router();
-const modifyController = require('../controller/payment')
-/*
-const isAuth = require('../middleware/is-auth');
-const isManager = require('../middleware/is-manager');
-*/
+const express = require("express");
+const sha256 = require("sha256");
+const querystring = require("qs");
+const moment = require("moment");
+const dateFormat = require("dateformat");
+const paymentController = require("../controller/payment");
+const vnpayConfig = require("../config/vnpay.config");
 
-//Khai báo dường dẫn
-/*
-router.get('/MH-1/attendance', isAuth, isFrozen, modifyController.getAttendance);
-router.post('/MH-1/attendance', isAuth, isFrozen, modifyController.postAttendance);
-router.get('/MH-1/annualLeave', isAuth, isFrozen, modifyController.getAnnualLeave);
-router.post('/MH-1/annualLeave', isAuth, isFrozen, modifyController.postAnnualLeave);
-router.post('/MH-2/profile', isAuth, modifyController.postProfile);
-router.post('/MH-3/salary', isAuth, modifyController.postSalary);
-router.get('/MH-4/temperature-register', isAuth, modifyController.getTemperatureResgister);
-router.post('/MH-4/temperature-register', isAuth, modifyController.postTemperatureResgister);
-router.get('/MH-4/vaccine-register', isAuth, modifyController.getVaccineRegister);
-router.post('/MH-4/vaccine-register', isAuth, isValid.vaccine, modifyController.postVaccineRegister);
-router.get('/MH-4/covid-report', isAuth, modifyController.getCovidReport);
-router.post('/MH-4/covid-report', isAuth, isValid.report, modifyController.postCovidReport);
-router.get('/MH04/getPdf/:userId', isAuth, modifyController.getPdf);
-router.get('/MH-5/delete', isAuth, isManager, modifyController.getHistoryDelete);
-router.post('/MH-5/frozen', isAuth, isManager, modifyController.postFrozen);
-*/
+const router = express.Router();
+
+router.post("/create_payment_url", paymentController.postCreatePayment);
+
+router.get('/vnpay_ipn', function (req, res, next) {
+    var vnp_Params = req.query;
+    var secureHash = vnp_Params['vnp_SecureHash'];
+
+    delete vnp_Params['vnp_SecureHash'];
+    delete vnp_Params['vnp_SecureHashType'];
+
+    vnp_Params = sortObject(vnp_Params);
+    var config = require('config');
+    var secretKey = config.get('vnp_HashSecret');
+    var querystring = require('qs');
+    var signData = secretKey + querystring.stringify(vnp_Params, { encode: false });
+    
+    var sha256 = require('sha256');
+
+    var checkSum = sha256(signData);
+
+    if(secureHash === checkSum){
+        var orderId = vnp_Params['vnp_TxnRef'];
+        var rspCode = vnp_Params['vnp_ResponseCode'];
+        //Kiem tra du lieu co hop le khong, cap nhat trang thai don hang va gui ket qua cho VNPAY theo dinh dang duoi
+        res.status(200).json({RspCode: '00', Message: 'success'})
+    }
+    else {
+        res.status(200).json({RspCode: '97', Message: 'Fail checksum'})
+    }
+});
+
+router.get("/payment_return", paymentController.getPaymentReturn);
+
+function sortObject(obj) {
+    let sorted = {};
+    let str = [];
+    let key;
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            str.push(encodeURIComponent(key));
+        }
+    }
+    str.sort();
+    for (key = 0; key < str.length; key++) {
+        sorted[str[key]] = encodeURIComponent(obj[str[key]]).replace(
+            /%20/g,
+            "+"
+        );
+    }
+    return sorted;
+}
 module.exports = router;

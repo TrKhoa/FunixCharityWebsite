@@ -1,5 +1,6 @@
 
 #wrapper {
+  padding-top:30px;
   padding-left: 0;
   -webkit-transition: all 0.5s ease;
   -moz-transition: all 0.5s ease;
@@ -44,7 +45,6 @@
 .fixed-brand {
   width: auto;
 }
-/* Sidebar Styles */
 
 .sidebar-nav {
   position: absolute;

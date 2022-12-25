@@ -1,3 +1,9 @@
+.bg-white{
+    background-color: white;
+}
+.white-space{
+    white-space: pre-wrap
+}
 .truncate-2, .truncate-3, .truncate-4, .truncate-5 {
     overflow: hidden;
     text-overflow: ellipsis;

@@ -1,7 +1,7 @@
 <body>
     <nav class="navbar navbar-default no-margin">
       
-      <div class="navbar-header fixed-brand">
+      <div class="fixed-brand fixed-top py-2 bg-white">
         <button type="button" class="navbar-toggle collapsed border-0" data-toggle="collapse" id="menu-toggle">
           <span class="fa-solid fa-bars" aria-hidden="true"></span>
         </button>
@@ -15,9 +15,8 @@
         </ul>
       </div>
       <!-- navbar-header-->
-      <%- include('./nav.ejs') %>
+      
   
-      <!-- bs-example-navbar-collapse-1 -->
     </nav>
     <div id="wrapper">
       <!-- Sidebar -->
@@ -62,9 +61,12 @@
           <li>
             <a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-server fa-stack-1x "></i></span>Contact</a>
           </li>
+          
         </ul>
       </div>
-      
+
+      <%- include('./nav.ejs') %>
+
       <div id="page-content-wrapper">
         <div class="container-fluid">
           
