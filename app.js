@@ -57,7 +57,7 @@ app.use(uiRoute);
 
 app.get("/", (req, res) => {
     res.send(
-        '<html><form action="/create_payment_url" method="POST"><button type="submit">Test</button></form></html>'
+        '<html><form action="/create_payment_url" method="POST"><input name="value"><input name="desc"><button type="submit">Test</button></form></html>'
     );
 });
 
