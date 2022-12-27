@@ -34,7 +34,7 @@ function Menu() {
                         src='/images/logo.jpg'
                         style={{
                             height: 60,
-                            width: 80,
+                            width: 70,
                         }}
                     />
                     VINADONATION
@@ -51,21 +51,6 @@ function Menu() {
                     <NavItem>
                         <Link to="/Cause" className="nav-link">
                             <NavLink>Các hoàn cảnh cần quyên góp</NavLink>
-                        </Link>
-                    </NavItem>
-                    <NavItem>
-                        <Link to="/" className="nav-link nav-link-active">
-                            <NavLink>Về chúng tôi</NavLink>
-                        </Link>
-                    </NavItem>
-                    <NavItem>
-                        <Link to="/" className="nav-link">
-                            <NavLink>Blog</NavLink>
-                        </Link>
-                    </NavItem>
-                    <NavItem>
-                        <Link to="/" className="nav-link">
-                            <NavLink>Liên hệ</NavLink>
                         </Link>
                     </NavItem>
                 </Nav>

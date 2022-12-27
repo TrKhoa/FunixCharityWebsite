@@ -1,4 +1,5 @@
 import { isCampaignStart, getError, getSuccess } from "./campaignSlice";
+import { Redirect } from "react-router-dom";
 import {
     isUserStart,
     loginSuccess,
@@ -21,8 +22,20 @@ export const getCampaign = async (dispatch) => {
             process.env.REACT_APP_SERVER_URL + "/campaigns"
         );
         await dispatch(getSuccess(res));
+        console.log(res);
     } catch (err) {
         dispatch(getError(err));
+    }
+};
+
+export const postDonate = async (dispatch, data) => {
+    const donate = await axios.post(
+        process.env.REACT_APP_SERVER_URL + "/create_payment_url",
+        { value: data, desc: "Donation" }
+    );
+    if (donate.status === 200) {
+        const donateLink = donate.data;
+        window.location.replace(donateLink);
     }
 };
 
@@ -81,9 +94,10 @@ export const isLogin = async (dispatch, data) => {
 
 export const isLogout = async (dispatch) => {
     dispatch(isUserStart());
-    const logout = await axios.get(process.env.REACT_APP_SERVER_URL + "/logout");
-    if(!logout.data.error){
+    const logout = await axios.get(
+        process.env.REACT_APP_SERVER_URL + "/logout"
+    );
+    if (!logout.data.error) {
         dispatch(logoutSuccess());
     }
-    
 };

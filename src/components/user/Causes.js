@@ -53,7 +53,7 @@ export default function Causes(args) {
                             id={val._id}
                             title={val.name}
                             sub=""
-                            image="https://picsum.photos/318/180"
+                            image={process.env.REACT_APP_SERVER_URL + val.image}
                             raise={val.raise}
                             goal={val.goal}
                             desc={val.desc}

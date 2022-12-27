@@ -18,7 +18,7 @@ export default function Campaign(data) {
         if (fullCard === true) {
             return "border-0 hover-card-shadow text-break";
         } else {
-            return "col-xxl-4 col-md-5 mt-5 border-0 hover-card-shadow text-break";
+            return "col-xxl-4 col-md-5 mt-lg-5 border-0 hover-card-shadow text-break";
         }
     };
 
@@ -31,7 +31,7 @@ export default function Campaign(data) {
     };
 
     return (
-        <Card className={cardClass()} style={{ height: "500px" }}>
+        <Card className={cardClass()} style={{ height: "550px" }}>
             <Link
                 to={"/Cause/" + id}
                 className="text-black text text-decoration-none"
@@ -43,7 +43,7 @@ export default function Campaign(data) {
                         {sub}
                     </CardSubtitle>
                     <CardText className="truncate-2">{desc}</CardText>
-                    <div className="position-relative">
+                    <div className="position-relative d-none d-lg-block ">
                         <Progress
                             className="my-3"
                             style={{
