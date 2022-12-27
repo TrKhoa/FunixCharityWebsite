@@ -8,7 +8,7 @@ export const campaignSlice = createSlice({
         error: false
     },
     reducers: {
-        getStart:(state)=>{
+        isCampaignStart:(state)=>{
             state.pending = true;
         },
         getError:(state)=>{
@@ -19,10 +19,9 @@ export const campaignSlice = createSlice({
             state.pending = false;
             state.error = false;
             state.data = action.payload.data;
-            
         }
     }
 })
 
-export const { getStart,getError,getSuccess } = campaignSlice.actions;
+export const { isCampaignStart,getError,getSuccess } = campaignSlice.actions;
 export default campaignSlice.reducer;

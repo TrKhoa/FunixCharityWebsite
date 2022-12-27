@@ -8,13 +8,17 @@ export const userSlice = createSlice({
         error: "",
     },
     reducers: {
-        isStart: (state) => {
+        isUserStart: (state) => {
             state.pending = true;
         },
         loginSuccess: (state, action) => {
             state.pending = false;
             state.error = "";
             state.info = action.payload.data;
+        },
+        loginFailed: (state, action) => {
+            state.pending = false;
+            state.error = "";
         },
         logoutSuccess: (state) => {
             state.pending = false;
@@ -36,9 +40,10 @@ export const userSlice = createSlice({
 });
 
 export const {
-    isStart,
+    isUserStart,
     isError,
     loginSuccess,
+    loginFailed,
     logoutSuccess,
     registerSuccess,
     registerFailed,

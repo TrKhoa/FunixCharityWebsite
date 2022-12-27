@@ -39,10 +39,10 @@ export default function Campaign(data) {
                 <CardImg alt="Card image cap" src={image} top width="100%" />
                 <CardBody>
                     <CardTitle tag="h5">{title}</CardTitle>
-                    <CardSubtitle className="mb-2 text-muted" tag="h6">
+                    <CardSubtitle className="mb-2 text-muted truncate-2" tag="h6">
                         {sub}
                     </CardSubtitle>
-                    <CardText>{desc}</CardText>
+                    <CardText className="truncate-2">{desc}</CardText>
                     <div className="position-relative">
                         <Progress
                             className="my-3"

@@ -1,7 +1,8 @@
-import { getStart, getError, getSuccess } from "./campaignSlice";
+import { isCampaignStart, getError, getSuccess } from "./campaignSlice";
 import {
-    isStart,
+    isUserStart,
     loginSuccess,
+    loginFailed,
     registerSuccess,
     registerFailed,
     logoutSuccess,
@@ -14,19 +15,19 @@ export const resetError = (dispatch) => {
 };
 
 export const getCampaign = async (dispatch) => {
-    dispatch(getStart());
+    dispatch(isCampaignStart());
     try {
         const res = await axios.get(
             process.env.REACT_APP_SERVER_URL + "/campaigns"
         );
-        dispatch(getSuccess(res));
+        await dispatch(getSuccess(res));
     } catch (err) {
         dispatch(getError(err));
     }
 };
 
 export const postRegister = async (dispatch, data) => {
-    dispatch(isStart());
+    dispatch(isUserStart());
 
     const register = await axios.post(
         process.env.REACT_APP_SERVER_URL + "/register",
@@ -54,7 +55,7 @@ export const postPasswordReset = async (data) => {
 };
 
 export const postLogin = async (dispatch, data) => {
-    dispatch(isStart());
+    dispatch(isUserStart());
     const login = await axios.post(
         process.env.REACT_APP_SERVER_URL + "/login",
         {
@@ -70,14 +71,16 @@ export const postLogin = async (dispatch, data) => {
 };
 
 export const isLogin = async (dispatch, data) => {
-    await dispatch(isStart());
+    await dispatch(isUserStart());
     if (data.isLogin === true) {
         dispatch(loginSuccess(data));
+    } else {
+        dispatch(loginFailed(data));
     }
 };
 
 export const isLogout = async (dispatch) => {
-    dispatch(isStart());
+    dispatch(isUserStart());
     const logout = await axios.get(process.env.REACT_APP_SERVER_URL + "/logout");
     if(!logout.data.error){
         dispatch(logoutSuccess());
