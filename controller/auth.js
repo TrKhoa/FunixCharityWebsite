@@ -1,4 +1,3 @@
-const config = require("config");
 const dateFormat = require("dateformat");
 const { sendMail } = require("../util/mailer");
 const bcrypt = require("bcrypt");

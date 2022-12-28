@@ -1,5 +1,4 @@
 const express = require("express");
-const config = require("config");
 const dateFormat = require("dateformat");
 
 const Campaign = require("../model/Campaign");

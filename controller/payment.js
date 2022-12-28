@@ -2,9 +2,11 @@ const express = require("express");
 const sha256 = require("sha256");
 const querystring = require("qs");
 const moment = require("moment");
+const ObjectID = require("mongodb").ObjectId;
 const dateFormat = require("dateformat");
 const vnpayConfig = require("../config/vnpay.config");
-
+const User = require("../model/User");
+const Campaign = require("../model/Campaign");
 
 exports.getCreate = async (req, res) => {
     let data = req.body;
@@ -17,7 +19,7 @@ exports.postPostName = async (req, res) => {
 };
 
 exports.postCreatePayment = async (req, res, next) => {
-    const { value,desc } = req.body;
+    const { value, campaign } = req.body;
     let ipAddr =
         req.headers["x-forwarded-for"] ||
         req.connection.remoteAddress ||
@@ -36,7 +38,7 @@ exports.postCreatePayment = async (req, res, next) => {
     let amount = value;
     let bankCode = "";
 
-    let orderInfo = desc;
+    let orderInfo = campaign;
     let orderType = "billpayment";
     let locale = "vn";
     let currCode = "VND";
@@ -60,7 +62,8 @@ exports.postCreatePayment = async (req, res, next) => {
     }
 
     vnp_Params = sortObject(vnp_Params);
-    let signData = secretKey + querystring.stringify(vnp_Params, { encode: false });
+    let signData =
+        secretKey + querystring.stringify(vnp_Params, { encode: false });
     let secureHash = sha256(signData);
 
     vnp_Params["vnp_SecureHashType"] = "SHA256";
@@ -72,56 +75,109 @@ exports.postCreatePayment = async (req, res, next) => {
 
 exports.vnpayIpn = async (req, res) => {
     var vnp_Params = req.query;
-    var secureHash = vnp_Params['vnp_SecureHash'];
+    var secureHash = vnp_Params["vnp_SecureHash"];
 
-    delete vnp_Params['vnp_SecureHash'];
-    delete vnp_Params['vnp_SecureHashType'];
+    delete vnp_Params["vnp_SecureHash"];
+    delete vnp_Params["vnp_SecureHashType"];
 
     vnp_Params = sortObject(vnp_Params);
     let secretKey = vnpayConfig.vnp_HashSecret;
-    var querystring = require('qs');
-    let signData = secretKey + querystring.stringify(vnp_Params, { encode: false });
+    var querystring = require("qs");
+    let signData =
+        secretKey + querystring.stringify(vnp_Params, { encode: false });
     let checkSum = sha256(signData);
 
-    if(checkSum == checkSum){
-        var orderId = vnp_Params['vnp_TxnRef'];
-        var rspCode = vnp_Params['vnp_ResponseCode'];
+    if (checkSum == checkSum) {
+        var orderId = vnp_Params["vnp_TxnRef"];
+        var rspCode = vnp_Params["vnp_ResponseCode"];
         //Kiem tra du lieu co hop le khong, cap nhat trang thai don hang va gui ket qua cho VNPAY theo dinh dang duoi
-        res.status(200).send('<html><body>OK</body></html>');
+        res.status(200).send("<html><body>OK</body></html>");
+    } else {
+        res.status(200).json({
+            RspCode: "97",
+            Message: checkSum,
+            Test: checkSum,
+        });
     }
-    else {
-        res.status(200).json({RspCode: '97', Message: checkSum, Test: checkSum })
-    }
-}
+};
 
 exports.getPaymentReturn = async (req, res, next) => {
-    var vnp_Params = req.query;
+    let vnp_Params = req.query;
+    let campaignId = new ObjectID(vnp_Params.vnp_OrderInfo);
+    const userId = req.session.user
+        ? new ObjectID(req.session.user._id)
+        : false;
+    let amount = parseInt(vnp_Params.vnp_Amount) / 100;
+    let payDate = vnp_Params.vnp_PayDate;
+    let status = vnp_Params.vnp_TransactionStatus;
 
-    var secureHash = vnp_Params['vnp_SecureHash'];
+    const userDonate = userId
+        ? User.findById(userId).then((user) => {
+              if (user) return user.donate;
+              else return [];
+          })
+        : false;
+    const campaignInfo = Campaign.findById(campaignId).then((campaign) => {
+        if (campaign) return campaign;
+        else return [];
+    });
 
-    delete vnp_Params['vnp_SecureHash'];
-    delete vnp_Params['vnp_SecureHashType'];
+    let secureHash = vnp_Params["vnp_SecureHash"];
+
+    delete vnp_Params["vnp_SecureHash"];
+    delete vnp_Params["vnp_SecureHashType"];
 
     vnp_Params = sortObject(vnp_Params);
     let tmnCode = vnpayConfig.vnp_TmnCode;
     let secretKey = vnpayConfig.vnp_HashSecret;
 
-    var signData = secretKey + querystring.stringify(vnp_Params, { encode: false });
+    let signData =
+        secretKey + querystring.stringify(vnp_Params, { encode: false });
 
-    var checkSum = sha256(signData);
+    let checkSum = sha256(signData);
 
-    if(secureHash === checkSum){
+    if (secureHash === checkSum) {
         //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
-        console.log('Kiem tra xem du lieu trong db co hop')
-    } else{
-       console.log('haha ko')
+        Promise.all([userDonate, campaignInfo]).then((val) => {
+            const user = val[0];
+            const campaign = val[1].donator;
+            const campaignRaise = parseInt(val[1].raise);
+            const userData = {
+                campaign: campaignId,
+                cash: amount,
+                date: payDate,
+            };
+            const campaignData = {
+                user: userId ? userId : null,
+                raise: amount,
+                date: payDate,
+            };
+            console.log(campaignRaise + amount);
+            if (status == "00") {
+                if (userId) {
+                    user.push(userData);
+                    User.findOneAndUpdate({ _id: userId }, { donate: user });
+                }
+                campaign.push(campaignData);
+                Campaign.findOneAndUpdate(
+                    { _id: campaignId },
+                    { donator: campaign, raise: campaignRaise + amount }
+                ).then((result) =>
+                    res.redirect(process.env.CLIENT_URL + "/thankyou")
+                );
+            } else {
+                res.redirect(process.env.CLIENT_URL);
+            }
+        });
+    } else {
+        res.redirect(process.env.CLIENT_URL);
     }
 };
 
-
 function sortObject(o) {
     var sorted = {},
-        key, a = [];
+        key,
+        a = [];
 
     for (key in o) {
         if (o.hasOwnProperty(key)) {
@@ -136,4 +192,3 @@ function sortObject(o) {
     }
     return sorted;
 }
-
