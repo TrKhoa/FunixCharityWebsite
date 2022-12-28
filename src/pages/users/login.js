@@ -1,8 +1,8 @@
 import {  useSelector } from "react-redux";
 import { motion } from "framer-motion"
-import Notification from "../components/user/Notification";
-import LoginForm from '../components/LoginForm'
-import PasswordReset from '../components/users/PasswordReset'
+import Notification from "../../components/assets/Notification";
+import LoginForm from '../../components/users/LoginForm'
+import PasswordReset from '../../components/users/PasswordReset'
 
 export default function Login(value) {
     const errMessage = useSelector((state) => state.user.error);

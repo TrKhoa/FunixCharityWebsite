@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import { Progress, Carousel, CarouselItem, CarouselControl } from "reactstrap";
 import { percent } from "../../util/calculate";
 import { postDonate } from "../../redux/apiRequest"
-import Campaign from "./Campaign";
+import Campaign from "../campaigns/Campaign";
 
 export default function CauseDetail() {
     const dispatch = useDispatch();
@@ -20,7 +20,7 @@ export default function CauseDetail() {
         const value = donate.current.value;
         if(value){
             if(value>=10000){
-                postDonate(dispatch, value);
+                postDonate(dispatch, value, id);
             } else {
                 alert("Số tiền ủng hộ phải lớn hơn bằng 10.000 VND")
             }

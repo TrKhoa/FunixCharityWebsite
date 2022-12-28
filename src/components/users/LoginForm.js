@@ -9,7 +9,7 @@ import {
     Form,
     Button,
 } from "reactstrap";
-import { postRegister, postLogin, postPasswordForgot, resetError } from "../redux/apiRequest";
+import { postRegister, postLogin, postPasswordForgot, resetError } from "../../redux/apiRequest";
 
 export default function LoginForm(type) {
     const errMessage = useSelector((state) => state.user.error);

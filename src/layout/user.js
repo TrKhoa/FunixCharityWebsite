@@ -3,12 +3,12 @@ import {useEffect} from 'react';
 import { useDispatch } from 'react-redux';
 import { getCampaign } from '../redux/apiRequest';
 
-import Menu from '../components/user/Navbar'
-import Footer from '../components/user/Footer'
-import Login from '../pages/login'
-import Home from '../pages/user/home';
-import Causes from '../pages/user/causes';
-import CauseDetail from '../components/user/CauseDetail'
+import Menu from '../components/assets/Navbar'
+import Footer from '../components/assets/Footer'
+import Login from '../pages/users/login'
+import Home from '../pages/home';
+import Causes from '../pages/causes/causes';
+import CauseDetail from '../components/causes/CauseDetail'
 import Err404 from './404';
 
 export default function User() {

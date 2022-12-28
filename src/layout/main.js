@@ -1,5 +1,5 @@
 import User from "./user";
-import Loading from "../components/Loading";
+import Loading from "../components/assets/Loading";
 import { useEffect } from "react";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";

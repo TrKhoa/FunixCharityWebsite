@@ -1,5 +1,4 @@
 import { isCampaignStart, getError, getSuccess } from "./campaignSlice";
-import { Redirect } from "react-router-dom";
 import {
     isUserStart,
     loginSuccess,
@@ -28,10 +27,10 @@ export const getCampaign = async (dispatch) => {
     }
 };
 
-export const postDonate = async (dispatch, data) => {
+export const postDonate = async (dispatch, data, id) => {
     const donate = await axios.post(
         process.env.REACT_APP_SERVER_URL + "/create_payment_url",
-        { value: data, desc: "Donation" }
+        { value: data, campaign: id }
     );
     if (donate.status === 200) {
         const donateLink = donate.data;

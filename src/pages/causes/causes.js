@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux'
 import { motion } from 'framer-motion'
-import Bread from '../../components/user/Bread'
-import Cause from '../../components/user/Causes'
+import Bread from '../../components/assets/Bread'
+import Cause from '../../components/causes/Causes'
 
 
 export default function Causes(){

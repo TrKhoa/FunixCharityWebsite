@@ -3,7 +3,7 @@ import Hero from '../../components/user/Hero'
 import { motion } from 'framer-motion'
 import Mission from '../../components/user/Mission'
 import AboutUs from '../../components/user/AboutUs-Landing'
-import Causes from '../../components/user/Causes'
+import Causes from '../../components/causes/Causes'
 
 export default function Home(){
 

@@ -1,4 +1,4 @@
-import Campaign from "../user/Campaign";
+import Campaign from "../campaigns/Campaign";
 
 export default function Causes(args) {
     /*
