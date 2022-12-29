@@ -13,7 +13,23 @@ exports.getDashboard = (req, res, next) => {
 };
 
 exports.getUser = (req, res, next) => {
-    User.find().then((user) => {
+    const byPhone = req.query.byPhone || false;
+    const desc = req.query.desc || false;
+    function sortBy(){ 
+        if(byPhone){
+            return 'phone'
+        } else {
+            return 'username'
+        }
+    }
+    function sortType(){
+        if(desc){
+            return '-';
+        } else {
+            return '';
+        }
+    }
+    User.find().sort(sortType()+sortBy()).then((user) => {
         if (user) {
             res.render("user/user", {
                 name: "req.session.name",
