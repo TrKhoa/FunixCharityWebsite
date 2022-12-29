@@ -38,12 +38,13 @@ export default function Causes(args) {
                 limit: page * itemsPerPage,
                 skip: (page - 1) * itemsPerPage,
             };
-        } else return { display: "", limit: 6 };
+        } else return { display: "", limit: 6, skip: 0 };
     };
 
-    const Pagination = () => {
+    const Pagination = ({display}) => {
         return (
-            <ul class="pagination justify-content-center pt-5">
+            <div class={display ? display : ''}>
+                <ul class="pagination justify-content-center pt-5">
                 {page > 1 ? (
                     <li class="page-item">
                         <Link to="/Cause?page=1" class="page-link">
@@ -94,6 +95,7 @@ export default function Causes(args) {
                     </li>
                 )}
             </ul>
+            </div>
         );
     };
     return (
@@ -131,7 +133,7 @@ export default function Causes(args) {
                         />
                     ))}
             </div>
-            <Pagination />
+            <Pagination display={extraInfo().display == "d-none" ? '' : 'd-none'}/>
         </div>
     );
 }

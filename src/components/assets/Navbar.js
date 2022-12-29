@@ -65,11 +65,7 @@ function Menu() {
                         <UncontrolledDropdown>
                             <DropdownToggle nav caret>
                                 <img
-                                    src={
-                                        (userState.image !== "" &&
-                                            userState.image) ||
-                                        "/image/default-user.png"
-                                    }
+                                    src={process.env.REACT_APP_SERVER_URL + userState.image}
                                     alt="mdo"
                                     width="32"
                                     height="32"

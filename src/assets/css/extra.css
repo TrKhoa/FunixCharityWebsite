@@ -1,3 +1,7 @@
+body{
+    padding-top:80px;
+}
+
 .nav-link {
     color: black;
     text-decoration: none;

@@ -8,7 +8,7 @@ export default function Causes(){
     const reduxCampaign = useSelector((state) => state.campaign)
     return (
         <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}>
-            <Bread />
+            <Bread title="Các hoàn cảnh cần giúp đỡ"/>
             <Cause campaigns={reduxCampaign} />
         </motion.div>
     )

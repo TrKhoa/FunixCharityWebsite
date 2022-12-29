@@ -1,9 +1,12 @@
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+
 export default function Hero(args) {
+    const isLogin = useSelector((state) => state.user).info !== '' 
     return (
-        <div className="container col-xxl-12 px-4 py-5">
-            <div className="row flex-lg-row-reverse align-items-center g-5 py-5">
-                <div className="col-10 col-sm-8 col-lg-7">
+        <div className="container col-xxl-12 px-4">
+            <div className="row flex-lg-row-reverse align-items-center g-5 py-md-5 ">
+                <div className="col-sm-12 col-lg-7">
                     <img
                         src="/images/charity.png"
                         className="d-block mx-lg-auto img-fluid"
@@ -24,7 +27,8 @@ export default function Hero(args) {
                                 Chiến dịch
                             </button>
                         </Link>
-                        <Link to="/Login">
+                        {!isLogin ? 
+                            <Link to="/Login">
                             <button
                                 type="button"
                                 className="btn btn-outline-darkYellow btn-lg px-4 rounded-5"
@@ -32,6 +36,9 @@ export default function Hero(args) {
                                 Đóng góp ngay
                             </button>
                         </Link>
+                        :
+                        <></>
+                        }
                     </div>
                 </div>
             </div>
