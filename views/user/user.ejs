@@ -10,8 +10,8 @@
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Hình ảnh</th>
                 <th scope="col">Tên tài khoản</th>
+                <th scope="col">Trạng thái</th>
                 <th scope="col">Tên người dùng</th>
                 <th scope="col">Email</th>
                 <th scope="col">Chức năng</th>
@@ -22,8 +22,8 @@
               <% user.forEach(function(val){%>
                 <tr>
                   <th scope="row">1</th>
-                  <td><img src="/image/user/default.png" height="40"></td>
-                  <td><%= val.username %></td>
+                  <td><img src="/image/user/default.png" height="40"> <%= val.username %></td>
+                  <td><%= isOnline(val.username) %></td>
                   <td><%= val.name %></td>
                   <td><%= val.email %></td>
                   <td><%= val.status===3 ? 'admin' : 'user'%></td>
@@ -39,11 +39,11 @@
                       </div>
                       
                       <div class="modal-body">
-                        <%= val.status !== 3 ? "Bạn có chắc muốn xóa User: "+val.username : "Không thể xóa User là Admin" %>
+                        <%= isOnline(val.username) == "online" ? "Tài khoản hiện đang online nên bạn không thể xóa" : val.status !== 3 ? "Bạn có chắc muốn xóa User: "+val.username : "Không thể xóa User là Admin" %>
                       </div>
                       
                       <div class="modal-footer">
-                        <% if(val.status !== 3) { %>
+                        <% if(val.status !== 3 && isOnline(val.username) == "offline" ) { %>
                         <a href=<%= "/admin/user-delete/"+val.username %>>
                           <button type="button" class="btn btn-primary">Xóa</button>
                         </a>

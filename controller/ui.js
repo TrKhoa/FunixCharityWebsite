@@ -2,6 +2,8 @@ const { validationResult } = require("express-validator");
 const moment = require("moment");
 const User = require("../model/User");
 const Campaign = require("../model/Campaign");
+const Sessions = require("../model/Session");
+const mongoose = require("mongoose");
 
 exports.getDashboard = (req, res, next) => {
     res.render("dashboard", {
@@ -29,7 +31,8 @@ exports.getUser = (req, res, next) => {
             return '';
         }
     }
-    User.find().sort(sortType()+sortBy()).then((user) => {
+    /*
+    const user = User.find().sort(sortType()+sortBy()).then((user) => {
         if (user) {
             res.render("user/user", {
                 name: "req.session.name",
@@ -48,6 +51,40 @@ exports.getUser = (req, res, next) => {
             });
         }
     });
+    */
+    const user = User.find().sort(sortType()+sortBy()).then((user) => {
+        return user ? user : [];
+    });
+    const onlineUser = Sessions.find().then(a=>{
+        const user = [];
+        a.map(val => {
+            const username = val.session.user.username;
+            user.push(username);
+        })
+        return user;
+    })
+    Promise.all([user, onlineUser]).then((result) => {
+        const user = result[0];
+        const onlineUser = result[1];
+        function isOnline(username){
+            let status = 'offline'
+            onlineUser.map(check => {
+                if(username == check){
+                    return status = 'online';
+                }
+            })
+            return status;
+        }
+        res.render("user/user", {
+            name: "req.session.name",
+            pageTitle: "User",
+            user: user,
+            isOnline: isOnline,
+            errorMessage: "errorMessage",
+            path: "/admin/dashboard",
+        });
+    })
+    
 };
 
 exports.getUserAdd = (req, res, next) => {
