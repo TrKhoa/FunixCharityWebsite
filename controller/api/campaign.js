@@ -1,7 +1,7 @@
 const express = require("express");
 const dateFormat = require("dateformat");
 
-const Campaign = require("../model/Campaign");
+const Campaign = require("../../model/Campaign");
 
 exports.getCampaigns = async (req, res) => {
     /*

@@ -7,9 +7,9 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 const moment = require("moment");
 const MongoDBStore = require("connect-mongodb-session")(session);
-const authRoute = require("./routes/auth");
-const campaignRoute = require("./routes/campaign");
-const paymentRoute = require("./routes/payment");
+const userRoute = require("./routes/api/user");
+const campaignRoute = require("./routes/api/campaign");
+const paymentRoute = require("./routes/api/payment");
 const uiRoute = require("./routes/ui");
 require("dotenv").config();
 
@@ -50,15 +50,13 @@ app.use(
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(authRoute);
+app.use(userRoute);
 app.use(campaignRoute);
 app.use(paymentRoute);
 app.use(uiRoute);
 
 app.get("/", (req, res) => {
-    res.send(
-        '<html><form action="/create_payment_url" method="POST"><input name="value"><input name="desc"><button type="submit">Test</button></form></html>'
-    );
+    res.redirect("/admin/dashboard");
 });
 
 /*

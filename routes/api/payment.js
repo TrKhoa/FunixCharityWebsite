@@ -3,8 +3,8 @@ const sha256 = require("sha256");
 const querystring = require("qs");
 const moment = require("moment");
 const dateFormat = require("dateformat");
-const paymentController = require("../controller/payment");
-const vnpayConfig = require("../config/vnpay.config");
+const paymentController = require("../../controller/api/payment");
+const vnpayConfig = require("../../config/vnpay.config");
 
 const router = express.Router();
 

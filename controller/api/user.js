@@ -1,9 +1,9 @@
 const dateFormat = require("dateformat");
-const { sendMail } = require("../util/mailer");
+const { sendMail } = require("../../util/mailer");
 const bcrypt = require("bcrypt");
 const sha256 = require("sha256");
-const User = require("../model/User");
-const Campaign = require("../model/Campaign");
+const User = require("../../model/User");
+const Campaign = require("../../model/Campaign");
 
 exports.postRegister = async (req, res) => {
     try {

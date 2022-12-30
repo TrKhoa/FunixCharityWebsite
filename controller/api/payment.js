@@ -4,9 +4,9 @@ const querystring = require("qs");
 const moment = require("moment");
 const ObjectID = require("mongodb").ObjectId;
 const dateFormat = require("dateformat");
-const vnpayConfig = require("../config/vnpay.config");
-const User = require("../model/User");
-const Campaign = require("../model/Campaign");
+const vnpayConfig = require("../../config/vnpay.config");
+const User = require("../../model/User");
+const Campaign = require("../../model/Campaign");
 
 exports.getCreate = async (req, res) => {
     let data = req.body;
