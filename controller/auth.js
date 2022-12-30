@@ -1,6 +1,7 @@
 const dateFormat = require("dateformat");
 const { sendMail } = require("../util/mailer");
 const bcrypt = require("bcrypt");
+const sha256 = require("sha256");
 const User = require("../model/User");
 const Campaign = require("../model/Campaign");
 
@@ -13,7 +14,7 @@ exports.postRegister = async (req, res) => {
             .join("");
         await User.findOne({ username: validUsername }).then((userExist) => {
             if (!userExist) {
-                const user = new User({ ...userInfo, username: validUsername });
+                const user = new User({ ...userInfo, username: validUsername, password: sha256(userInfo.password) });
                 user.save()
                     .then((e) => {
                         return res.status(201).send({
@@ -53,7 +54,7 @@ exports.postLogin = async (req, res) => {
     await User.findOne({ username: validUsername })
         .then((user) => {
             if (user) {
-                if (user.password === password) {
+                if (user.password === sha256(password)) {
                     req.session.isLoggedIn = true;
                     req.session.user = user;
                     return res.status(201).send({ data: user, error: false });
@@ -114,7 +115,7 @@ exports.postForgotPassword = async (req, res) => {
     bcrypt.compare(username, token, (err, result) => {
         if (result == true) {
             const filter = { username: username };
-            const update = { password: password };
+            const update = { password: sha256(password) };
             User.findOneAndUpdate(filter, update).then((result) => {
                 if(result){
                     console.log(result);

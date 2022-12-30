@@ -1,5 +1,6 @@
 const { validationResult } = require("express-validator");
 const moment = require("moment");
+const sha256 = require("sha256");
 const User = require("../model/User");
 const Campaign = require("../model/Campaign");
 const Sessions = require("../model/Session");
@@ -128,7 +129,7 @@ exports.postUserAdd = (req, res, next) => {
                 const user = new User({
                     name: name,
                     username: validUsername,
-                    password: password,
+                    password: sha256(password),
                     email: email,
                     status: type,
                     donate: [],
