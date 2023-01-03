@@ -10,9 +10,15 @@ exports.getDashboard = (req, res, next) => {
     res.render("dashboard", {
         name: req.session.name,
         image: req.session.image,
+        user: req.session.user,
         pageTitle: "Dashboard",
         errorMessage: "errorMessage",
     });
+};
+
+exports.getLogout = (req, res, next) => {
+    req.session.destroy();
+    res.redirect('/admin/dashboard');
 };
 
 exports.getUser = (req, res, next) => {
