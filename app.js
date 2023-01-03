@@ -30,7 +30,7 @@ app.set('views', 'views');
 
 app.use(
     cors({
-        origin: "http://localhost:3000",
+        origin: ["http://localhost:3000","https://charity-server-side.onrender.com/"],
         methods: ["GET", "POST"],
         credentials: true,
     })
