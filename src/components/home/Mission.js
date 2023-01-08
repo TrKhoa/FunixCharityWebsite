@@ -17,41 +17,41 @@ export default function Mission(args) {
                     deserunt mollit anim id est laborum.
                 </p>
 
-                <div className="d-flex col-xxl-12 justify-content-center">
-                <div className="col-xxl-2">
+                <div className="d-flex row align-items-center justify-content-center">
+                    <div className="col-12 col-md-5 col-lg-2">
                         <img src="/images/icon-1.png" alt="1" />
-                        <h4 className="fw-bold mt-5 mb-3">Help child</h4>
+                        <h4 className="fw-bold mt-5 mb-3">Giúp trẻ em</h4>
                         <p className="">
                             Lorem ipsum dolor sit amet, consectetur adipiscing
                             elit, sed do eiusmod tempor incididunt ut labore et
-                            dolore magna aliqua. 
+                            dolore magna aliqua.
                         </p>
                     </div>
-                    <div className="col-xxl-2 offset-md-1">
-                        <img src="/images/icon-1.png" alt="1" />
-                        <h4 className="fw-bold mt-5 mb-3">Help child</h4>
+                    <div className="col-12 col-md-5 col-lg-2 offset-0 offset-md-1">
+                        <img src="/images/icon-2.png" alt="1" />
+                        <h4 className="fw-bold mt-5 mb-3">Cơ sở hạ tầng</h4>
                         <p className="">
                             Lorem ipsum dolor sit amet, consectetur adipiscing
                             elit, sed do eiusmod tempor incididunt ut labore et
-                            dolore magna aliqua. 
+                            dolore magna aliqua.
                         </p>
                     </div>
-                    <div className="col-xxl-2 offset-md-1">
-                        <img src="/images/icon-1.png" alt="1" />
-                        <h4 className="fw-bold mt-5 mb-3">Help child</h4>
+                    <div className="col-12 col-md-5 col-lg-2 offset-lg-1">
+                        <img src="/images/icon-3.png" alt="1" />
+                        <h4 className="fw-bold mt-5 mb-3">Về giáo dục</h4>
                         <p className="">
                             Lorem ipsum dolor sit amet, consectetur adipiscing
                             elit, sed do eiusmod tempor incididunt ut labore et
-                            dolore magna aliqua. 
+                            dolore magna aliqua.
                         </p>
                     </div>
-                    <div className="col-xxl-2 offset-md-1">
-                        <img src="/images/icon-1.png" alt="1" />
-                        <h4 className="fw-bold mt-5 mb-3">Help child</h4>
+                    <div className="col-12 col-md-5 col-lg-2 offset-md-1">
+                        <img src="/images/icon-4.png" alt="1" />
+                        <h4 className="fw-bold mt-5 mb-3">Về lương thực</h4>
                         <p className="">
                             Lorem ipsum dolor sit amet, consectetur adipiscing
                             elit, sed do eiusmod tempor incididunt ut labore et
-                            dolore magna aliqua. 
+                            dolore magna aliqua.
                         </p>
                     </div>
                 </div>

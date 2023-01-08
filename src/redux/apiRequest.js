@@ -21,7 +21,6 @@ export const getCampaign = async (dispatch) => {
             process.env.REACT_APP_SERVER_URL + "/campaigns"
         );
         await dispatch(getSuccess(res));
-        console.log(res);
     } catch (err) {
         dispatch(getError(err));
     }

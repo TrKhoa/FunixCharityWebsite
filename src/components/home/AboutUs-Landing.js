@@ -2,7 +2,7 @@ export default function AboutUs(args) {
     return (
         <div className="container col-xxl-12 px-4 py-5">
             <div className="row flex-lg-row align-items-center g-5 py-5">
-                <div className="col-10 col-sm-8 col-lg-7">
+                <div className="col-12 col-sm-8 col-lg-7">
                     <img
                         src="/images/ceo.jpg"
                         className="d-block mx-lg-auto img-fluid"

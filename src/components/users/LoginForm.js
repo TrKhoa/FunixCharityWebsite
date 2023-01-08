@@ -41,10 +41,16 @@ export default function LoginForm(type) {
                 } else if (values.password !== values.passwordConfirm) {
                     errors.passwordConfirm = "Passwords không giống nhau";
                 }
+
+                if (!values.phone) {
+                    errors.phone = "Thiếu thông tin!";
+                }
     
                 if (!values.email) {
                     errors.email = "Thiếu thông tin!";
                 }
+
+                
             }
         }
         
@@ -57,6 +63,7 @@ export default function LoginForm(type) {
             name: "",
             username: "",
             email: "",
+            phone: "",
             password: "",
             passwordConfirm: "",
         },
@@ -113,18 +120,6 @@ export default function LoginForm(type) {
                     </FormFeedback>
                     <Label for="user">Tài khoản</Label>
                 </FormGroup>
-                {/*}
-                <div className="d-flex justify-content-center">
-                    <div
-                        className="hover-darkYellow c-pointer col-xxl-2"
-                        onClick={() => {
-                            setPasswordForgot(!isForgot);
-                        }}
-                    >
-                        Trở lại
-                    </div>
-                </div>
-                <*/}
                 <br />
                 <Button
                     type="submit"
@@ -217,6 +212,20 @@ export default function LoginForm(type) {
                         />
                         <FormFeedback invalid>{formik.errors.email}</FormFeedback>
                         <Label for="email">Email</Label>
+                    </FormGroup>
+                    <FormGroup floating>
+                        <Input
+                            id="phone"
+                            name="phone"
+                            placeholder="phone"
+                            type="number"
+                            required
+                            value={formik.values.phone}
+                            onChange={formik.handleChange}
+                            invalid={formik.errors.phone ? true : false}
+                        />
+                        <FormFeedback invalid>{formik.errors.phone}</FormFeedback>
+                        <Label for="phone">Số điện thoại</Label>
                     </FormGroup>
                     <div className="d-flex justify-content-end">
                         <div

@@ -65,7 +65,7 @@ function Menu() {
                         <UncontrolledDropdown>
                             <DropdownToggle nav caret>
                                 <img
-                                    src={process.env.REACT_APP_SERVER_URL + userState.image}
+                                    src={userState.images ? process.env.REACT_APP_SERVER_URL + userState.image : "/images/default-user.png"}
                                     alt="mdo"
                                     width="32"
                                     height="32"
@@ -73,7 +73,7 @@ function Menu() {
                                 />
                             </DropdownToggle>
                             <DropdownMenu>
-                                <a href={userState.status === 3 ? serverUrl+"/dashboard" : "/dashboard"} className="text-decoration-none"><DropdownItem>Tài khoản</DropdownItem></a>
+                                <a href={userState.status === 3 ? serverUrl+"/dashboard" : "/dashboard"} className="text-decoration-none"><DropdownItem>{userState.status === 3 ? "Dashboard" : "Tài khoản"}</DropdownItem></a>
                                 <a href={userState.status === 3 ? serverUrl+"/history" : "/history"} className="text-decoration-none"><DropdownItem>Lịch sử</DropdownItem></a>
                                 <DropdownItem divider />
                                 <DropdownItem onClick={() => isLogout(dispatch)}>Đăng xuất</DropdownItem>
