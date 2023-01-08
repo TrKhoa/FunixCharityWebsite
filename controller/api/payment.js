@@ -156,21 +156,21 @@ exports.getPaymentReturn = async (req, res, next) => {
             if (status == "00") {
                 if (userId) {
                     user.push(userData);
-                    User.findOneAndUpdate({ _id: userId }, { donate: user });
+                    User.findOneAndUpdate({ _id: userId }, { donate: user }).then(() => {});
                 }
                 campaign.push(campaignData);
                 Campaign.findOneAndUpdate(
                     { _id: campaignId },
                     { donator: campaign, raise: campaignRaise + amount }
                 ).then((result) =>
-                    res.redirect(process.env.CLIENT_URL + "/thankyou")
+                    res.redirect(process.env.CLIENT_URI + "/thankyou")
                 );
             } else {
-                res.redirect(process.env.CLIENT_URL);
+                res.redirect(process.env.CLIENT_URI);
             }
         });
     } else {
-        res.redirect(process.env.CLIENT_URL);
+        res.redirect(process.env.CLIENT_URI);
     }
 };
 

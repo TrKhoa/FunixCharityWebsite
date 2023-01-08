@@ -37,7 +37,8 @@ router.post(
     UIController.postUserEdit
 );
 router.get("/admin/user-delete/:user", isAuth, UIController.getUserDelete);
-
+router.post("/admin/user-delete", isAuth, UIController.postMultiUserDelete);
+router.get("/admin/user-passwordGen/:user", isAuth, UIController.getUserPasswordGen);
 //Campaigns
 router.get("/admin/campaign", isAuth, UIController.getCampaigns);
 router.get("/admin/campaign-add", isAuth, UIController.getCampaignAdd);

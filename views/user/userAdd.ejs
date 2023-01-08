@@ -1,4 +1,4 @@
-<%- include('../includes/head.ejs') %>
+<%- include('../includes/head.ejs', {user: userSession}) %>
 </head>
 
 <body>
@@ -15,15 +15,20 @@
             <div class="mb-3">
               <label for="name" class="form-label">Tên</label>
               <input type="text" class="form-control" id="name" name="name" aria-describedby="nameHelp" value=<%= user ? user.name : '' %> >
-              <div id="nameHelp" class="form-text">We'll never share your email with anyone else.</div>
             </div>
-            <div class="mb-3">
-              <label for="username" class="form-label">Tài khoản</label>
-              <input type="text" class="form-control" id="username" name="username" value=<%= user ? user.username : '' %>>
-            </div>
+            <% if(!edit) {%>
+              <div class="mb-3">
+                <label for="username" class="form-label">Tài khoản</label>
+                <input type="text" class="form-control" id="username" name="username" value=<%= user ? user.username : '' %>>
+              </div>
+              <% } %>
             <div class="mb-3">
               <label for="email" class="form-label">Email</label>
               <input type="email" class="form-control" id="email" name="email" value=<%= user ? user.email : '' %>>
+            </div>
+            <div class="mb-3">
+              <label for="number" class="form-label">Số điện thoại</label>
+              <input type="number" class="form-control" id="phone" name="phone" value=<%= user ? user.phone : '' %>>
             </div>
             <% if(!edit) {%>
             <div class="mb-3">
@@ -48,8 +53,14 @@
               <button type="button" class="btn btn-secondary">Hủy</button>
             </a>
             <button type="submit" class="btn btn-primary"><%= user ? 'Chỉnh sửa' : 'Tạo tài khoản' %></button>
+            <input class="btn btn-primary" type="reset">
           </form>
         </div>
       </div>
+      <script>
+        $(document).ready(function() {
+          $('#name').val("<%= user ? user.name : '' %>");
+        });
+      </script>
     <%- include('../includes/end.ejs') %>
 </body>
