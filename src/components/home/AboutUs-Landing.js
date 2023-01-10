@@ -10,7 +10,6 @@ export default function AboutUs(args) {
                         style={{
                             borderRadius: "0px 100px 0px 100px",
                         }}
-                        loading="lazy"
                     />
                 </div>
                 <div className="col-lg-5">
