@@ -36,7 +36,7 @@ app.use(
     })
 );
 app.use(cookieParser());
-app.enable('trust proxy')
+app.set('trust proxy',1)
 
 app.use(
     session({
