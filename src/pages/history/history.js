@@ -1,10 +1,14 @@
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import moment from "moment";
 import { motion } from "framer-motion";
 import { Table } from "reactstrap";
 import Bread from "../../components/assets/Bread";
 
 export default function History() {
     const userHistory = useSelector((state) => state.user.info.donate) || [];
+    const campaigns = useSelector((state) => state.campaign.data) || [];
+
     return (
         <motion.div
             initial={{ opacity: 0 }}
@@ -13,25 +17,37 @@ export default function History() {
         >
             <Bread title="Lịch sử giao dịch" />
             <div className="container">
-                <Table className="my-5" responsive>
+                <Table className="my-5 table" responsive>
                     <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Chiến dịch</th>
-                            <th>Số tiền</th>
-                            <th>Ngày</th>
+                        <tr className="d-flex">
+                            <th className="col-0">#</th>
+                            <th className="col-6">Chiến dịch</th>
+                            <th className="col-2">Số tiền</th>
+                            <th className="col-3">Ngày</th>
                         </tr>
                     </thead>
                     <tbody>
                         {userHistory.map((user, index) => {
-                            return(
-                                <tr>
-                                <th scope="row">{index+1}</th>
-                                <td>{index+1}</td>
-                                <td>{user.cash}</td>
-                                <td>{user.date}</td>
-                            </tr>
-                            )
+                            return (
+                                <tr className="d-flex">
+                                    <th className="col-0" scope="row">{index + 1}</th>
+                                    <td className="text-truncate col-6">
+                                        <Link to={"/Cause/" + user.campaign}>
+                                            {campaigns.map((val) => {
+                                                if (val._id == user.campaign) {
+                                                    return val.name;
+                                                }
+                                            })}
+                                        </Link>
+                                    </td>
+                                    <td className="col-2">{user.cash} VND</td>
+                                    <td className="col-3">
+                                        {moment(user.date).format(
+                                            "DD/mm/yyyy - hh:mm:ss"
+                                        )}
+                                    </td>
+                                </tr>
+                            );
                         })}
                     </tbody>
                 </Table>
