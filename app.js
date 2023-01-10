@@ -30,7 +30,7 @@ app.set('views', 'views');
 
 app.use(
     cors({
-        origin: ["http://localhost:3000","https://charity-server-side.onrender.com","https://client-side-beryl.vercel.app"],
+        origin: ["http://localhost:3000","https://charity-server-side.onrender.com","https://client-side-beryl.vercel.app","https://client-side-5rpo6jgec-trkhoa.vercel.app"],
         methods: ["GET", "POST"],
         credentials: true,
     })
