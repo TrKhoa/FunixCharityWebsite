@@ -109,6 +109,7 @@ exports.getPaymentReturn = async (req, res, next) => {
         : false;
     let amount = parseInt(vnp_Params.vnp_Amount) / 100;
     let payDate = vnp_Params.vnp_PayDate;
+    const Date = new Date();
     let status = vnp_Params.vnp_TransactionStatus;
 
     const userDonate = userId
@@ -145,26 +146,32 @@ exports.getPaymentReturn = async (req, res, next) => {
             const userData = {
                 campaign: campaignId,
                 cash: amount,
-                date: payDate,
+                date: Date,
             };
             const campaignData = {
                 user: userId ? userId : null,
                 raise: amount,
-                date: payDate,
+                date: Date,
             };
-            console.log(campaignRaise + amount);
             if (status == "00") {
                 if (userId) {
                     user.push(userData);
-                    User.findOneAndUpdate({ _id: userId }, { donate: user }).then(() => {});
+                    User.findOneAndUpdate(
+                        { _id: userId },
+                        { donate: user },
+                        { new: true }
+                    ).then((result) => {
+                        req.session.user = result;
+                    });
                 }
                 campaign.push(campaignData);
                 Campaign.findOneAndUpdate(
                     { _id: campaignId },
-                    { donator: campaign, raise: campaignRaise + amount }
-                ).then((result) =>
-                    res.redirect(process.env.CLIENT_URI + "/thankyou")
-                );
+                    { donator: campaign, raise: campaignRaise + amount },
+                    { new: true }
+                ).then((result) => {
+                    res.redirect(process.env.CLIENT_URI + "/thankyou");
+                });
             } else {
                 res.redirect(process.env.CLIENT_URI);
             }

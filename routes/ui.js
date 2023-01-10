@@ -6,16 +6,13 @@ const mailer = require("../util/mailer");
 const {
     nameValidate,
     usernameValidate,
+    phoneValidate,
     passwordValidate,
     passwordConfirmValidate,
     endDateValidate,
     goalValidate,
     descValidate,
 } = require("../middleware/validate");
-/*
-const isAuth = require('../middleware/is-auth');
-const isManager = require('../middleware/is-manager');
-*/
 const router = express.Router();
 
 //Khai báo dường dẫn
@@ -27,13 +24,15 @@ router.get("/admin/user", isAuth, UIController.getUser);
 router.get("/admin/user-add", isAuth, UIController.getUserAdd);
 router.post(
     "/admin/user-add",
-    [nameValidate, usernameValidate, passwordValidate, passwordConfirmValidate],
+    userUpload,
+    [nameValidate, usernameValidate, passwordValidate, passwordConfirmValidate,phoneValidate],
     UIController.postUserAdd
 );
 router.get("/admin/user-edit/:user", isAuth, UIController.getUserEdit);
 router.post(
     "/admin/user-edit/:user",
-    [nameValidate, usernameValidate],
+    userUpload,
+    [nameValidate,phoneValidate],
     UIController.postUserEdit
 );
 router.get("/admin/user-delete/:user", isAuth, UIController.getUserDelete);

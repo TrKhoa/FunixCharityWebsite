@@ -4,6 +4,9 @@
 .white-space{
     white-space: pre-wrap
 }
+.h-60px{
+    height: 60px;
+}
 .truncate-2, .truncate-3, .truncate-4, .truncate-5 {
     overflow: hidden;
     text-overflow: ellipsis;

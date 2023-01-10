@@ -9,13 +9,43 @@ const Sessions = require("../model/Session");
 const mongoose = require("mongoose");
 
 exports.getDashboard = (req, res, next) => {
+    const userSession = req.session.user;
+    const campaign = Campaign.find().then(result => {
+        return result ? result : [];
+    })
+    const user = User.find().then((user) => {
+        return user ? user : [];
+    });
+const onlineUser = Sessions.find().then((a) => {
+    const user = [];
+    a.map((val) => {
+        const username = val.session.user.username;
+        user.push(username);
+    });
+    return user;
+});
+Promise.all([user, onlineUser, campaign]).then((result) => {
+    const user = result[0];
+    const onlineUser = result[1];
+    const campaign = result[2]
+    function isOnline(username) {
+        let status = "offline";
+        onlineUser.map((check) => {
+            if (username == check) {
+                return (status = "online");
+            }
+        });
+        return status;
+    }
     res.render("dashboard", {
-        name: req.session.name,
-        image: req.session.image,
-        user: req.session.user,
+        userSession: userSession,
+        campaign: result[2],
+        user: user,
+        isOnline: isOnline,
         pageTitle: "Dashboard",
         errorMessage: "errorMessage",
     });
+});
 };
 
 exports.getLogout = (req, res, next) => {
@@ -88,10 +118,9 @@ exports.getUser = (req, res, next) => {
             return status;
         }
         res.render("user/user", {
-            name: "req.session.name",
             pageTitle: "User",
-            user: user,
             userSession: userSession,
+            user: user,
             isOnline: isOnline,
             errorMessage: "errorMessage",
             path: "/admin/dashboard",
@@ -102,10 +131,8 @@ exports.getUser = (req, res, next) => {
 exports.getUserAdd = (req, res, next) => {
     const userSession = req.session.user;
     res.render("user/userAdd", {
-        name: req.session.name,
-        image: req.session.image,
-        user: "",
         userSession: userSession,
+        user: '',
         edit: false,
         pageTitle: "User add",
         errorMessage: "",
@@ -114,10 +141,10 @@ exports.getUserAdd = (req, res, next) => {
 
 exports.postUserAdd = (req, res, next) => {
     const err = validationResult(req);
+    const userSession = req.session.user;
     if (!err.isEmpty()) {
-        res.render("user/userAdd", {
-            name: req.session.name,
-            image: req.session.image,
+        res.render("user/userAdd", {    
+            userSession: userSession,
             user: req.body,
             edit: false,
             pageTitle: "User add",
@@ -126,30 +153,33 @@ exports.postUserAdd = (req, res, next) => {
     } else {
         const { name, username, email, phone, password, type } = req.body;
         const validUsername = username.toLowerCase().split(" ").join("");
-        console.log(validUsername);
         const filter = { username: username };
         User.findOne(filter).then((check) => {
             if (check) {
                 res.render("user/userAdd", {
-                    name: req.session.name,
-                    image: req.session.image,
+                    userSession: userSession,
                     user: req.body,
                     edit: false,
                     pageTitle: "User add",
                     errorMessage: "Username đã tồn tại",
                 });
             } else {
+                const img = req.file || false;
+                const imgPath = img ? img.path.substr(6) : "";
                 const user = new User({
                     name: name,
                     username: validUsername,
                     password: sha256(password),
                     email: email,
+                    image: imgPath,
                     phone: phone,
                     status: type,
                     donate: [],
                 });
                 user.save().then(() => {
-                    res.redirect("/admin/user");
+                    req.session.reload(() => {
+                        res.redirect("/admin/user");
+                    })
                 });
             }
         });
@@ -162,10 +192,8 @@ exports.getUserEdit = (req, res, next) => {
     User.findOne({ username: username }).then((user) => {
         if (user) {
             res.render("user/userAdd", {
-                name: req.session.name,
-                image: req.session.image,
-                user: user,
                 userSession: userSession,
+                user: user,
                 edit: true,
                 pageTitle: "User",
                 errorMessage: "",
@@ -178,28 +206,32 @@ exports.getUserEdit = (req, res, next) => {
 
 exports.postUserEdit = (req, res, next) => {
     const user = req.params.user || "";
+    const userSession = req.session.user;
     if (user === "") {
         res.redirect("/admin/user");
     } else {
         const err = validationResult(req);
         if (!err.isEmpty()) {
             res.render("user/userAdd", {
-                name: req.session.name,
-                image: req.session.image,
+                userSession: userSession,
                 user: req.body,
                 edit: true,
                 pageTitle: "User Edit",
                 errorMessage: err.array()[0].msg,
             });
         } else {
-            const { name, phone, type } = req.body;
+            const { name, phone, type, image } = req.body;
+            const img = req.file;
+            const imgPath = img ? img.path.substr(6) : image;
             const filter = { username: user };
             const update = {
                 name: name,
+                image: imgPath,
                 phone: phone,
                 status: type,
             };
-            User.findOneAndUpdate(filter, update).then(() => {
+            User.findOneAndUpdate(filter, update, { new: true}).then((result) => {
+                req.session.user = result;
                 res.redirect("/admin/user");
             });
         }
@@ -260,7 +292,7 @@ exports.getUserPasswordGen = (req, res, next) => {
 exports.getCampaigns = (req, res, next) => {
     const page = req.query.page || 1;
     const itemsPerPage = 6;
-    const user = req.session.user;
+    const userSession = req.session.user;
     const skippedItems = (page - 1) * itemsPerPage;
     let totalItems = 0;
     Campaign.find()
@@ -277,11 +309,10 @@ exports.getCampaigns = (req, res, next) => {
                     .then((campaign) => {
                         if (campaign) {
                             res.render("campaign/campaign", {
-                                name: "req.session.name",
+                                userSession: userSession,
                                 pageTitle: "Campaign",
                                 campaign: campaign,
                                 page: parseInt(page),
-                                user: user,
                                 totalItems: totalItems,
                                 nextPage: itemsPerPage * page < totalItems,
                                 prePage: page > 1,
@@ -290,7 +321,7 @@ exports.getCampaigns = (req, res, next) => {
                             });
                         } else {
                             res.render("campaign/campaign", {
-                                name: "req.session.name",
+                                userSession: userSession,
                                 pageTitle: "Campaign",
                                 campaign: [],
                                 errorMessage: "errorMessage",
@@ -302,13 +333,13 @@ exports.getCampaigns = (req, res, next) => {
 };
 
 exports.getCampaignAdd = (req, res, next) => {
-    const user = req.session.user;
+    const userSession = req.session.user;
     res.render("campaign/campaignAdd", {
         name: req.session.name,
         image: req.session.image,
         today: moment().format("YYYY-MM-DD"),
         campaign: "",
-        user: user,
+        userSession: userSession,
         edit: false,
         pageTitle: "Campaign add",
         errorMessage: "",
@@ -317,10 +348,10 @@ exports.getCampaignAdd = (req, res, next) => {
 
 exports.postCampaignAdd = (req, res, next) => {
     const err = validationResult(req);
+    const userSession = req.session.user;
     if (!err.isEmpty()) {
         res.render("campaign/campaignAdd", {
-            name: req.session.name,
-            image: req.session.image,
+            userSession: userSession,
             today: false,
             campaign: req.body,
             edit: false,
@@ -331,8 +362,7 @@ exports.postCampaignAdd = (req, res, next) => {
         const img = req.file;
         if (img === undefined) {
             res.render("campaign/campaignAdd", {
-                name: req.session.name,
-                image: req.session.image,
+                userSession: userSession,
                 today: false,
                 campaign: req.body,
                 edit: false,
@@ -362,14 +392,12 @@ exports.postCampaignAdd = (req, res, next) => {
 
 exports.getCampaignEdit = (req, res, next) => {
     const id = req.params.id || "";
-    const user = req.session.user;
+    const userSession = req.session.user;
     Campaign.findById(id).then((campaign) => {
         if (campaign) {
             res.render("campaign/campaignAdd", {
-                name: req.session.name,
-                image: req.session.image,
                 today: false,
-                user: user,
+                userSession: userSession,
                 campaign: campaign,
                 edit: true,
                 pageTitle: "Campaign Edit",
@@ -382,15 +410,15 @@ exports.getCampaignEdit = (req, res, next) => {
 };
 
 exports.postCampaignEdit = (req, res, next) => {
-    const id = req.params.id || "";
-    if (id === "") {
+    const id = req.params.id || false;
+    const userSession = req.session.user;
+    if (id) {
         res.redirect("/admin/campaign");
     } else {
         const err = validationResult(req);
         if (!err.isEmpty()) {
             res.render("campaign/campaignAdd", {
-                name: req.session.name,
-                image: req.session.image,
+                userSession: userSession,
                 today: false,
                 campaign: req.body,
                 edit: true,

@@ -1,4 +1,4 @@
-<%- include('../includes/head.ejs', {user: userSession}) %>
+<%- include('../includes/head.ejs') %>
 </head>
 
 <body>
@@ -27,7 +27,7 @@
                 <% user.forEach(function(val){%>
                   <tr>
                     <th scope="row"><input name="username" type="checkbox" value=<%= val.username %> /></th>
-                    <td><img src="/image/user/default.png" height="40"> <%= val.username %></td>
+                    <td><img src=<%= val.image !== '' ? val.image :"/image/user/default.png" %> height="40"> <%= val.username %></td>
                     <td><%= isOnline(val.username) %></td>
                     <td class="d-none d-md-table-cell"><%= val.name %></td>
                     <td class="d-none d-md-table-cell"><%= val.email %></td>

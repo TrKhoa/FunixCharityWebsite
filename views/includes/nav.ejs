@@ -19,7 +19,7 @@
         -->
         <div class="dropstart text-end">
           <a href="/admin/Dashboard" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src=<%= user.image === "" ? "/image/user/default.png" : user.image %> alt="mdo" width="32" height="32" class="rounded-circle">
+            <img src=<%= userSession.image === "" ? "/image/user/default.png" : userSession.image %> alt="mdo" width="32" height="32" class="rounded-circle">
           </a>
           <ul class="dropdown-menu text-small">
             <li><a class="dropdown-item" href=<%= process.env.CLIENT_URI %>>Client</a></li>

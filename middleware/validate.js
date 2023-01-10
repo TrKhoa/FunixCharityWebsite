@@ -6,7 +6,11 @@ exports.nameValidate = body("name")
     .isLength({ min: 4 })
     .withMessage("Tối thiểu 4 kí tự");
 exports.imageValidate = body("image").notEmpty().withMessage("Phải upload ảnh");
-
+exports.phoneValidate = body("phone")
+    .notEmpty()
+    .withMessage("Số điện thoại không đươc rỗng")
+    .isLength({ min: 10 })
+    .withMessage("Tối thiểu 10 số");
 //Users
 exports.usernameValidate = body("username")
     .notEmpty()
