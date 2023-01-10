@@ -13,9 +13,11 @@ import {
 } from "../../redux/apiRequest";
 
 export default function PasswordReset() {
+    //Khai báo biến
     const search = useLocation().search;
     const username = new URLSearchParams(search).get('username');
     const token = new URLSearchParams(search).get('token');
+    //Kiểm tra dữ liệu nhập
     const validate = (values) => {
         const errors = {};
         if (!values.password) {
@@ -30,6 +32,7 @@ export default function PasswordReset() {
         }
         return errors;
     };
+    //Gửi action
     const formik = useFormik({
         initialValues: {
             username: username,
@@ -43,6 +46,7 @@ export default function PasswordReset() {
         },
     });
 
+    //Trả về
     return (
         <Form
             className="p-4 p-md-5 border rounded-3 bg-light"

@@ -1,26 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
 import Campaign from "../campaigns/Campaign";
-export default function Causes(args) {
-    /*
-    const CampaignGroup = () => {
-        console.log(campaigns);
-        if (campaigns != null)
-            campaigns.map((val) => (
-                <Campaign
-                    title={val.name}
-                    sub=""
-                    image="https://picsum.photos/318/180"
-                    raise={val.raise}
-                    goal={val.goal}
-                    percent="100"
-                    desc={val.desc}
-                />
-            ));
-    };
-    */
 
+export default function Causes(args) {
+    //Khai báo biến
     const search = useLocation().search;
     const query = new URLSearchParams(search);
+
+    //Phân trang
     const itemsPerPage = 6;
     const campaigns = args.campaigns;
     const total = campaigns.data.length;
@@ -41,6 +27,7 @@ export default function Causes(args) {
         } else return { display: "", limit: 6, skip: 0 };
     };
 
+    //Giao diện phân trang
     const Pagination = ({display}) => {
         return (
             <div class={display ? display : ''}>
@@ -98,6 +85,8 @@ export default function Causes(args) {
             </div>
         );
     };
+
+    //Trả về
     return (
         <div className="container col-xxl-12">
             <div className={extraInfo().display}>
@@ -118,6 +107,7 @@ export default function Causes(args) {
                     </p>
                 </div>
             </div>
+            {/* Chiến dịch */}
             <div className="row align-items-center justify-content-center">
                 {campaigns.data
                     .slice(extraInfo().skip, extraInfo().limit)
@@ -133,6 +123,7 @@ export default function Causes(args) {
                         />
                     ))}
             </div>
+            {/* Phân trang */}
             <Pagination display={extraInfo().display == "d-none" ? '' : 'd-none'}/>
         </div>
     );

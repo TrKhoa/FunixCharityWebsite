@@ -10,10 +10,12 @@ import {
 } from "./userSlice";
 import axios from "axios";
 
+//Reset báo lỗi
 export const resetError = (dispatch) => {
     dispatch(userResetError());
 };
 
+//Lấy dữ liệu chiến dịch từ server
 export const getCampaign = async (dispatch) => {
     dispatch(isCampaignStart());
     try {
@@ -26,6 +28,7 @@ export const getCampaign = async (dispatch) => {
     }
 };
 
+//Gửi dữ liệu quyên góp lên server
 export const postDonate = async (dispatch, data, id) => {
     const donate = await axios.post(
         process.env.REACT_APP_SERVER_URL + "/create_payment_url",
@@ -37,6 +40,7 @@ export const postDonate = async (dispatch, data, id) => {
     }
 };
 
+//Gửi dữ liệu đăng ký lên server
 export const postRegister = async (dispatch, data) => {
     dispatch(isUserStart());
 
@@ -53,18 +57,21 @@ export const postRegister = async (dispatch, data) => {
     }
 };
 
+//Gửi yêu cầu thay mật khẩu lên server
 export const postPasswordForgot = async (data) => {
     await axios.post(
         process.env.REACT_APP_SERVER_URL + "/passwordReset/" + data.username
     );
 };
 
+//Gửi mật khẩu sau khi thay đổi lên serevr
 export const postPasswordReset = async (data) => {
     await axios.post(process.env.REACT_APP_SERVER_URL + "/forgotPassword/", {
         data,
     });
 };
 
+//Gửi thông tin đăng nhập lên server
 export const postLogin = async (dispatch, data) => {
     dispatch(isUserStart());
     const login = await axios.post(
@@ -81,6 +88,7 @@ export const postLogin = async (dispatch, data) => {
     }
 };
 
+//Kiểm tra và lấy dữ liệu đăng nhập
 export const isLogin = async (dispatch, data) => {
     await dispatch(isUserStart());
     if (data.isLogin === true) {
@@ -90,6 +98,7 @@ export const isLogin = async (dispatch, data) => {
     }
 };
 
+//Gửi yêu cầu đăng xuất
 export const isLogout = async (dispatch) => {
     dispatch(isUserStart());
     const logout = await axios.get(

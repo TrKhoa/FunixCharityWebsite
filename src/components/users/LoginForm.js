@@ -12,7 +12,9 @@ import {
 import { postRegister, postLogin, postPasswordForgot, resetError } from "../../redux/apiRequest";
 
 export default function LoginForm(type) {
-    const errMessage = useSelector((state) => state.user.error);
+    const errMessage = useSelector((state) => state.user.error); //Khai báo lỗi
+
+    //Kiểm tra dữ liệu
     const validate = (values) => {
         const errors = {};
 
@@ -54,10 +56,10 @@ export default function LoginForm(type) {
             }
         }
         
-
         return errors;
     };
     const dispatch = useDispatch();
+    //Khởi tạo dữ liệu ban đầu và gửi action
     const formik = useFormik({
         initialValues: {
             name: "",
@@ -69,6 +71,7 @@ export default function LoginForm(type) {
         },
         validate,
         onSubmit: (values) => {
+            //Thực hiên gửi action khi: quên mật khẩu, đăng ký, đăng nhập
             if(isForgot){
                 postPasswordForgot(values)
             } else {
@@ -90,13 +93,15 @@ export default function LoginForm(type) {
             
         },
     });
-    const [isRegister, setIsRegister] = useState(type.isRegister);
-    const [isForgot, setPasswordForgot] = useState(false);
+    const [isRegister, setIsRegister] = useState(type.isRegister);//Nếu đăng ký
+    const [isForgot, setPasswordForgot] = useState(false);//Nếu quên mật khẩu
 
+    //Reset báo lỗi
     useEffect(() => {
         resetError(dispatch);
     }, [isRegister]);
 
+    //Trả về các trang tương ứng
     if (isForgot) {
         return (
             <Form

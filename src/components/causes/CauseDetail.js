@@ -9,12 +9,14 @@ import { postDonate } from "../../redux/apiRequest"
 import Campaign from "../campaigns/Campaign";
 
 export default function CauseDetail() {
+    /* Khai báo biến */
     const dispatch = useDispatch();
     const { id } = useParams();
     const reduxCampaign = useSelector((state) => state.campaign.data);
     const data = reduxCampaign.filter((campaign) => campaign._id === id)[0];
     const donate = useRef();
 
+    //Kiểm tra và gửi action
     const handleSubmit = (e) =>{
         e.preventDefault();
         const value = donate.current.value;
@@ -29,6 +31,7 @@ export default function CauseDetail() {
         }
     }
 
+    /* Carousel */
     const [activeIndex, setActiveIndex] = useState(0);
     const [animating, setAnimating] = useState(false);
 
@@ -44,11 +47,6 @@ export default function CauseDetail() {
         const nextIndex =
             activeIndex === 0 ? reduxCampaign.length - 1 : activeIndex - 1;
         setActiveIndex(nextIndex);
-    };
-
-    const goToIndex = (newIndex) => {
-        if (animating) return;
-        setActiveIndex(newIndex);
     };
 
     const slides = reduxCampaign.map((item) => {
@@ -73,9 +71,11 @@ export default function CauseDetail() {
         );
     });
 
+    // Nếu dữ liệu rỗng
     if (!data) {
         return <></>;
     } else {
+        // Nếu có dữ liệu
         return (
             <motion.div
                 initial={{ opacity: 0 }}
@@ -84,15 +84,18 @@ export default function CauseDetail() {
                 className="container row col-xxl-12 p-5 my-5 mx-auto"
             >
                 <div className="col-xxl-8">
+                    {/* Hình ảnh */}
                     <img
                         src={process.env.REACT_APP_SERVER_URL + data.image}
                         className="d-block mx-lg-auto img-fluid"
                         alt="Bootstrap Themes"
                     />
                     <div className="my-5">
+                        {/* Tên */}
                         <h2>{data.name}</h2>
 
                         <div className="p-3">
+                            {/* Số tiền quyên góp */}
                             <div className="position-relative mb-4">
                                 <div className="position-relative w-full">
                                     <div>
@@ -133,6 +136,7 @@ export default function CauseDetail() {
                                     </div>
                                 </div>
                             </div>
+                            {/* Tiến độ hiện tại */}
                             <div className="position-relative">
                                 <Progress
                                     style={{
@@ -151,6 +155,7 @@ export default function CauseDetail() {
                                     {percent(data.raise, data.goal)}%
                                 </div>
                             </div>
+                            {/* Nhập số tiền ủng hộ */}
                             <form onSubmit={(e)=> handleSubmit(e)} class="input-group my-3">
                                 <input
                                     type="number"
@@ -172,6 +177,7 @@ export default function CauseDetail() {
                     </div>
                     <div>{data.desc}</div>
                 </div>
+                {/* Các trường hợp tương tự (Carousel) */}
                 <div className="col-xxl-4">
                     <Carousel
                         className="px-5"

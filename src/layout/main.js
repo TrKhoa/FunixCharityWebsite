@@ -7,8 +7,10 @@ import { useLocation } from "react-router-dom";
 import { isLogin } from "../redux/apiRequest";
 
 export default function Main() {
+    //Khai báo biến cần dùng
     axios.defaults.withCredentials = true;
     const dispatch = useDispatch();
+    //Khai báo dữ liệu cho Loading
     const loadingState = useSelector((state) => {
         if (state.campaign.pending) {
             return true;
@@ -19,11 +21,13 @@ export default function Main() {
         }
     });
     const location = useLocation();
-
+    
+    //Tự động đưa lên đầu trang khi chuyển trang
     useEffect(() => {
         window.scrollTo({ top: 0 });
     }, [location]);
 
+    //Lấy dữ liệu đăng nhập từ server
     useEffect(() => {
         axios
             .get(process.env.REACT_APP_SERVER_URL + "/isLogin")
@@ -32,6 +36,7 @@ export default function Main() {
             });
     }, []);
 
+    //Trả về
     return (
         <>
             <Loading isLoading={loadingState} />

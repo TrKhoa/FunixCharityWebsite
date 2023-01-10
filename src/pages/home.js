@@ -6,9 +6,8 @@ import AboutUs from '../components/home/AboutUs-Landing'
 import Causes from '../components/causes/Causes'
 
 export default function Home(){
-
-    const reduxCampaign = useSelector((state) => state.campaign)
-   
+    const reduxCampaign = useSelector((state) => state.campaign) //Lấy dữ liệu từ Redux
+    //Trả về
     return (
         <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}>
             <Hero title="Cùng chung tay xây dựng 1 đất nước Việt Nam tươi đẹp hơn" />

@@ -6,6 +6,7 @@ import { Table } from "reactstrap";
 import Bread from "../../components/assets/Bread";
 
 export default function History() {
+    //Lấy dữ liệu từ Redux
     const userHistory = useSelector((state) => state.user.info.donate) || [];
     const campaigns = useSelector((state) => state.campaign.data) || [];
 
@@ -26,12 +27,14 @@ export default function History() {
                             <th className="col-3">Ngày</th>
                         </tr>
                     </thead>
+                    {/* Lịch sử giao dịch */}
                     <tbody>
                         {userHistory.map((user, index) => {
                             return (
                                 <tr className="d-flex">
                                     <th className="col-0" scope="row">{index + 1}</th>
                                     <td className="text-truncate col-6">
+                                        {/* Tìm tên chiến dịch */}
                                         <Link to={"/Cause/" + user.campaign}>
                                             {campaigns.map((val) => {
                                                 if (val._id == user.campaign) {

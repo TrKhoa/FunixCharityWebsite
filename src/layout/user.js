@@ -14,13 +14,13 @@ import History from '../pages/history/history';
 import Err404 from './404';
 
 export default function User() {
-
+    //Khai báo biến và lấy dữ liệu
     const dispatch = useDispatch();
-
     useEffect(() => {
         getCampaign(dispatch);
     }, []);
 
+    //Tạo Layout
     function BasicLayout(){
         return(
             <>
@@ -30,8 +30,11 @@ export default function User() {
             </>
         )
     }
+
+    //Trả về
     return (
         <>
+            {/* Thiết lập điều hướng */}
             <Routes>
                 <Route element={<BasicLayout />} >
                     <Route path="/">
@@ -48,15 +51,4 @@ export default function User() {
             </Routes>
         </>
      )
-     /*
-     <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/forgotpassword" element={<ForgotPassword />} />
-                <Route path="/resetpassword" element={<ResetPassword />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/404" element={<NotFound />} />
-                <Route path="*" element={<NotFound />} />
-                */
 }

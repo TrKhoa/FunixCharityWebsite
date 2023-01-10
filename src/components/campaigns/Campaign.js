@@ -12,8 +12,9 @@ import { NumericFormat } from "react-number-format";
 import { Link } from "react-router-dom";
 import { percent } from "../../util/calculate";
 export default function Campaign(data) {
+    //Khai báo biến
     const { id, title, image, desc, sub, raise, goal, fullCard, noRaise } = data;
-
+    //Chỉnh sửa thuộc tính
     const cardClass = () => {
         if (fullCard === true) {
             return "border-0 hover-card-shadow text-break";
@@ -21,7 +22,6 @@ export default function Campaign(data) {
             return "col-xxl-4 col-md-5 mt-lg-5 border-0 hover-card-shadow text-break";
         }
     };
-
     const raiseShow = () => {
         if (noRaise === true) {
             return "d-none";
@@ -30,19 +30,24 @@ export default function Campaign(data) {
         }
     };
 
+    //Trả về
     return (
         <Card className={cardClass()} style={{ height: "550px" }}>
             <Link
                 to={"/Cause/" + id}
                 className="text-black text text-decoration-none"
             >
+                {/* Hình ảnh */}
                 <CardImg alt="Card image cap" src={image} top width="100%" />
                 <CardBody>
+                    {/* Tên */}
                     <CardTitle tag="h5">{title}</CardTitle>
                     <CardSubtitle className="mb-2 text-muted truncate-2" tag="h6">
                         {sub}
                     </CardSubtitle>
+                    {/* Mô tả */}
                     <CardText className="truncate-2">{desc}</CardText>
+                    {/* Tiến độ */}
                     <div className="position-relative d-none d-lg-block ">
                         <Progress
                             className="my-3"
@@ -102,6 +107,7 @@ export default function Campaign(data) {
                             </div>
                         </div>
                     </div>
+                    {/* Truy cập trang */}
                     <Button
                         color="btn btn-outline-darkYellow btn-md rounded-0 fw-bold mt-4"
                         outline

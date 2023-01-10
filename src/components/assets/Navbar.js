@@ -19,14 +19,17 @@ import { Link } from "react-router-dom";
 import { isLogout } from "../../redux/apiRequest";
 
 function Menu() {
+    //Khai báo biến
     const dispatch = useDispatch();
     const userState = useSelector((state) => state.user.info);
     const serverUrl = process.env.REACT_APP_SERVER_ADMIN_URL || '';
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
 
+    //Trả về
     return (
         <Navbar expand="md" fixed="top" color="light" className="z-index-2" >
+            {/* Logo */}
             <Link to="/" className="text-decoration-none">
                 <NavbarBrand className="text-darkYellow">
                     <img
@@ -40,6 +43,7 @@ function Menu() {
                     VINADONATION
                 </NavbarBrand>
             </Link>
+            {/* Main */}
             <NavbarToggler onClick={toggle} />
             <Collapse isOpen={isOpen} navbar>
                 <Nav className="me-auto" navbar>
@@ -54,6 +58,7 @@ function Menu() {
                         </Link>
                     </NavItem>
                 </Nav>
+                {/* Login/Resgister/User */}
                 <NavbarText>
                     {userState === "" ? (
                         <Link to="/Login">

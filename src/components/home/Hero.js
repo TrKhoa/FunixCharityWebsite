@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 export default function Hero(args) {
-    const isLogin = useSelector((state) => state.user).info !== '' 
+    const isLogin = useSelector((state) => state.user).info !== ''  //Kiểm tra dăng nhập
     return (
         <div className="container col-xxl-12 px-4">
             <div className="row flex-lg-row-reverse align-items-center g-5 py-md-5 ">
@@ -27,6 +27,7 @@ export default function Hero(args) {
                                 Chiến dịch
                             </button>
                         </Link>
+                        {/* Hiện phần User khi đăng nhập hoặc nút đăng nhập nếu chưa đăng nhập */}
                         {!isLogin ? 
                             <Link to="/Login">
                             <button
