@@ -14,13 +14,31 @@ exports.postRegister = async (req, res) => {
             .join("");
         await User.findOne({ username: validUsername }).then((userExist) => {
             if (!userExist) {
-                const user = new User({ ...userInfo, username: validUsername, password: sha256(userInfo.password) });
+                let length = 12;
+                const characters = "abcdefghijklmnopqrstuvwxyz";
+                let result = "";
+                const charactersLength = characters.length;
+                for (let i = 0; i < length; i++) {
+                    result += characters.charAt(
+                        Math.floor(Math.random() * charactersLength)
+                    );
+                }
+                const user = new User({
+                    ...userInfo,
+                    username: validUsername,
+                    password: sha256(result),
+                });
                 user.save()
                     .then((e) => {
+                        sendMail(
+                            user.email,
+                            "Cảm ơn bạn đã đăng ký, mật khẩu của bạn là:",
+                            "<b>Mật khẩu mới của bạn là: " + result + "</b>"
+                        );
                         return res.status(201).send({
                             error: false,
                             message:
-                                "Tạo user thành công, xin hãy đăng nhập lại",
+                                "Tạo user thành công, xin hãy kiểm tra email của bạn để nhận mật khẩu",
                         });
                     })
                     .catch((err) => {
@@ -78,7 +96,7 @@ exports.postLogin = async (req, res) => {
 
 exports.postPasswordReset = async (req, res) => {
     const username = req.params.user;
-    User.findOne({username: username}).then((user) => {
+    User.findOne({ username: username }).then((user) => {
         if (user) {
             bcrypt
                 .hash(username, parseInt(process.env.SALT_ROUNDS))
@@ -88,10 +106,10 @@ exports.postPasswordReset = async (req, res) => {
                         "Yêu cầu đổi mật khẩu",
                         `<b>Hãy nhấn vào <a href="${process.env.APP_URL}/forgotPassword?username=${username}&token=${hashedUsername}">Link này</a> để khôi phục mật khẩu</b>`
                     );
-                    res.send({ message: 'Vui lòng kiểm tra Email' });
+                    res.send({ message: "Vui lòng kiểm tra Email" });
                 });
         } else {
-            res.send({ message: 'Username không tồn tại' });
+            res.send({ message: "Username không tồn tại" });
         }
     });
 };
@@ -100,7 +118,6 @@ exports.getForgotPassword = async (req, res) => {
     const { username, token } = req.query;
     bcrypt.compare(username, token, (err, result) => {
         if (result == true) {
-            console.log(username);
             res.redirect(
                 `${process.env.CLIENT_URI}/forgotPassword?username=${username}&token=${token}`
             );
@@ -117,9 +134,8 @@ exports.postForgotPassword = async (req, res) => {
             const filter = { username: username };
             const update = { password: sha256(password) };
             User.findOneAndUpdate(filter, update).then((result) => {
-                if(result){
-                    console.log(result);
-                    res.redirect(process.env.CLIENT_URI+'/login');
+                if (result) {
+                    res.redirect(process.env.CLIENT_URI + "/login");
                 } else {
                     res.redirect(process.env.CLIENT_URI);
                 }
@@ -132,5 +148,31 @@ exports.postForgotPassword = async (req, res) => {
 
 exports.isLogout = (req, res, next) => {
     req.session.destroy();
-    return res.status(201).send({ data: '', error: false });
+    return res.status(201).send({ data: "", error: false });
+};
+
+exports.postChangePassword = (req, res, next) => {
+    const {username, password} = req.body;
+    if (username === "") {
+        res.redirect("/admin/user");
+    } else {
+        User.findOneAndUpdate({ username: username }, { password: password }).then((result) => {
+            if(result) {
+                const newUser = {...req.session.user, password: password}
+                req.session.user = newUser;
+                return res.status(201).send({
+                    error: false,
+                    message:
+                        "Thay đổi password thành công",
+                    user: newUser
+                }); 
+            } else {
+                return res.status(201).send({
+                    error: true,
+                    message:
+                        "Thay đổi password thất bại"
+                }); 
+            }
+        });
+    }
 };

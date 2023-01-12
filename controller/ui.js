@@ -71,27 +71,6 @@ exports.getUser = (req, res, next) => {
             return "";
         }
     }
-    /*
-    const user = User.find().sort(sortType()+sortBy()).then((user) => {
-        if (user) {
-            res.render("user/user", {
-                name: "req.session.name",
-                pageTitle: "User",
-                user: user,
-                errorMessage: "errorMessage",
-                path: "/admin/dashboard",
-            });
-        } else {
-            res.render("user/user", {
-                name: "req.session.name",
-                pageTitle: "User",
-                user: [],
-                errorMessage: "errorMessage",
-                path: "/admin/dashboard",
-            });
-        }
-    });
-    */
     const user = User.find()
         .sort(sortType() + sortBy())
         .then((user) => {
@@ -122,7 +101,7 @@ exports.getUser = (req, res, next) => {
             userSession: userSession,
             user: user,
             isOnline: isOnline,
-            errorMessage: "errorMessage",
+            errorMessage: req.flash('success'),
             path: "/admin/dashboard",
         });
     });
@@ -177,9 +156,8 @@ exports.postUserAdd = (req, res, next) => {
                     donate: [],
                 });
                 user.save().then(() => {
-                    req.session.reload(() => {
-                        res.redirect("/admin/user");
-                    })
+                    req.flash('success','Thêm User thành công')
+                    res.redirect("/admin/user");
                 });
             }
         });
@@ -231,7 +209,10 @@ exports.postUserEdit = (req, res, next) => {
                 status: type,
             };
             User.findOneAndUpdate(filter, update, { new: true}).then((result) => {
-                req.session.user = result;
+                if(userSession.username == result.username){
+                    req.session.user = result;
+                }
+                req.flash('success','Chỉnh sửa User thành công')
                 res.redirect("/admin/user");
             });
         }
@@ -245,6 +226,7 @@ exports.getUserDelete = (req, res, next) => {
     } else {
         const filter = { username: user, status: { $lt: 3 } };
         User.deleteOne(filter).then(() => {
+            req.flash('success','Xóa User thành công')
             res.redirect("/admin/user");
         });
     }
@@ -256,6 +238,7 @@ exports.postMultiUserDelete = (req, res, next) => {
         res.redirect("/admin/user");
     } else {
         User.deleteMany({ username: username }).then((result) => {
+            req.flash('success','Xóa hàng loạt User thành công')
             res.redirect("/admin/user");
         });
     }
@@ -317,14 +300,14 @@ exports.getCampaigns = (req, res, next) => {
                                 nextPage: itemsPerPage * page < totalItems,
                                 prePage: page > 1,
                                 lastPage: lastPage,
-                                errorMessage: "errorMessage",
+                                errorMessage: '',
                             });
                         } else {
                             res.render("campaign/campaign", {
                                 userSession: userSession,
                                 pageTitle: "Campaign",
                                 campaign: [],
-                                errorMessage: "errorMessage",
+                                errorMessage: req.flash('success'),
                             });
                         }
                     });
@@ -384,6 +367,7 @@ exports.postCampaignAdd = (req, res, next) => {
                 donator: [],
             });
             campaign.save().then(() => {
+                req.flash('success','Thêm Campaign thành công')
                 res.redirect("/admin/campaign");
             });
         }
@@ -440,6 +424,7 @@ exports.postCampaignEdit = (req, res, next) => {
                 endAt: endAt,
             };
             Campaign.findOneAndUpdate(filter, update).then(() => {
+                req.flash('success','Chỉnh sửa Campaign thành công')
                 res.redirect("/admin/campaign");
             });
         }
@@ -453,6 +438,7 @@ exports.getCampaignDelete = (req, res, next) => {
     } else {
         const filter = { _id: id };
         Campaign.deleteOne(filter).then(() => {
+            req.flash('success','Xóa Campaign thành công')
             res.redirect("/admin/campaign");
         });
     }

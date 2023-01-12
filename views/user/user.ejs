@@ -3,7 +3,11 @@
 
 <body>
     <%- include('../includes/sidebar.ejs') %>
-    
+    <% if(errorMessage != ""){ %>
+      <div class="alert alert-primary" role="alert">
+        <%= errorMessage %>
+      </div>
+    <% } %>
     <div class="row">
         <div class="col-lg-12">
           <form action="/admin/user-delete?delete=true" method="POST">

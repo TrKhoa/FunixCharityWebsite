@@ -3,7 +3,10 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
 const mongoose = require("mongoose");
+const flash = require("connect-flash");
 const session = require("express-session");
 const moment = require("moment");
 const MongoDBStore = require("connect-mongodb-session")(session);
@@ -40,13 +43,16 @@ app.set('trust proxy',1)
 
 app.use(
     session({
-        secret: "1jf7s03jf792k94ks234",
+        secret: process.env.SESSION_KEY,
         resave: false,
         saveUninitialized: false,
         cookie: {maxAge: 1000*60*60},
         store: store,
     })
 );
+app.use(flash());
+app.use(passport.initialize())
+app.use(passport.session())
 
 
 app.use(express.static(path.join(__dirname, 'public')));

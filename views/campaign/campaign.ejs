@@ -3,7 +3,11 @@
 
 <body>
     <%- include('../includes/sidebar.ejs') %>
-    
+    <% if(errorMessage){ %>
+    <div class="alert alert-primary" role="alert">
+      <%= errorMessage ? errorMessage : '' %>
+    </div>
+    <% } %>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
       <% campaign.forEach(function(val){ %>
         <div class="card">

@@ -109,7 +109,7 @@ exports.getPaymentReturn = async (req, res, next) => {
         : false;
     let amount = parseInt(vnp_Params.vnp_Amount) / 100;
     let payDate = vnp_Params.vnp_PayDate;
-    const Date = new Date();
+    let DateSuccess = new Date();
     let status = vnp_Params.vnp_TransactionStatus;
 
     const userDonate = userId
@@ -146,12 +146,12 @@ exports.getPaymentReturn = async (req, res, next) => {
             const userData = {
                 campaign: campaignId,
                 cash: amount,
-                date: Date,
+                date: DateSuccess,
             };
             const campaignData = {
                 user: userId ? userId : null,
                 raise: amount,
-                date: Date,
+                date: DateSuccess,
             };
             if (status == "00") {
                 if (userId) {
@@ -162,16 +162,28 @@ exports.getPaymentReturn = async (req, res, next) => {
                         { new: true }
                     ).then((result) => {
                         req.session.user = result;
+                        campaign.push(campaignData);
+                        Campaign.findOneAndUpdate(
+                            { _id: campaignId },
+                            {
+                                donator: campaign,
+                                raise: campaignRaise + amount,
+                            },
+                            { new: true }
+                        ).then(() => {
+                            res.redirect(process.env.CLIENT_URI + "/thankyou");
+                        });
+                    });
+                } else {
+                    campaign.push(campaignData);
+                    Campaign.findOneAndUpdate(
+                        { _id: campaignId },
+                        { donator: campaign, raise: campaignRaise + amount },
+                        { new: true }
+                    ).then((result) => {
+                        res.redirect(process.env.CLIENT_URI + "/thankyou");
                     });
                 }
-                campaign.push(campaignData);
-                Campaign.findOneAndUpdate(
-                    { _id: campaignId },
-                    { donator: campaign, raise: campaignRaise + amount },
-                    { new: true }
-                ).then((result) => {
-                    res.redirect(process.env.CLIENT_URI + "/thankyou");
-                });
             } else {
                 res.redirect(process.env.CLIENT_URI);
             }
