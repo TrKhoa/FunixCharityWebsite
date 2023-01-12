@@ -78,8 +78,8 @@ function Menu() {
                                 />
                             </DropdownToggle>
                             <DropdownMenu>
-                                <a href={userState.status === 3 ? serverUrl+"/dashboard" : "/dashboard"} className="text-decoration-none"><DropdownItem>{userState.status === 3 ? "Dashboard" : "Tài khoản"}</DropdownItem></a>
-                                <a href="/history" className="text-decoration-none"><DropdownItem>Lịch sử</DropdownItem></a>
+                                <a href={userState.status === 3 ? serverUrl+"/dashboard" : "/dashboard?show=profile"} className="text-decoration-none"><DropdownItem>{userState.status === 3 ? "Dashboard" : "Tài khoản"}</DropdownItem></a>
+                                <a href="/dashboard?show=history" className="text-decoration-none"><DropdownItem>Lịch sử</DropdownItem></a>
                                 <DropdownItem divider />
                                 <DropdownItem onClick={() => isLogout(dispatch)}>Đăng xuất</DropdownItem>
                             </DropdownMenu>

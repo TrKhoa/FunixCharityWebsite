@@ -6,6 +6,7 @@ import { getCampaign } from '../redux/apiRequest';
 import Menu from '../components/assets/Navbar'
 import Footer from '../components/assets/Footer'
 import Login from '../pages/users/login'
+import Dashboard from '../pages/users/dashboard'
 import Home from '../pages/home';
 import Causes from '../pages/causes/causes';
 import CauseDetail from '../components/causes/CauseDetail'
@@ -45,6 +46,7 @@ export default function User() {
                         <Route path="forgotPassword" element={<Login forgot={true}/>} />
                         <Route path="Thankyou" element={<Thankyou />} />
                         <Route path="History" element={<History />} />
+                        <Route path="Dashboard" element={<Dashboard />} />
                         <Route path="*" element={<Err404 />} />
                     </Route>
                 </Route>

@@ -26,22 +26,17 @@ export default function LoginForm(type) {
 
         if(!isForgot)
         {
-            if (!values.password) {
-                errors.password = "Thiếu thông tin!";
-            } else if (values.password.length < 8) {
-                errors.password = "Cần tối thiểu 8 ký tự!";
-            }
-            if (isRegister) {
+            if(!isRegister){
+                if (!values.password) {
+                    errors.password = "Thiếu thông tin!";
+                } else if (values.password.length < 8) {
+                    errors.password = "Cần tối thiểu 8 ký tự!";
+                }
+            } else {
                 if (!values.name) {
                     errors.name = "Thiếu thông tin!";
                 } else if (values.name.length < 4) {
                     errors.name = "Cần tối thiểu 4 ký tự!";
-                }
-    
-                if (!values.passwordConfirm) {
-                    errors.passwordConfirm = "Thiếu thông tin!";
-                } else if (values.password !== values.passwordConfirm) {
-                    errors.passwordConfirm = "Passwords không giống nhau";
                 }
 
                 if (!values.phone) {
@@ -67,7 +62,6 @@ export default function LoginForm(type) {
             email: "",
             phone: "",
             password: "",
-            passwordConfirm: "",
         },
         validate,
         onSubmit: (values) => {
@@ -77,15 +71,6 @@ export default function LoginForm(type) {
             } else {
                 if (isRegister) {
                     postRegister(dispatch, formik.values);
-                    if (!errMessage) {
-                        setIsRegister(!isRegister);
-                        formik.resetForm({
-                            values: {
-                                username: formik.values.username,
-                                password: "",
-                            },
-                        });
-                    }
                 } else {
                     postLogin(dispatch, formik.values);
                 }
@@ -171,38 +156,6 @@ export default function LoginForm(type) {
                             {formik.errors.username}
                         </FormFeedback>
                         <Label for="username">Tài khoản</Label>
-                    </FormGroup>
-                    <FormGroup floating>
-                        <Input
-                            id="password"
-                            name="password"
-                            placeholder="Mật khẩu"
-                            type="password"
-                            required
-                            value={formik.values.password}
-                            onChange={formik.handleChange}
-                            invalid={formik.errors.password ? true : false}
-                        />
-                        <FormFeedback invalid>
-                            {formik.errors.password}
-                        </FormFeedback>
-                        <Label for="password">Mật khẩu</Label>
-                    </FormGroup>
-                    <FormGroup floating>
-                        <Input
-                            id="passwordConfirm"
-                            name="passwordConfirm"
-                            placeholder="Nhập lại mật khẩu"
-                            type="password"
-                            required
-                            value={formik.values.passwordConfirm}
-                            onChange={formik.handleChange}
-                            invalid={formik.errors.passwordConfirm ? true : false}
-                        />
-                        <FormFeedback invalid>
-                            {formik.errors.passwordConfirm}
-                        </FormFeedback>
-                        <Label for="passwordConfirm">Nhập lại mật khẩu</Label>
                     </FormGroup>
                     <FormGroup floating>
                         <Input

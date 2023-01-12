@@ -16,9 +16,17 @@ export const userSlice = createSlice({
             state.error = "";
             state.info = action.payload.data;
         },
+        isUserFailed: (state, action) => {
+            state.pending = false;
+        },
         loginFailed: (state, action) => {
             state.pending = false;
             state.error = "";
+        },
+        isPasswordUpdate: (state, action) => {
+            state.pending = false;
+            state.error = "";
+            state.info = {...state.info, password: action.payload};
         },
         logoutSuccess: (state) => {
             state.pending = false;
@@ -47,6 +55,8 @@ export const {
     logoutSuccess,
     registerSuccess,
     registerFailed,
+    isPasswordUpdate,
+    isUserFailed,
     userResetError,
 } = userSlice.actions;
 export default userSlice.reducer;

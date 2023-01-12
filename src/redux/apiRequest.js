@@ -3,11 +3,14 @@ import {
     isUserStart,
     loginSuccess,
     loginFailed,
+    isPasswordUpdate,
+    isUserFailed,
     registerSuccess,
     registerFailed,
     logoutSuccess,
     userResetError,
 } from "./userSlice";
+import sha256 from "sha256";
 import axios from "axios";
 
 //Reset báo lỗi
@@ -106,5 +109,22 @@ export const isLogout = async (dispatch) => {
     );
     if (!logout.data.error) {
         dispatch(logoutSuccess());
+    }
+};
+
+export const postChangePassword = async (dispatch,data) => {
+    dispatch(isUserStart());
+    const changePassword = await axios.post(
+        process.env.REACT_APP_SERVER_URL + "/changePassword",
+        {
+            username: data.username,
+            password: sha256(data.newPassword)
+        }
+    );
+    if (!changePassword.data.error) {
+        dispatch(isPasswordUpdate(sha256(data.newPassword)));
+        alert('Thay đổi password thành công')
+    } else {
+        dispatch(isUserFailed());
     }
 };
