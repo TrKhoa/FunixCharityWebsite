@@ -152,26 +152,58 @@ exports.isLogout = (req, res, next) => {
 };
 
 exports.postChangePassword = (req, res, next) => {
-    const {username, password} = req.body;
+    const { username, password } = req.body;
     if (username === "") {
         res.redirect("/admin/user");
     } else {
-        User.findOneAndUpdate({ username: username }, { password: password }).then((result) => {
-            if(result) {
-                const newUser = {...req.session.user, password: password}
+        User.findOneAndUpdate(
+            { username: username },
+            { password: password }
+        ).then((result) => {
+            if (result) {
+                const newUser = { ...req.session.user, password: password };
                 req.session.user = newUser;
                 return res.status(201).send({
                     error: false,
-                    message:
-                        "Thay đổi password thành công",
-                    user: newUser
-                }); 
+                    message: "Thay đổi password thành công",
+                    user: newUser,
+                });
             } else {
                 return res.status(201).send({
                     error: true,
-                    message:
-                        "Thay đổi password thất bại"
-                }); 
+                    message: "Thay đổi password thất bại",
+                });
+            }
+        });
+    }
+};
+
+exports.postUpdateProfile = (req, res, next) => {
+    const { username, name, phone, email } = req.body;
+    const img = req.file;
+    console.log(req.body);
+    if (username === "") {
+        res.redirect("/admin/user");
+    } else {
+        const imgPath = img ? img.path.substr(6) : req.session.user.image;
+        const update = { name: name, phone: phone, email: email, image: imgPath };
+        User.findOneAndUpdate(
+            { username: username },
+            update
+        ).then((result) => {
+            if (result) {
+                const newUser = {...req.session.user, name: name, email: email, image: imgPath}
+                req.session.user = newUser;
+                return res.status(201).send({
+                    error: false,
+                    message: "Thay đổi Profile thành công",
+                    user: newUser,
+                });
+            } else {
+                return res.status(201).send({
+                    error: true,
+                    message: "Thay đổi Profile thất bại",
+                });
             }
         });
     }

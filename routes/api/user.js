@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../../controller/api/user')
+const { userUpload } = require('../../util/imageUpload')
 /*
 const isAuth = require('../middleware/is-auth');
 const isManager = require('../middleware/is-manager');
@@ -15,5 +16,6 @@ router.post("/passwordReset/:user", userController.postPasswordReset);
 router.get("/forgotPassword", userController.getForgotPassword);
 router.post("/forgotPassword/", userController.postForgotPassword);
 router.post("/changePassword/", userController.postChangePassword);
+router.post("/updateProfile/", userUpload, userController.postUpdateProfile);
 
 module.exports = router;
