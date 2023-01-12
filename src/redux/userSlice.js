@@ -23,6 +23,11 @@ export const userSlice = createSlice({
             state.pending = false;
             state.error = "";
         },
+        isProfileUpdate: (state, action) => {
+            state.pending = false;
+            state.error = "";
+            state.info = action.payload;
+        },
         isPasswordUpdate: (state, action) => {
             state.pending = false;
             state.error = "";
@@ -50,6 +55,7 @@ export const userSlice = createSlice({
 export const {
     isUserStart,
     isError,
+    isProfileUpdate,
     loginSuccess,
     loginFailed,
     logoutSuccess,

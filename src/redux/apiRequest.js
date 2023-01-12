@@ -4,6 +4,7 @@ import {
     loginSuccess,
     loginFailed,
     isPasswordUpdate,
+    isProfileUpdate,
     isUserFailed,
     registerSuccess,
     registerFailed,
@@ -112,6 +113,7 @@ export const isLogout = async (dispatch) => {
     }
 };
 
+//Gửi yêu cầu đổi User password
 export const postChangePassword = async (dispatch,data) => {
     dispatch(isUserStart());
     const changePassword = await axios.post(
@@ -128,3 +130,17 @@ export const postChangePassword = async (dispatch,data) => {
         dispatch(isUserFailed());
     }
 };
+
+//Gửi yêu cầu đổi User Profile
+export const postUserProfileUpdate = async (dispatch,data) => {
+    dispatch(isUserStart());
+    const updateProfile = await axios.post(
+        process.env.REACT_APP_SERVER_URL + "/updateProfile",data
+    );
+    if (!updateProfile.data.error) {
+        dispatch(isProfileUpdate(updateProfile.data.user));
+        alert('Thay đổi thông tin thành công')
+    } else {
+        dispatch(isUserFailed());
+    }
+}
