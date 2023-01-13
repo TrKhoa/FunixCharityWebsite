@@ -8,7 +8,7 @@ export default function Thankyou(req, res) {
             <div className="text-center">
                 <Link to="/"> Về trang chủ </Link>
                 /
-                <Link to="/history"> Xem lịch sử </Link>
+                <Link to="/dashboard?show=history"> Xem lịch sử </Link>
             </div>
         </div>
     )

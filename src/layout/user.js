@@ -11,7 +11,6 @@ import Home from '../pages/home';
 import Causes from '../pages/causes/causes';
 import CauseDetail from '../components/causes/CauseDetail'
 import Thankyou from '../components/campaigns/Thankyou';
-import History from '../pages/history/history';
 import Err404 from './404';
 
 export default function User() {
@@ -45,7 +44,6 @@ export default function User() {
                         <Route path="Login" element={<Login />} />
                         <Route path="forgotPassword" element={<Login forgot={true}/>} />
                         <Route path="Thankyou" element={<Thankyou />} />
-                        <Route path="History" element={<History />} />
                         <Route path="Dashboard" element={<Dashboard />} />
                         <Route path="*" element={<Err404 />} />
                     </Route>

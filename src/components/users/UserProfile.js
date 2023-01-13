@@ -98,6 +98,7 @@ export default function UserProfile(args) {
                     values.passwordConfirm !== ""
                 ) {
                     postChangePassword(dispatch, values);
+                    togglePassword();
                 }
             } else if (modalProfile) {
                 if (
@@ -106,7 +107,6 @@ export default function UserProfile(args) {
                     values.phone !== ""
                 ) {
                     if (image) {
-                        console.log('s')
                         const formData = new FormData();
                         formData.append("image", image);
                         formData.append("imageName", image.name);
@@ -114,13 +114,6 @@ export default function UserProfile(args) {
                         formData.append("name", values.name);
                         formData.append("email", values.email);
                         formData.append("phone", values.phone);
-                        /*
-                        axios
-                            .post("https://httpbin.org/anything", formData)
-                            .then((res) => {
-                                console.log(res);
-                            });
-                          */  
                             postUserProfileUpdate(dispatch, formData);
                     } else {
                         postUserProfileUpdate(dispatch, values);
@@ -137,8 +130,9 @@ export default function UserProfile(args) {
 
     return (
         <>
-            <center>
-                <img
+            <center class="rounded-circle mb-3 ">
+            <img
+                    style={{width: 300}}
                     src={
                         userProfile.image
                             ? process.env.REACT_APP_SERVER_URL +
@@ -148,7 +142,7 @@ export default function UserProfile(args) {
                     alt={userProfile.name}
                 />
                 <h3>
-                    {userProfile.name} <i class="fa-solid fa-pen-to-square"></i>
+                    {userProfile.name}
                 </h3>
             </center>
             <Table className="">
@@ -262,7 +256,6 @@ export default function UserProfile(args) {
                                         : false
                                 }
                                 type="submit"
-                                onClick={togglePassword}
                             >
                                 Thay đổi
                             </Button>

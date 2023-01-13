@@ -22,19 +22,19 @@ function Menu() {
     //Khai báo biến
     const dispatch = useDispatch();
     const userState = useSelector((state) => state.user.info);
-    const serverUrl = process.env.REACT_APP_SERVER_ADMIN_URL || '';
+    const serverUrl = process.env.REACT_APP_SERVER_ADMIN_URL || "";
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
 
     //Trả về
     return (
-        <Navbar expand="md" fixed="top" color="light" className="z-index-2" >
+        <Navbar expand="md" fixed="top" color="light" className="z-index-2">
             {/* Logo */}
             <Link to="/" className="text-decoration-none">
                 <NavbarBrand className="text-darkYellow">
                     <img
                         alt="logo"
-                        src='/images/logo.jpg'
+                        src="/images/logo.jpg"
                         style={{
                             height: 60,
                             width: 70,
@@ -70,7 +70,12 @@ function Menu() {
                         <UncontrolledDropdown>
                             <DropdownToggle nav caret>
                                 <img
-                                    src={userState.image ? process.env.REACT_APP_SERVER_URL + userState.image : "/images/default-user.png"}
+                                    src={
+                                        userState.image
+                                            ? process.env.REACT_APP_SERVER_URL +
+                                              userState.image
+                                            : "/images/default-user.png"
+                                    }
                                     alt="mdo"
                                     width="32"
                                     height="32"
@@ -78,10 +83,36 @@ function Menu() {
                                 />
                             </DropdownToggle>
                             <DropdownMenu>
-                                <a href={userState.status === 3 ? serverUrl+"/dashboard" : "/dashboard?show=profile"} className="text-decoration-none"><DropdownItem>{userState.status === 3 ? "Dashboard" : "Tài khoản"}</DropdownItem></a>
-                                <a href="/dashboard?show=history" className="text-decoration-none"><DropdownItem>Lịch sử</DropdownItem></a>
+                                {userState.status >= 2 ? (
+                                    <a
+                                        href={serverUrl + "/dashboard"}
+                                        className="text-decoration-none"
+                                    >
+                                        <DropdownItem>
+                                            Trang quản lý
+                                        </DropdownItem>
+                                    </a>
+                                ) : (
+                                    ""
+                                )}
+                                <a
+                                    href="/dashboard?show=profile"
+                                    className="text-decoration-none"
+                                >
+                                    <DropdownItem>Tài khoản</DropdownItem>
+                                </a>
+                                <a
+                                    href="/dashboard?show=history"
+                                    className="text-decoration-none"
+                                >
+                                    <DropdownItem>Lịch sử</DropdownItem>
+                                </a>
                                 <DropdownItem divider />
-                                <DropdownItem onClick={() => isLogout(dispatch)}>Đăng xuất</DropdownItem>
+                                <DropdownItem
+                                    onClick={() => isLogout(dispatch)}
+                                >
+                                    Đăng xuất
+                                </DropdownItem>
                             </DropdownMenu>
                         </UncontrolledDropdown>
                     )}
