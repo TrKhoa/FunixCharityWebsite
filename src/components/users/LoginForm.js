@@ -13,7 +13,7 @@ import { postRegister, postLogin, postPasswordForgot, resetError } from "../../r
 
 export default function LoginForm(type) {
     const errMessage = useSelector((state) => state.user.error); //Khai báo lỗi
-
+    
     //Kiểm tra dữ liệu
     const validate = (values) => {
         const errors = {};
@@ -67,7 +67,7 @@ export default function LoginForm(type) {
         onSubmit: (values) => {
             //Thực hiên gửi action khi: quên mật khẩu, đăng ký, đăng nhập
             if(isForgot){
-                postPasswordForgot(values)
+                postPasswordForgot(dispatch, values)
             } else {
                 if (isRegister) {
                     postRegister(dispatch, formik.values);
@@ -81,11 +81,26 @@ export default function LoginForm(type) {
     const [isRegister, setIsRegister] = useState(type.isRegister);//Nếu đăng ký
     const [isForgot, setPasswordForgot] = useState(false);//Nếu quên mật khẩu
 
+
     //Reset báo lỗi
     useEffect(() => {
-        resetError(dispatch);
+        if(errMessage=== "Username đã tồn tại"){
+            setIsRegister(true);
+        }
+        return () => {
+            resetError(dispatch);
+          }
     }, [isRegister]);
 
+    useEffect(() => {
+        if(errMessage=== "Username không tồn tại"){
+            setPasswordForgot(true);
+        }
+        return () => {
+            resetError(dispatch);
+          }
+    }, [isForgot]);
+    
     //Trả về các trang tương ứng
     if (isForgot) {
         return (

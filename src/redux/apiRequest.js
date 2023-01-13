@@ -10,6 +10,7 @@ import {
     registerFailed,
     logoutSuccess,
     userResetError,
+    isForgot,
 } from "./userSlice";
 import sha256 from "sha256";
 import axios from "axios";
@@ -55,23 +56,29 @@ export const postRegister = async (dispatch, data) => {
         }
     );
     if (register.data.error === false) {
-        dispatch(registerSuccess());
+        dispatch(registerSuccess(register.data.message));
     } else {
         dispatch(registerFailed(register.data.message));
     }
 };
 
 //Gửi yêu cầu thay mật khẩu lên server
-export const postPasswordForgot = async (data) => {
+export const postPasswordForgot = async (dispatch, data) => {
+    dispatch(isUserStart());
     await axios.post(
         process.env.REACT_APP_SERVER_URL + "/passwordReset/" + data.username
-    );
+    ).then((result) => {
+        dispatch(isForgot(result.data.message));
+    });
 };
 
 //Gửi mật khẩu sau khi thay đổi lên serevr
-export const postPasswordReset = async (data) => {
+export const postPasswordReset = async (dispatch,data) => {
+    dispatch(isUserStart());
     await axios.post(process.env.REACT_APP_SERVER_URL + "/forgotPassword/", {
         data,
+    }).then((result) => {
+        dispatch(isForgot(result.data.message));
     });
 };
 

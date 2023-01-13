@@ -38,6 +38,10 @@ export const userSlice = createSlice({
             state.error = "";
             state.info = "";
         },
+        isForgot: (state, action) => {
+            state.pending = false;
+            state.error = action.payload;
+        },
         registerSuccess: (state, action) => {
             state.pending = false;
             state.error = "";
@@ -55,6 +59,7 @@ export const userSlice = createSlice({
 export const {
     isUserStart,
     isError,
+    isForgot,
     isProfileUpdate,
     loginSuccess,
     loginFailed,

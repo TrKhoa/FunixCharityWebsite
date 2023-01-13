@@ -1,4 +1,5 @@
 import { useFormik } from "formik";
+import { useSelector,useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom"
 import {
     FormGroup,
@@ -10,10 +11,14 @@ import {
 } from "reactstrap";
 import {
     postPasswordReset,
+    resetError,
 } from "../../redux/apiRequest";
 
 export default function PasswordReset() {
     //Khai báo biến
+    const errMessage = useSelector((state) => state.user.error);
+    const dispatch = useDispatch();
+    resetError(dispatch);
     const search = useLocation().search;
     const username = new URLSearchParams(search).get('username');
     const token = new URLSearchParams(search).get('token');
@@ -42,7 +47,7 @@ export default function PasswordReset() {
         },
         validate,
         onSubmit: (values) => {
-            postPasswordReset(formik.values);
+            postPasswordReset(dispatch,formik.values);
         },
     });
 
