@@ -122,7 +122,7 @@ exports.postPasswordReset = async (req, res) => {
                         "Yêu cầu đổi mật khẩu",
                         `<b>Hãy nhấn vào <a href="${process.env.APP_URL}/forgotPassword?username=${username}&token=${hashedUsername}">Link này</a> để khôi phục mật khẩu</b>`
                     );
-                    res.send({ message: "Vui lòng kiểm tra Email" });
+                    res.send({ message: "Yêu cầu thay đổi mật khẩu thành công, vui lòng kiểm tra Email" });
                 });
         } else {
             res.send({ message: "Username không tồn tại" });
@@ -157,9 +157,9 @@ exports.postForgotPassword = async (req, res) => {
             const update = { password: sha256(password) };
             User.findOneAndUpdate(filter, update).then((result) => {
                 if (result) {
-                    res.redirect(process.env.CLIENT_URI + "/login");
+                    res.send({ message: "Thay đổi mật khẩu thành công" });
                 } else {
-                    res.redirect(process.env.CLIENT_URI);
+                    res.send({ message: "Thay đổi mật khẩu thất bại" });
                 }
             });
         } else {
