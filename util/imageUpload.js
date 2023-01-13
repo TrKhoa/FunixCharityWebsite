@@ -1,5 +1,7 @@
 const multer = require('multer');
 
+//Thiết lập vị trí lưu hình ảnh
+//User
 const userStore = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'public/image/user');
@@ -9,6 +11,7 @@ const userStore = multer.diskStorage({
     },
 })
 
+//Campaign
 const campaignStore = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'public/image/campaign');
@@ -18,6 +21,7 @@ const campaignStore = multer.diskStorage({
     },
 })
 
+//Thiết lập bộ lọc hình ảnh
 const fileFilter = (req, file, cb) => {
     if (
         file.mimetype === "image/png" ||
@@ -30,5 +34,6 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
+//Tạo yêu cầu upload hình ảnh
 exports.userUpload =  multer({ storage: userStore, fileFilter: fileFilter }).single('image');
 exports.campaignUpload = multer({ storage: campaignStore, fileFilter: fileFilter }).single('image');

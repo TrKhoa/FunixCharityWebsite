@@ -1,5 +1,6 @@
 require("dotenv/config")
 
+//Thiết lập các thông tin lấy từ .env để thực hiện gửi mail
 module.exports ={
     MAILER: process.env.MAIL_MAILER,
     HOST: process.env.MAIL_HOST,

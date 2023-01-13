@@ -5,15 +5,19 @@ const sha256 = require("sha256");
 const User = require("../../model/User");
 const Campaign = require("../../model/Campaign");
 
+//Gửi yêu cầu đăng ký
 exports.postRegister = async (req, res) => {
     try {
+        //Lấy thông tin từ phía Front
         const userInfo = req.body.data;
+        //Chỉnh sửa username thành 1 username hợp lệ
         const validUsername = userInfo.username
             .toLowerCase()
             .split(" ")
             .join("");
         await User.findOne({ username: validUsername }).then((userExist) => {
             if (!userExist) {
+                //Tạo mật khẩu ngẫu nhiên
                 let length = 12;
                 const characters = "abcdefghijklmnopqrstuvwxyz";
                 let result = "";
@@ -28,8 +32,10 @@ exports.postRegister = async (req, res) => {
                     username: validUsername,
                     password: sha256(result),
                 });
+                //Lưu người dùng
                 user.save()
                     .then((e) => {
+                        //Gửi Email chứa Password
                         sendMail(
                             user.email,
                             "Cảm ơn bạn đã đăng ký, mật khẩu của bạn là:",
@@ -55,7 +61,9 @@ exports.postRegister = async (req, res) => {
     }
 };
 
+//Gửi yêu cầu kiểm tra đã đăng nhập chưa
 exports.isLogin = async (req, res) => {
+    //Kiểm tra Session xem đã đăng nhập chưa
     if (req.session.user) {
         res.send({ data: req.session.user, isLogin: true });
     } else {
@@ -63,14 +71,19 @@ exports.isLogin = async (req, res) => {
     }
 };
 
+//Gửi yêu cầu đăng nhập
 exports.postLogin = async (req, res) => {
+    /*
     let getCookie = undefined;
     if (req.get("Cookie")) getCookie = req.get("Cookie").split(";");
     else getCookie = [];
+    */
+   //Lấy thông tin từ phía Front
     const { username, password } = req.body;
     const validUsername = username.toLowerCase().split(" ").join("");
     await User.findOne({ username: validUsername })
         .then((user) => {
+            //Nếu thông tin đăng nhập là đúng thì tạo session hoặc báo lỗi nếu sai thông tin đăng nhập
             if (user) {
                 if (user.password === sha256(password)) {
                     req.session.isLoggedIn = true;
@@ -94,10 +107,13 @@ exports.postLogin = async (req, res) => {
         });
 };
 
+//Gửi yêu cầu quên Password
 exports.postPasswordReset = async (req, res) => {
-    const username = req.params.user;
+    const username = req.params.user;//Lấy username
     User.findOne({ username: username }).then((user) => {
+        //Nếu tồn tại user thì tạo Mail chứa link thay đổi password
         if (user) {
+            //Tạo Token và gửi Mail
             bcrypt
                 .hash(username, parseInt(process.env.SALT_ROUNDS))
                 .then((hashedUsername) => {
@@ -114,8 +130,11 @@ exports.postPasswordReset = async (req, res) => {
     });
 };
 
+//Điều hướng đến trang thay đổi mật khẩu sau khi xác thực link yêu cầu quên Password
 exports.getForgotPassword = async (req, res) => {
+    //Lấy thông tin
     const { username, token } = req.query;
+    //Kiếm tra Username và Token, nếu hợp lệ sẽ đưa đến trang thay đổi mật khẩu
     bcrypt.compare(username, token, (err, result) => {
         if (result == true) {
             res.redirect(
@@ -127,8 +146,11 @@ exports.getForgotPassword = async (req, res) => {
     });
 };
 
+//Gửi yêu cầu thay đổi mật khẩu từ link yêu cầu quên password
 exports.postForgotPassword = async (req, res) => {
+    //Lấy thông tin từ phía Front
     const { username, password, token } = req.body.data;
+    //Kiểm tra tính hợp lệ của Token và thực hiện lưu thông tin vào MongoDB
     bcrypt.compare(username, token, (err, result) => {
         if (result == true) {
             const filter = { username: username };
@@ -146,16 +168,21 @@ exports.postForgotPassword = async (req, res) => {
     });
 };
 
+//Gửi yêu cầu đăng xuất
 exports.isLogout = (req, res, next) => {
+    //Hủy Session đăng nhập và đăng xuất tài khoản ở Front
     req.session.destroy();
     return res.status(201).send({ data: "", error: false });
 };
 
+//Gửi yêu cầu thay đổi mật khẩu
 exports.postChangePassword = (req, res, next) => {
+    //Lấy thông tin từ phía Front
     const { username, password } = req.body;
     if (username === "") {
         res.redirect("/admin/user");
     } else {
+        //Cập nhật password mới cho user
         User.findOneAndUpdate(
             { username: username },
             { password: password }
@@ -178,14 +205,16 @@ exports.postChangePassword = (req, res, next) => {
     }
 };
 
+//Gửi yêu cầu thay đổi thông tin tài khoản
 exports.postUpdateProfile = (req, res, next) => {
+    //Lấy thông tin từ phía Front
     const { username, name, phone, email } = req.body;
     const img = req.file;
-    console.log(req.body);
     if (username === "") {
         res.redirect("/admin/user");
     } else {
-        const imgPath = img ? img.path.substr(6) : req.session.user.image;
+        const imgPath = img ? img.path.substr(6) : req.session.user.image;//Kiểm tra thông tin về hình ảnh
+        //Cập nhật thông tin tài khoản cho User
         const update = { name: name, phone: phone, email: email, image: imgPath };
         User.findOneAndUpdate(
             { username: username },

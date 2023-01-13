@@ -1,4 +1,5 @@
 
+//Thiết lập các thông tin cần thiết để gửi yêu cầu giao dịch lên VNPAY
 module.exports ={
   vnp_TmnCode: process.env.VNP_TMNCODE,
   vnp_HashSecret: process.env.VNP_HASHSECRET,

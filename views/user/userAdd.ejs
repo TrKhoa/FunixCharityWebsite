@@ -3,11 +3,20 @@
 
 <body>
     <%- include('../includes/sidebar.ejs') %>
+
+    <!--báo lỗi-->
     <% if(errorMessage) { %>
     <div class="alert alert-danger" role="alert">
       <%= errorMessage %>
     </div>
     <% } %>
+
+    <!--Kiểm tra user, nếu user là admin thì được toàn quyền, nếu là Semi-Admin thì bị giới hạn-->
+    <% if(userSession.status === 3){
+      ''
+    } else if((user.status === 3 && userSession.status !== 3 || (user.status === 2 && userSession.username !== user.username))){
+      notAuth();
+    }%>
     <div class="row">
         <div class="col-lg-12">
           <h1><%= edit ? 'Chỉnh sửa tài khoản' : 'Thêm tài khoản' %></h1>
@@ -44,12 +53,12 @@
               <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm">
             </div>
             <% } %>
-            <% if(user.status !== 3) { %>
+            <% if((userSession.status === 3 && user.username != userSession.username) || !edit ||(user.status===0) ) { %>
             <div class="mb-3">
               <label for="type" class="form-label">Loại tài khoản</label>
               <select id="type" class="form-select" name="type">
                 <option value="1">User</option>
-                <option value="3">Admin</option>
+                <option value="2">Semi-Admin</option>
               </select>
             </div>
             <% } %>

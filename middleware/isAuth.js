@@ -3,7 +3,7 @@ const LocalStrategy = require("passport-local").Strategy;
 const sha256 = require('sha256');
 const User = require("../model/User")
 
-
+//Điều hướng về Front nếu không phải Semin-Admin hoặc Admin
 exports.isAuth = (req, res, next) => {
     const user = req.session.user;
     if (user) {
@@ -13,6 +13,8 @@ exports.isAuth = (req, res, next) => {
     }
 };
 
+//Phần nâng cao với passport (chưa hoàn thiện)
+/*
 exports.isAuths = passport.authenticate('local', {
         successMessage: 'Authentication successful',
         failureRedirect: process.env.CLIENT_URI + '/login'
@@ -38,3 +40,4 @@ passport.deserializeUser((user,done)=>{
         done(null,false);
     }
 });
+*/

@@ -1,5 +1,5 @@
 const { body } = require("express-validator");
-//Xac thuc
+//Xác thực nhập Form
 exports.nameValidate = body("name")
     .notEmpty()
     .withMessage("Tên không đươc rỗng")

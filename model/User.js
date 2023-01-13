@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+
+//Cấu trúc Collection
 const User = new Schema({
     name: {
         type: String,

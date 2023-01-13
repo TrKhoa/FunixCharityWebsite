@@ -8,17 +8,9 @@ const vnpayConfig = require("../../config/vnpay.config");
 const User = require("../../model/User");
 const Campaign = require("../../model/Campaign");
 
-exports.getCreate = async (req, res) => {
-    let data = req.body;
-    console.log(data);
-};
-
-exports.postPostName = async (req, res) => {
-    let { name } = req.body;
-    console.log(name);
-};
-
+//Gửi yêu cầu tạo giao dịch thanh toán
 exports.postCreatePayment = async (req, res, next) => {
+    //Lấy dữ liệu
     const { value, campaign } = req.body;
     let ipAddr =
         req.headers["x-forwarded-for"] ||
@@ -33,6 +25,7 @@ exports.postCreatePayment = async (req, res, next) => {
 
     let date = new Date();
 
+    //Tạo thông tin của giao dịch
     let createDate = dateFormat(date, "yyyymmddHHmmss");
     let orderId = dateFormat(date, "HHmmss");
     let amount = value;
@@ -61,6 +54,7 @@ exports.postCreatePayment = async (req, res, next) => {
         vnp_Params["vnp_BankCode"] = bankCode;
     }
 
+    //Thiết lập Token và tạo đường link giao dịch
     vnp_Params = sortObject(vnp_Params);
     let signData =
         secretKey + querystring.stringify(vnp_Params, { encode: false });
@@ -70,9 +64,11 @@ exports.postCreatePayment = async (req, res, next) => {
     vnp_Params["vnp_SecureHash"] = secureHash;
     vnpUrl += "?" + querystring.stringify(vnp_Params, { encode: true });
 
+    //Trả đường link giao dịch về cho Front
     res.send(vnpUrl);
 };
 
+//Gửi yêu cầu lên server của VNPAY để xác thực
 exports.vnpayIpn = async (req, res) => {
     var vnp_Params = req.query;
     var secureHash = vnp_Params["vnp_SecureHash"];
@@ -101,7 +97,9 @@ exports.vnpayIpn = async (req, res) => {
     }
 };
 
+//Trả về kết quả của giao dịch thanh toán
 exports.getPaymentReturn = async (req, res, next) => {
+    //Lấy kết quả giao dịch
     let vnp_Params = req.query;
     let campaignId = new ObjectID(vnp_Params.vnp_OrderInfo);
     const userId = req.session.user
@@ -137,8 +135,8 @@ exports.getPaymentReturn = async (req, res, next) => {
 
     let checkSum = sha256(signData);
 
+    //Kiểm tra kết quả giao dịch
     if (secureHash === checkSum) {
-        //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
         Promise.all([userDonate, campaignInfo]).then((val) => {
             const user = val[0];
             const campaign = val[1].donator;
@@ -153,8 +151,10 @@ exports.getPaymentReturn = async (req, res, next) => {
                 raise: amount,
                 date: DateSuccess,
             };
+            //Nếu giao dịch thành công
             if (status == "00") {
                 if (userId) {
+                    //Cập nhật lại dữ liệu trong MongoDB và Session
                     user.push(userData);
                     User.findOneAndUpdate(
                         { _id: userId },
@@ -185,6 +185,7 @@ exports.getPaymentReturn = async (req, res, next) => {
                     });
                 }
             } else {
+                //Nếu giao dịch thất bại
                 res.redirect(process.env.CLIENT_URI);
             }
         });
@@ -193,6 +194,7 @@ exports.getPaymentReturn = async (req, res, next) => {
     }
 };
 
+//Hàm sắp xếp lại Token dành riêng cho giao dịch
 function sortObject(o) {
     var sorted = {},
         key,

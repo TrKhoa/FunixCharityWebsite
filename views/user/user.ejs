@@ -3,6 +3,7 @@
 
 <body>
     <%- include('../includes/sidebar.ejs') %>
+    <!--báo lỗi-->
     <% if(errorMessage != ""){ %>
       <div class="alert alert-primary" role="alert">
         <%= errorMessage %>
@@ -12,9 +13,13 @@
         <div class="col-lg-12">
           <form action="/admin/user-delete?delete=true" method="POST">
             <table class="table">
+
+              <!--Thanh chức năng-->
               <tr>
                 <div class="text-start">Sắp xếp theo: <a href="/admin/user">Username</a> / <a href="/admin/user?byPhone=true">Phone</a> | Tác vụ: <span data-bs-toggle="modal" data-bs-target='#deleteAll'>Xóa</span></div>
               </tr>
+
+              <!--Tiêu đề-->
               <thead>
                 <tr>
                   <th scope="col">#</th>
@@ -27,6 +32,8 @@
                   <th scope="col"></th>
                 </tr>
               </thead>
+
+              <!--Nội dung-->
               <tbody class="table-group-divider">
                 <% user.forEach(function(val){%>
                   <tr>
@@ -36,7 +43,7 @@
                     <td class="d-none d-md-table-cell"><%= val.name %></td>
                     <td class="d-none d-md-table-cell"><%= val.email %></td>
                     <td class="d-none d-md-table-cell"><%= val.phone %></td>
-                    <td><%= val.status===3 ? 'admin' : 'user'%></td>
+                    <td><%= val.status===3 ? 'admin' : val.status===2 ? 'semi-admin' : 'user'%></td>
                     <td>
                       <a href=<%= "/admin/user-passwordGen/"+val.username %>><i class="fa-solid fa-key" ></i></a>
                       <a href=<%= "/admin/user-edit/"+val.username %> class="fa-solid fa-pen-to-square"> </a> 
@@ -44,6 +51,7 @@
                     </td>
                   </tr>
 
+                  <!--Thông báo-->
                   <div class="modal fade" id=<%= val.username %> tabindex="-1" aria-labelledby="label" aria-hidden="true">
                     <div class="modal-dialog">
                       <div class="modal-content">
@@ -69,6 +77,7 @@
                     </div>
                   </div>
 
+                  <!--Thông báo xóa User hàng loạt-->
                   <div class="modal fade" id="deleteAll" tabindex="-1" aria-labelledby="label" aria-hidden="true">
                     <div class="modal-dialog">
                       <div class="modal-content">
