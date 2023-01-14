@@ -124,10 +124,12 @@ export default function UserProfile(args) {
         },
     });
 
+    //Xử lý hình ảnh
     const handleImage = (e) => {
         setImage(e.target.files[0]);
     };
 
+    //Trả về
     return (
         <>
             <center class="rounded-circle mb-3 ">
@@ -177,7 +179,8 @@ export default function UserProfile(args) {
                     </tr>
                 </tbody>
             </Table>
-
+            
+            {/* Form thay đổi mật khẩu*/}
             <Modal
                 isOpen={modalPassword}
                 toggle={togglePassword}
@@ -267,6 +270,7 @@ export default function UserProfile(args) {
                 </ModalBody>
             </Modal>
 
+            {/* Form cập nhật thông tin*/}
             <Modal
                 isOpen={modalProfile}
                 toggle={toggleProfile}

@@ -9,6 +9,7 @@ export default function History(args) {
     const userHistory = [...userData] || [];
     const campaigns = useSelector((state) => state.campaign.data) || [];
 
+    //Pagination
     let page = args.page;
     const itemsPerPage = 12;
     const total = userHistory.length;
@@ -85,6 +86,7 @@ export default function History(args) {
         );
     };
 
+    //Trả về
     return (
         <>
             <Table className="row" responsive>
@@ -106,7 +108,7 @@ export default function History(args) {
                             </th>
                             <td className="text-truncate col-6">
                                 {/* Tìm tên chiến dịch */}
-                                <Link to={"/dashboard/show=history&" + user.campaign}>
+                                <Link to={"/cause/" + user.campaign}>
                                     {campaigns.map((val) => {
                                         if (val._id == user.campaign) {
                                             return val.name;

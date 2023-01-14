@@ -44,7 +44,7 @@ export const userSlice = createSlice({
         },
         registerSuccess: (state, action) => {
             state.pending = false;
-            state.error = "";
+            state.error = action.payload;
         },
         registerFailed: (state, action) => {
             state.pending = false;
