@@ -221,7 +221,7 @@ exports.postUpdateProfile = (req, res, next) => {
             update
         ).then((result) => {
             if (result) {
-                const newUser = {...req.session.user, name: name, email: email, image: imgPath}
+                const newUser = {...req.session.user, name: name, email: email, phone: phone, image: imgPath}
                 req.session.user = newUser;
                 return res.status(201).send({
                     error: false,
