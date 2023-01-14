@@ -66,7 +66,7 @@ export default function UserProfile(args) {
 
             if (!values.phone) {
                 errors.phone = "Thiếu thông tin!";
-            } else if (values.phone.length < 10) {
+            } else if (values.phone < 100000000) {
                 errors.phone = "Cần tối thiểu 10 số!";
             }
 
