@@ -1,0 +1,27 @@
+[{
+  "_id": {
+    "$oid": "63c0d088038d4bce978fe729"
+  },
+  "name": "Khoa semi admin",
+  "username": "khoasemi",
+  "password": "4deb863cf81ce350c8f058b17c8d0f3f44d001398dc5bf5137374d3b9310dfe2",
+  "email": "khoatmtfx14250@gmail.com",
+  "phone": "16467529174",
+  "image": "",
+  "status": 2,
+  "donate": [],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63c25b34f396a38535d659f9"
+  },
+  "name": "Khoa Admin",
+  "username": "khoadmin",
+  "password": "fa059ddf5cd2294cc03d1af4e927e3d9e242109866fa0b006bb7181e75a6df0b",
+  "email": "tkhoa1302@gmail.com",
+  "phone": "0707070707",
+  "image": "",
+  "status": 3,
+  "donate": [],
+  "__v": 0
+}]

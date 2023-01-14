@@ -256,8 +256,8 @@ exports.getUserDelete = (req, res, next) => {
         res.redirect("/admin/user");
     } else {
         const filter = { username: user, status: { $lt: 3 } };
+        req.flash("success", "Xóa User thành công");
         User.deleteOne(filter).then(() => {
-            req.flash("success", "Xóa User thành công");
             res.redirect("/admin/user");
         });
     }
@@ -269,8 +269,8 @@ exports.postMultiUserDelete = (req, res, next) => {
     if (!username) {
         res.redirect("/admin/user");
     } else {
+        req.flash("success", "Xóa hàng loạt User thành công");
         User.deleteMany({ username: username }).then((result) => {
-            req.flash("success", "Xóa hàng loạt User thành công");
             res.redirect("/admin/user");
         });
     }

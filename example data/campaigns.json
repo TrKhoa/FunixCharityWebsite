@@ -1,0 +1,221 @@
+[{
+  "_id": {
+    "$oid": "63a56b29876576e2c8f47ea1"
+  },
+  "name": "Chung tay quyên góp kinh phí khám chữa bệnh để gìn giữ trái tim cụ Nhung - linh hồn của bếp ăn Quán trọ Trăng Khuyết",
+  "image": "\\image\\campaign\\1671785257488-image_2022-12-23_154704361.png",
+  "type": 2,
+  "desc": "Trước cổng quán trọ Trăng Khuyết quận 12, có một người phụ nữ đã ngoài 70 đang quét vội những mảnh rác còn vất vưởng ngoài sân để còn chuẩn bị bữa trưa cho các cụ già nơi đây. Thấy cụ cặm cụi vo gạo, nhặt rau, đun nước nấu cơm cho các cụ, thật không khỏi thương cảm cho những mảnh đời neo đơn nơi này! \r\n\r\nChạnh lòng phận neo đơn…\r\n\r\nĐáng lẽ ở cái tuổi 74, cụ Nguyễn Thị Nhung phải được quây quần, được sum vầy bên con cháu người thân, thì cụ lại phải sống lủi thủi, một mình ở đây. Đằng sau đôi bàn tay đã hằn đầy vết chai sạn này là câu chuyện về cuộc đời cụ.",
+  "donator": [],
+  "raise": 0,
+  "goal": 20000000,
+  "startAt": {
+    "$date": {
+      "$numberLong": "1671753600000"
+    }
+  },
+  "endAt": {
+    "$date": {
+      "$numberLong": "1677110400000"
+    }
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63a5709a876576e2c8f47eca"
+  },
+  "name": "Cùng chiến dịch “Áo Ấm Cho Em” – mang đến “Mùa đông không lạnh cho trẻ em nghèo” tỉnh Quảng Trị",
+  "image": "\\image\\campaign\\1671786650910-image_2022-12-23_161028270.png",
+  "type": 1,
+  "desc": "Mỗi mùa đông về, những trẻ em may mắn có một mái nhà ấm áp hạnh phúc, sẽ được gia đình ủ ấm bằng áo bông, áo len khi trời chỉ vừa chớm lạnh. Thế nhưng với các hộ nghèo khó khăn tại tỉnh Quảng Trị,  thì các em nhỏ lại phải oằn mình vượt qua giá rét với đôi chân trần đỏ ửng, với chiếc áo rách thậm chí còn không đủ để che thân. Nhìn các em nhỏ nơi đây với ánh mắt hồn nhiên, ngây thơ run lên vì cái lạnh khắc nghiệt thật sự khiến chúng ta phải lặng mình suy ngẫm.",
+  "donator": [],
+  "raise": 0,
+  "goal": 250000000,
+  "startAt": {
+    "$date": {
+      "$numberLong": "1671753600000"
+    }
+  },
+  "endAt": {
+    "$date": {
+      "$numberLong": "1673481600000"
+    }
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63a570ea876576e2c8f47ecd"
+  },
+  "name": "“Giữ nhà” cho Voọc Chà Vá chân xám tại Tam Mỹ Tây, Núi Thành, Quảng Nam",
+  "image": "\\image\\campaign\\1671786730477-image_2022-12-23_161208384.png",
+  "type": 4,
+  "desc": "Về Tam Mỹ Tây, Núi Thành, Quảng Nam, người ta không chỉ bị thu hút bởi thiên nhiên hữu tình mà còn bị “giữ chân” bởi câu chuyện giữ nhà cho Voọc của cộng đồng nơi đây. Với tất cả tình yêu như những người thân trong gia đình, họ đã canh giữ từng mảnh rừng để Voọc sinh sống, họ hiểu về tập tính, vùng sống và đặc điểm của từng gia đình Voọc ở cả 4 khu vực núi. Để từ đó mỗi khi có một du khách phương xa nào ghé thăm họ lại say sưa kể chuyện nhà Vọọc cũng như nhiệt tình dắt đi thăm nơi ở của chúng.",
+  "donator": [],
+  "raise": 0,
+  "goal": 100000000,
+  "startAt": {
+    "$date": {
+      "$numberLong": "1668643200000"
+    }
+  },
+  "endAt": {
+    "$date": {
+      "$numberLong": "1672185600000"
+    }
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63a57150876576e2c8f47ed3"
+  },
+  "name": "1.000 trẻ em khó khăn, yếu thế được trải nghiệm chương trình giáo dục thiên nhiên Sơn Trà",
+  "image": "\\image\\campaign\\1671786832297-image_2022-12-23_161343267.png",
+  "type": 4,
+  "desc": "Tất cả trẻ em Việt Nam đều xứng đáng nhận được nền giáo dục hoàn thiện. Có cơ hội được bước những bước chân trần trong rừng xanh mát, lắng nghe chim hót, chạm tay vào những gốc cây gần nghìn tuổi và cùng nhau “tắm mình” trong những câu chuyện. Chúng tôi thực sự tin rằng các em sẽ kiến tạo được tình yêu và rất nhiều giá trị tốt đẹp, bền vững cho hoạt động bảo tồn thiên nhiên của Sơn Trà và Đà Nẵng. ",
+  "donator": [],
+  "raise": 0,
+  "goal": 100000000,
+  "startAt": {
+    "$date": {
+      "$numberLong": "1671753600000"
+    }
+  },
+  "endAt": {
+    "$date": {
+      "$numberLong": "1676592000000"
+    }
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63a5719e876576e2c8f47ed6"
+  },
+  "name": "Trao tặng 20 ca phẫu thuật thay đổi cuộc đời cho các em bé hở môi, hàm ếch",
+  "image": "\\image\\campaign\\1671786910275-image_2022-12-23_161436207.png",
+  "type": 3,
+  "desc": "Nguyễn Thị Trúc Giang được sinh ra trong một gia đình nghèo khó khăn tại ấp 4 Tân Nghĩa, huyện Cao Lãnh, tỉnh Đồng Tháp. Em sinh ra với dị tật hiếm gặp trên khuôn mặt, là dị tật Tessier số 4 (khe hở mắt – miệng) nằm trong nhóm các khe hở mặt hiếm gặp trong y học với tỷ lệ 1.43 – 4.85 : 100.000 trẻ. Tổn thương phần mềm đặc trưng là khe hở từ bờ dưới mi mắt đến môi trên ở vị trí giữa nhân trung và khóe miệng. Kèm theo là dị tật nhãn cầu teo nhỏ hoặc không có nhãn cầu, gây ảnh hưởng nặng nề về chức năng sinh hoạt. Năm nay 13 tuổi, em đã trải qua 2 cuộc phẫu thuật. Đến với Operation Smile là lần thứ 3, em được phẫu thuật tạo hình mi mắt hai bên.",
+  "donator": [],
+  "raise": 0,
+  "goal": 200000000,
+  "startAt": {
+    "$date": {
+      "$numberLong": "1665100800000"
+    }
+  },
+  "endAt": {
+    "$date": {
+      "$numberLong": "1676332800000"
+    }
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63a571f2876576e2c8f47ed9"
+  },
+  "name": "Chung tay ủng hộ, phủ xanh đất trống đồi trọc tại huyện Cam Lộ - tỉnh Quảng Trị",
+  "image": "\\image\\campaign\\1671786994813-image_2022-12-23_161605417.png",
+  "type": 5,
+  "desc": "Khi thiên tai xảy ra, các phương pháp phòng chống và giảm thiểu thiệt hại là vô cùng quan trọng. Một trong những giải pháp hữu hiệu để giảm thiểu ảnh hưởng từ lũ lụt chính là trồng nhiều cây xanh, phủ kín đồi trọc, tạo nên vành đai xanh điều hòa khí hậu. Tạo vành đai xanh sẽ giúp bảo vệ môi trường sinh thái, bảo đảm cho sự phát triển bền vững và toàn diện của xã hội. Đây là việc làm không chỉ có ý nghĩa và tầm quan trọng lớn cho ngày hôm nay mà còn cho cả mai sau.",
+  "donator": [],
+  "raise": 0,
+  "goal": 200000000,
+  "startAt": {
+    "$date": {
+      "$numberLong": "1655164800000"
+    }
+  },
+  "endAt": {
+    "$date": {
+      "$numberLong": "1685577600000"
+    }
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63a5724f876576e2c8f47edc"
+  },
+  "name": "Cùng Quỹ Hy Vọng xây mới nhà vệ sinh cho các em học sinh huyện Mường Nhé, tỉnh Điện Biên",
+  "image": "\\image\\campaign\\1671787087492-image_2022-12-23_161758164.png",
+  "type": 1,
+  "desc": "Theo số liệu của Bộ Giáo dục và Đào tạo, năm học 2019 - 2020 còn hơn 30% nhà vệ sinh trường học chưa đạt chuẩn trên cả nước. Báo cáo của UNICEF tại Việt Nam chỉ ra rằng, việc thiếu khả năng tiếp cận với nước sạch và vệ sinh môi trường, cùng với các thực hành vệ sinh kém góp phần làm tăng cao tỷ lệ tiêu chảy, viêm phổi và nhiễm ký sinh trùng.",
+  "donator": [],
+  "raise": 0,
+  "goal": 150000000,
+  "startAt": {
+    "$date": {
+      "$numberLong": "1671753600000"
+    }
+  },
+  "endAt": {
+    "$date": {
+      "$numberLong": "1672185600000"
+    }
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63a572b1876576e2c8f47ee0"
+  },
+  "name": "Gây quỹ tặng 40 nụ cười thay đổi cuộc đời cho các em bé hở môi, hàm ếch",
+  "image": "\\image\\campaign\\1671787185334-image_2022-12-23_161931293.png",
+  "type": 3,
+  "desc": "Nhân kỷ niệm 40 năm, tổ chức Operation Smile đưa ra cam kết chăm sóc y tế cho một triệu trẻ em toàn cầu trong 10 năm tới. Song song, tổ chức sẽ tiếp tục củng cố hệ thống y tế, cơ sở vật chất để hướng đến nâng cao chất lượng chăm sóc bệnh nhân, và rút ngắn bất bình đẳng trong các hệ thống chăm sóc sức khỏe. Với cam kết đó, tổ chức Operation Smile tại Việt Nam rất mong rằng trong hành trình sắp tới sẽ luôn nhận được sự ủng hộ và đồng hành của cộng đồng để mang lại sự thay đổi cho trẻ em Việt Nam.",
+  "donator": [],
+  "raise": 0,
+  "goal": 400000000,
+  "startAt": {
+    "$date": {
+      "$numberLong": "1670889600000"
+    }
+  },
+  "endAt": {
+    "$date": {
+      "$numberLong": "1684972800000"
+    }
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63a57305876576e2c8f47ee3"
+  },
+  "name": "Cùng chung tay xây dựng đảo sinh thái",
+  "image": "\\image\\campaign\\1671787269817-image_2022-12-23_162108349.png",
+  "type": 5,
+  "desc": "Sự phát triển của một thành phố tác động trực tiếp đến đa dạng sinh học của đô thị. Trong đó lực gia tăng dân số, đô thị hóa nhanh, thay đổi phương thức sử dụng đất, ô nhiễm môi trường và tác động của biến đổi khí hậu đã làm giảm đáng kể diện tích sinh cảnh, gia tăng sự chia cắt của các hệ sinh thái đô thị. Không gian công cộng với những đặc thù rất thích hợp là nơi hình thành các mô hình phục hồi và bảo tồn đa dạng sinh học đô thị, góp phần cải tạo không gian một cách bền vững cũng như nâng cao nhận thức của người dân đô thị về vai trò của môi trường và đa dạng sinh học.",
+  "donator": [],
+  "raise": 0,
+  "goal": 2500000,
+  "startAt": {
+    "$date": {
+      "$numberLong": "1671753600000"
+    }
+  },
+  "endAt": {
+    "$date": {
+      "$numberLong": "1692921600000"
+    }
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "63a57352876576e2c8f47ee6"
+  },
+  "name": "Trao điện thoại, đào tạo về chăm sóc trực tuyến, đào tạo kỹ năng số cho người khuyết tật và người chăm sóc tại Bình Định, Quảng Nam và Kon Tum",
+  "image": "\\image\\campaign\\1671787346504-image_2022-12-23_162217130.png",
+  "type": 2,
+  "desc": "Không được may mắn như những người khác, cuộc đời của những người khuyết tật (NKT) trải qua nhiều khó khăn và vất vả. Họ phải tự mình đối mặt và làm quen với mọi điều trong cuộc sống. Thế nhưng khi công nghệ ngày càng phát triển, mọi thông tin và kiến thức đều có thể sử dụng những thiết bị cầm tay như điện thoại di động để tra cứu thì thiệt thòi của NKT sẽ còn nhân lên nhiều lần hơn. ",
+  "donator": [],
+  "raise": 0,
+  "goal": 3125000,
+  "startAt": {
+    "$date": {
+      "$numberLong": "1668384000000"
+    }
+  },
+  "endAt": {
+    "$date": {
+      "$numberLong": "1676246400000"
+    }
+  },
+  "__v": 0
+}]

@@ -37,7 +37,7 @@
               <tbody class="table-group-divider">
                 <% user.forEach(function(val){%>
                   <tr>
-                    <th scope="row"><input name="username" type="checkbox" value=<%= val.username %> /></th>
+                    <th scope="row"><% if(val.status < 3 && isOnline(val.username) === 'offline'){ %><input name="username" type="checkbox" value=<%= val.username %> /><%}%></th>
                     <td><img src=<%= val.image !== '' ? val.image :"/image/user/default.png" %> height="40"> <%= val.username %></td>
                     <td><%= isOnline(val.username) %></td>
                     <td class="d-none d-md-table-cell"><%= val.name %></td>

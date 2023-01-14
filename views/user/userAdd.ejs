@@ -53,11 +53,11 @@
               <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm">
             </div>
             <% } %>
-            <% if((userSession.status === 3 && user.username != userSession.username) || !edit ||(user.status===0) ) { %>
+            <% if((userSession.status === 3 && user.username != userSession.username) || !edit || user.status< 2 || user.status===undefined) { %>
             <div class="mb-3">
               <label for="type" class="form-label">Loại tài khoản</label>
               <select id="type" class="form-select" name="type">
-                <option value="1">User</option>
+                <option value="0">User</option>
                 <option value="2">Semi-Admin</option>
               </select>
             </div>
