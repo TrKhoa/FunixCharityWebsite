@@ -117,6 +117,7 @@ export const isLogout = async (dispatch) => {
     );
     if (!logout.data.error) {
         dispatch(logoutSuccess());
+        window.location.replace('/');
     }
 };
 
