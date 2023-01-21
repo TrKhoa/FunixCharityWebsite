@@ -12,9 +12,11 @@ const mongoose = require("mongoose");
 exports.getDashboard = (req, res, next) => {
     const userSession = req.session.user; // Lấy session của user
     //Lấy dữ liệu từ MongoDB
-    const campaign = Campaign.find().then((result) => {
-        return result ? result : [];
-    });
+    const campaign = Campaign.find()
+        .sort([["_id", -1]])
+        .then((result) => {
+            return result ? result : [];
+        });
     const user = User.find().then((user) => {
         return user ? user : [];
     });
@@ -62,7 +64,6 @@ exports.getLogout = (req, res, next) => {
 //Truy cập trang quản lý User
 exports.getUser = (req, res, next) => {
     //Lấy dữ liệu
-    const userSession = req.session.user;
     const byPhone = req.query.byPhone || false;
     const desc = req.query.desc || false;
     //Tạo hàm sắp xếp
@@ -82,7 +83,7 @@ exports.getUser = (req, res, next) => {
     }
 
     //Sử dụng hàm sắp xếp để tạo bộ lọc dữ liệu và lấy dữ liệu
-    const user = User.find()
+    const user = User.find({ status: { $gt: -1 } })
         .sort(sortType() + sortBy())
         .then((user) => {
             return user ? user : [];
@@ -96,10 +97,24 @@ exports.getUser = (req, res, next) => {
         });
         return user;
     });
+    const totalItems = User.find({ status: { $gt: -1 } })
+        .count()
+        .then((user) => {
+            return user ? user : 0;
+        });
     //Trả về kết quả sau khi lấy dược dữ liệu
-    Promise.all([user, onlineUser]).then((result) => {
+    Promise.all([user, onlineUser, totalItems]).then((result) => {
         const user = result[0];
         const onlineUser = result[1];
+        const totalItems = result[2];
+        const page = req.query.page || 1;
+        const itemsPerPage = 12;
+        const limitItems = itemsPerPage * page;
+        const userSession = req.session.user;
+        const skippedItems = (page - 1) * itemsPerPage;
+        const lastPage = Math.ceil(totalItems / itemsPerPage);
+        const getUser = user.slice(skippedItems, limitItems);
+
         function isOnline(username) {
             let status = "offline";
             onlineUser.map((check) => {
@@ -109,15 +124,91 @@ exports.getUser = (req, res, next) => {
             });
             return status;
         }
+
         res.render("user/user", {
+            search: false,
             pageTitle: "User",
             userSession: userSession,
-            user: user,
+            page: parseInt(page),
+            totalItems: totalItems,
+            nextPage: itemsPerPage * page < totalItems,
+            prePage: page > 1,
+            lastPage: lastPage,
+            user: getUser,
             isOnline: isOnline,
             errorMessage: req.flash("success"),
             path: "/admin/dashboard",
         });
     });
+};
+
+//Truy cập phần tìm kiếm user
+exports.getUserSearch = (req, res, next) => {
+    const userSearch = req.body.search || req.cookies.search;
+    req.cookies.search = res.cookie('search',userSearch);
+    console.log(req.cookies.search )
+    const onlineUser = Sessions.find().then((a) => {
+        const user = [];
+        a.map((val) => {
+            const username = val.session.user.username;
+            user.push(username);
+        });
+        return user;
+    });
+    const user = User.find({status: {$gt: -1}})
+        .then((val) => {
+            const results = [];
+            val.map((value) => {
+                const checkValue = userSearch.toLowerCase().split(" ");
+                const userName = value.name.toLowerCase().split(" ");
+                userName.some((check) => {
+                    if (checkValue.includes(check)) {
+                        if (results.indexOf(value) === -1) {
+                            return results.push(value);
+                        }
+                    }
+                });
+            });
+            return results;
+        })
+        Promise.all([user,onlineUser]).then((val) => {
+            const userData = val[0];
+            const onlineUser = val[1];
+            const totalItems = userData.length;
+            const page = parseInt(req.query.page) || 1;
+            const itemsPerPage = 12;
+            const userSession = req.session.user;
+            const limitItems = itemsPerPage * page;
+            const skippedItems = (page - 1) * itemsPerPage;
+            const lastPage = Math.ceil(totalItems / itemsPerPage);
+            const userSlice = userData.slice(skippedItems, limitItems);
+
+            function isOnline(username) {
+                let status = "offline";
+                onlineUser.map((check) => {
+                    if (username == check) {
+                        return (status = "online");
+                    }
+                });
+                return status;
+            }
+
+            if (user) {
+                res.render("user/user", {
+                    search: true,
+                    userSession: userSession,
+                    pageTitle: "user",
+                    user: userSlice,
+                    isOnline: isOnline,
+                    page: parseInt(page),
+                    totalItems: totalItems,
+                    nextPage: itemsPerPage * page < totalItems,
+                    prePage: page > 1,
+                    lastPage: lastPage,
+                    errorMessage: req.flash("success"),
+                });
+            }
+        });
 };
 
 //Truy cập trang thêm User
@@ -134,7 +225,7 @@ exports.getUserAdd = (req, res, next) => {
 
 //Gửi yêu cầu thêm User
 exports.postUserAdd = (req, res, next) => {
-    const err = validationResult(req);//Lấy báo lỗi
+    const err = validationResult(req); //Lấy báo lỗi
     const userSession = req.session.user;
     //Trả về trang quản lý User nếu có lỗi hoặc tạo user nếu không có báo lỗi
     if (!err.isEmpty()) {
@@ -226,17 +317,26 @@ exports.postUserEdit = (req, res, next) => {
             });
         } else {
             //Lấy dữ liệu và cập nhật thông tin User trên MongoDB
-            const { name, phone, type, image } = req.body;
+            const { name, phone, email, type, image } = req.body;
             const img = req.file;
             const imgPath = img ? img.path.substr(6) : image;
             const filter = { username: user };
-            const update = {
-                name: name,
-                image: imgPath,
-                phone: phone,
-                status: type,
-            };
-            User.findOneAndUpdate(filter, update, { new: true }).then(
+            const update = () => {
+                if(name){
+                    return {
+                        name: name,
+                        image: imgPath,
+                        email: email,
+                        phone: phone,
+                        status: type,
+                    };
+                } else {
+                    return {
+                        status: type,
+                    }
+                }
+            }
+            User.findOneAndUpdate(filter, update(), { new: true }).then(
                 (result) => {
                     if (userSession.username == result.username) {
                         req.session.user = result;
@@ -255,10 +355,15 @@ exports.getUserDelete = (req, res, next) => {
     if (user === "") {
         res.redirect("/admin/user");
     } else {
-        const filter = { username: user, status: { $lt: 3 } };
-        req.flash("success", "Xóa User thành công");
-        User.deleteOne(filter).then(() => {
-            res.redirect("/admin/user");
+        User.findOneAndUpdate(
+            { username: user },
+            { status: -1 },
+            { new: true }
+        ).then((value) => {
+            if (value.status === -1) {
+                req.flash("success", "Xóa User thành công");
+                res.redirect("/admin/user");
+            }
         });
     }
 };
@@ -270,9 +375,11 @@ exports.postMultiUserDelete = (req, res, next) => {
         res.redirect("/admin/user");
     } else {
         req.flash("success", "Xóa hàng loạt User thành công");
-        User.deleteMany({ username: username }).then((result) => {
-            res.redirect("/admin/user");
-        });
+        User.updateMany({ username: username }, { status: -1 }).then(
+            (result) => {
+                res.redirect("/admin/user");
+            }
+        );
     }
 };
 
@@ -319,7 +426,7 @@ exports.getCampaigns = (req, res, next) => {
     let totalItems = 0;
 
     //Trả kết quả về trang quản lý Campaigns
-    Campaign.find()
+    Campaign.find({ type: { $gt: -1 } })
         .count()
         .then((items) => {
             totalItems = items;
@@ -328,11 +435,13 @@ exports.getCampaigns = (req, res, next) => {
                 res.redirect("/admin/campaign");
             } else {
                 return Campaign.find()
+                    .sort([["_id", -1]])
                     .skip(skippedItems)
                     .limit(itemsPerPage)
                     .then((campaign) => {
                         if (campaign) {
                             res.render("campaign/campaign", {
+                                search: false,
                                 userSession: userSession,
                                 pageTitle: "Campaign",
                                 campaign: campaign,
@@ -356,6 +465,51 @@ exports.getCampaigns = (req, res, next) => {
         });
 };
 
+exports.postCampaignsSearch = (req, res, next) => {
+    const campaignSearch = req.body.search || req.cookies.search;
+    req.cookies.search = res.cookie('search',campaignSearch);
+    Campaign.find()
+        .then((campaign) => {
+            const results = [];
+            campaign.map((value) => {
+                const checkValue = campaignSearch.toLowerCase().split(" ");
+                const campaignName = value.name.toLowerCase().split(" ");
+                campaignName.some((check) => {
+                    if (checkValue.includes(check)) {
+                        if (results.indexOf(value) === -1) {
+                            return results.push(value);
+                        }
+                    }
+                });
+            });
+            return results;
+        })
+        .then((results) => {
+            const totalItems = results.length;
+            const page = parseInt(req.query.page) || 1;
+            const itemsPerPage = 6;
+            const userSession = req.session.user;
+            const limitItems = itemsPerPage * page;
+            const skippedItems = (page - 1) * itemsPerPage;
+            const lastPage = Math.ceil(totalItems / itemsPerPage);
+            const campaign = results.slice(skippedItems, limitItems);
+            if (campaign) {
+                res.render("campaign/campaign", {
+                    search: true,
+                    userSession: userSession,
+                    pageTitle: "Campaign",
+                    campaign: campaign,
+                    page: parseInt(page),
+                    totalItems: totalItems,
+                    nextPage: itemsPerPage * page < totalItems,
+                    prePage: page > 1,
+                    lastPage: lastPage,
+                    errorMessage: req.flash("success"),
+                });
+            }
+        });
+};
+
 //Truy cập trang thêm Campaigns
 exports.getCampaignAdd = (req, res, next) => {
     const userSession = req.session.user;
@@ -373,7 +527,6 @@ exports.getCampaignAdd = (req, res, next) => {
 
 //Gửi yêu cầu thêm Campaigns
 exports.postCampaignAdd = (req, res, next) => {
-
     //Kiểm tra lỗi nhập Form
     const err = validationResult(req);
     const userSession = req.session.user;
@@ -400,10 +553,11 @@ exports.postCampaignAdd = (req, res, next) => {
             });
         } else {
             //Thêm Campaign
-            const { name, goal, type, desc, startAt, endAt } = req.body;
+            const { name, agent, goal, type, desc, startAt, endAt } = req.body;
             const imgPath = img.path.substr(6);
             const campaign = new Campaign({
                 name: name,
+                agent: agent,
                 raise: 0,
                 goal: goal,
                 image: imgPath,
@@ -462,17 +616,17 @@ exports.postCampaignEdit = (req, res, next) => {
             });
         } else {
             //Cập nhật thông tin Campaign
-            const { name, goal, image, type, startAt, endAt, desc } = req.body;
+            const { name, agent, goal, image, type, endAt, desc } = req.body;
             const img = req.file;
             const imgPath = img ? img.path.substr(6) : image;
             const filter = { _id: id };
             const update = {
                 name: name,
+                agent: agent,
                 goal: goal,
                 image: imgPath,
                 type: type,
                 desc: desc,
-                startAt: startAt,
                 endAt: endAt,
             };
             Campaign.findOneAndUpdate(filter, update).then(() => {
@@ -489,10 +643,16 @@ exports.getCampaignDelete = (req, res, next) => {
     if (id === "") {
         res.redirect("/admin/campaign");
     } else {
-        const filter = { _id: id };
-        Campaign.deleteOne(filter).then(() => {
-            req.flash("success", "Xóa Campaign thành công");
-            res.redirect("/admin/campaign");
+        Campaign.findById(id).then((campaign) => {
+            if (campaign.donator != "") {
+                req.flash("success", "Không thể xóa Campaign đã nhận từ thiện");
+                res.redirect("/admin/campaign");
+            } else {
+                campaign.delete().then(() => {
+                    req.flash("success", "Xóa Campaign thành công");
+                    res.redirect("/admin/campaign");
+                });
+            }
         });
     }
 };

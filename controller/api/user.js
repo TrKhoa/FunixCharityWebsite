@@ -85,14 +85,21 @@ exports.postLogin = async (req, res) => {
         .then((user) => {
             //Nếu thông tin đăng nhập là đúng thì tạo session hoặc báo lỗi nếu sai thông tin đăng nhập
             if (user) {
-                if (user.password === sha256(password)) {
-                    req.session.isLoggedIn = true;
-                    req.session.user = user;
-                    return res.status(201).send({ data: user, error: false });
+                if(user.status !== -1){
+                    if (user.password === sha256(password)) {
+                        req.session.isLoggedIn = true;
+                        req.session.user = user;
+                        return res.status(201).send({ data: user, error: false });
+                    } else {
+                        return res.status(202).send({
+                            error: true,
+                            message: "Mật khẩu hoặc tài khoản không đúng!",
+                        });
+                    }
                 } else {
                     return res.status(202).send({
                         error: true,
-                        message: "Mật khẩu hoặc tài khoản không đúng!",
+                        message: "Tài khoản đã bị vô hiệu hóa, xin liên hệ với Admin",
                     });
                 }
             } else {

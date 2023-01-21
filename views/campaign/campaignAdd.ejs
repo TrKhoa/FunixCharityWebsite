@@ -14,9 +14,15 @@
         <div class="col-lg-12">
           <h1><%= edit ? 'Chỉnh sửa chiến dịch' : 'Thêm chiến dịch' %></h1>
           <form enctype="multipart/form-data" action=<%= edit ? "/admin/campaign-edit/"+campaign._id : "/admin/campaign-add" %> method="post" class="mt-5">
-            <div class="mb-3">
-              <label for="name" class="form-label">Tên chiến dịch</label>
-              <input type="text" class="form-control" id="name" name="name" placeholder="VD: Chiến dịch ủng hộ đồng bào miền trung">
+            <div class="mb-3 row">
+              <div class="col-lg-9">
+                <label for="name" class="form-label">Tên chiến dịch</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="VD: Chiến dịch ủng hộ đồng bào miền trung">
+              </div>
+              <div class="col-lg-3">
+                <label for="agent" class="form-label">Tên người đại diện</label>
+                <input type="text" class="form-control" id="agent" name="agent" placeholder="VD: Nguyen Van A">
+              </div>
             </div>
             <div class="mb-3 row">
               <div class="col-lg-4">
@@ -42,7 +48,7 @@
             <div class="mb-3 row">
               <div class="col-lg-6">
                 <label for="startAt" class="form-label">Ngày bắt đầu</label>
-                <input type="date" class="form-control" id="startAt" name="startAt" placeholder="VD: 100000" value=<%= today ? today : moment(campaign.startAt).format("YYYY-MM-DD") %>>
+                <input type="date" <%= edit ? 'disabled' : '' %> class="form-control" id="startAt" name="startAt" placeholder="VD: 100000" value=<%= today ? today : moment(campaign.startAt).format("YYYY-MM-DD") %>>
               </div>
               <div class="col-lg-6">
                 <label for="endAt" class="form-label">Ngày kết thúc</label>
@@ -65,6 +71,7 @@
       <script>
         $(document).ready(function() {
           $('#name').val("<%= campaign ? campaign.name : '' %>");
+          $('#agent').val("<%= campaign ? campaign.agent : '' %>");
           $('#desc').val("<%= campaign ? campaign.desc : '' %>");
         });
       </script>

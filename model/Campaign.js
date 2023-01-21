@@ -11,6 +11,10 @@ const Campaign = new Schema({
         type: String,
         default: "",
     },
+    agent:{
+        type: String,
+        default: "",
+    },
     type: {
         type: Number,
     },
